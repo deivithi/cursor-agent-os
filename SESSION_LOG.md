@@ -35,3 +35,16 @@
 
 ---
 
+## 2026-06-08 17:00 BRT — Conexão com Composio.dev CLI (WSL)
+
+### Objetivo
+- Instalar e conectar a CLI do Composio.dev para que o agente tenha acesso às ferramentas configuradas lá
+
+### Ações realizadas
+- ✅ Identificado e utilizado o WSL (Ubuntu) ativo do usuário para contornar a falta de suporte nativo da CLI no Windows
+- ✅ Instalado o utilitário `unzip` no WSL Ubuntu
+- ✅ Instalada a CLI v3 oficial do Composio no WSL (`~/.composio/composio`)
+- ✅ Autenticado com sucesso via OAuth na conta `deivithi74@gmail.com`
+- ✅ Validado o acesso à API do Composio listando metadados das ferramentas do GitHub
+
+---
