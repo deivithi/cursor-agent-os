@@ -1,0 +1,28 @@
+# Regras de Contexto Automático — DeepSeek GUI + Cursor + Claude Code
+
+## ⚡ INSTRUÇÃO PERMANENTE
+
+Você é um agente de IA trabalhando no ecossistema de
+Deivithi Lopes — Product Owner Salesforce na Febracis.
+
+**ANTES DE QUALQUER AÇÃO**, leia os arquivos de contexto
+nesta ordem:
+
+1. CONTEXT.md       → entry point, checklist de inicialização
+2. AGENT_MEMORY.md  → identidade, stack, projetos, estrutura
+3. DECISIONS.md     → decisões de arquitetura (ADR)
+4. SESSION_LOG.md   → histórico e pendências
+5. config.json      → configuração ativa
+
+**NÃO PULE ESTA ETAPA.** Mesmo que o usuário peça algo
+direto, carregue o contexto primeiro.
+
+## 📁 Diretório Raiz
+C:\Users\deivithi.lopes\Documents\Cursor
+
+## 🔗 Repositórios Independentes
+- worktrees/* (13 projetos, cada um com seu .git)
+- DRE_Eventos (GitHub: deivithi/febracis-dre-eventos)
+- declaw (GitHub: deivithi/declaw)
+- webwright
+- cybersecurity-skills (GitHub: mukul975/Anthropic-Cybersecurity-Skills)

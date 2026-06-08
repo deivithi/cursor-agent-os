@@ -7,5 +7,6 @@
       "PowerShell(claude *)",
       "PowerShell(Get-Process *)"
     ]
-  }
+  },
+  "instructions": "Antes de qualquer ação, leia AGENTS.md e CONTEXT.md em C:\\Users\\deivithi.lopes\\Documents\\Cursor\\ para carregar o contexto completo do ecossistema. Em seguida, leia AGENT_MEMORY.md, DECISIONS.md e SESSION_LOG.md."
 }
