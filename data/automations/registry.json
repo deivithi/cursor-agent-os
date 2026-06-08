@@ -1,0 +1,25 @@
+{
+  "description": "Registry of scheduled automations. Each automation runs on a cron schedule via n8n dispatcher.",
+  "automations": [
+    {
+      "id": "auto-001",
+      "name": "Ouroboros Daily Improvement",
+      "schedule": "0 2 * * *",
+      "command": "/ouroboros",
+      "notify": ["telegram"],
+      "review_required": false,
+      "enabled": true,
+      "notes": "Already runs via dedicated n8n workflow. Listed here for registry completeness."
+    },
+    {
+      "id": "auto-002",
+      "name": "Obsidian Daily Briefing",
+      "schedule": "0 8 * * *",
+      "command": "obsidian-briefing",
+      "notify": ["email"],
+      "review_required": false,
+      "enabled": true,
+      "notes": "Runs via Windows Task Scheduler. Reads vault, generates briefing, sends email."
+    }
+  ]
+}

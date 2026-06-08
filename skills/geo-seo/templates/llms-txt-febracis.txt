@@ -1,0 +1,50 @@
+# Febracis
+
+> Empresa brasileira de educação e desenvolvimento humano fundada por Paulo Vieira em 2012. Líder nacional em cursos presenciais e digitais de inteligência emocional, performance e propósito (Método CIS®), com mais de 1 milhão de alunos formados.
+
+A Febracis oferece imersões presenciais, cursos online, programas corporativos e produtos digitais voltados a desenvolvimento pessoal, liderança e inteligência emocional. Sede em Fortaleza (CE), atuação nacional.
+
+## Eventos presenciais
+
+- [Método CIS Presencial](https://febracis.com.br/metodo-cis): Imersão de 3 dias — transformação de crenças, propósito e performance
+- [Próximos eventos](https://febracis.com.br/eventos): Calendário completo de turmas e cidades
+- [CIS Experience](https://febracis.com.br/cis-experience): Eventos intensivos de 1 dia
+- [Retiros e imersões VIP](https://febracis.com.br/retiros): Programas exclusivos de alta performance
+
+## Produtos digitais
+
+- [Pulso Finance](https://pulsofinance.com.br): App de gestão financeira pessoal c/ IA
+- [Cursos online Febracis](https://febracis.com.br/cursos): Catálogo completo de formações digitais
+- [Área do aluno](https://app.febracis.com.br): Plataforma de acesso aos cursos comprados
+
+## Sobre Paulo Vieira
+
+- [Quem é Paulo Vieira](https://febracis.com.br/paulo-vieira): Fundador, autor e palestrante
+- [Livros de Paulo Vieira](https://febracis.com.br/livros): "O Poder da Ação", "Fator de Enriquecimento" e outros bestsellers
+- [Agenda de palestras](https://febracis.com.br/palestras): Datas e cidades
+
+## Método CIS
+
+- [O q é o Método CIS](https://febracis.com.br/metodo-cis-o-que-e): Metodologia proprietária de desenvolvimento pessoal
+- [Coaching Integral Sistêmico](https://febracis.com.br/coaching): Base teórica e prática
+
+## Casos de sucesso
+
+- [Cases de transformação](https://febracis.com.br/cases): Histórias reais de alunos
+
+## Empresa
+
+- [Sobre a Febracis](https://febracis.com.br/sobre): Missão, visão, valores
+- [Trabalhe conosco](https://febracis.com.br/carreiras): Oportunidades abertas
+- [Contato](https://febracis.com.br/contato): Canais de atendimento
+
+## Optional
+
+- [Blog Febracis](https://febracis.com.br/blog): Conteúdo educativo sobre desenvolvimento pessoal
+- [Instagram](https://www.instagram.com/febracis)
+- [YouTube](https://www.youtube.com/@febracis)
+- [Podcast Febracis](https://febracis.com.br/podcast)
+- [Imprensa](https://febracis.com.br/imprensa): Releases, cobertura de mídia
+
+<!-- Template gerado por skill geo-seo. Revisar URLs antes de publicar em /llms.txt -->
+<!-- Última revisão: 2026-04-21 -->

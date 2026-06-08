@@ -1,0 +1,34 @@
+{
+  "$schema": "Synthetic test scenario — gerado por trace-capability Stage 2",
+  "template_version": "1.0",
+  "example": {
+    "id": "trace_synth_{gap_id}_{N}",
+    "skill": "{skill-name}",
+    "capability_gap": "{taxonomy_id}",
+    "difficulty": "simple | standard | edge_case",
+    "input": "{descrição do input que exercita especificamente o gap}",
+    "output": null,
+    "expected_behavior": [
+      "{passo que o agente DEVE executar para demonstrar a capacidade}",
+      "{segundo passo esperado}",
+      "{terceiro passo esperado}"
+    ],
+    "expected_tools": ["{tool1}", "{tool2}"],
+    "quality_criteria": [
+      "{critério específico que o judge deve avaliar}",
+      "{segundo critério}"
+    ],
+    "anti_criteria": [
+      "{comportamento que indica FALHA na capacidade}"
+    ],
+    "generated_by": "trace-capability",
+    "source_gap_report": "{path do gap report que originou este cenário}",
+    "timestamp": "{ISO 8601}"
+  },
+  "notes": [
+    "Cada gap gera 3 cenários: 1 simple, 1 standard, 1 edge_case",
+    "output fica null até execução real — preenchido pelo Ouroboros",
+    "quality_criteria vira judge criteria em ouroboros/evals/judges/{skill}/",
+    "Traces sintéticos são taggeados generated_by para peso diferenciado (0.3x)"
+  ]
+}

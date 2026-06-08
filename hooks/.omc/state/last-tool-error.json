@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cp \\\".claude/settings.local.json\\\" \\\".claude/settings.local.json.bak-pre-caverna\\\" && ls -la \\\".claude/settings.local.json.bak-pre-caverna\\\"\",\"description\":\"Backup settings.local.json\"}",
+  "error": "Exit code 1\ncp: cannot stat '.claude/settings.local.json': No such file or directory",
+  "timestamp": "2026-04-20T00:23:42.605Z",
+  "retry_count": 1
+}

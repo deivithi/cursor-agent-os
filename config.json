@@ -1,0 +1,46 @@
+{
+  "user": {
+    "name": "Deivithi",
+    "role": "Product Owner Salesforce",
+    "org": "Febracis",
+    "areas": ["Vendas", "Educação"]
+  },
+  "stack": {
+    "primary": ["Salesforce Sales", "Salesforce Service", "Salesforce Marketing", "Salesforce Experience"],
+    "development": ["Node.js", "TypeScript", "Supabase", "Vercel", "Netlify", "Shopify"],
+    "ai": ["Claude Code", "NotebookLM", "Hugging Face", "n8n"]
+  },
+  "active_projects": [
+    {
+      "name": "Aria",
+      "type": "SaaS",
+      "description": "Agente IA autônomo para PMEs",
+      "deploy": "Vercel"
+    },
+    {
+      "name": "FIO-IA",
+      "type": "Automação",
+      "description": "Gerador autônomo de threads no X, 6x/dia",
+      "deploy": "Task Scheduler"
+    },
+    {
+      "name": "ai-landing",
+      "type": "Landing Page",
+      "description": "Captação de leads em eventos Febracis com IA + QR",
+      "deploy": "Netlify"
+    }
+  ],
+  "preferences": {
+    "language": "pt-BR",
+    "timezone": "America/Sao_Paulo",
+    "tz_offset": "-03:00",
+    "date_format": "DD/MM/YYYY HH:MM BRT"
+  },
+  "data_dir": ".claude/data",
+  "skill_ecosystems": {
+    "custom": ".claude/skills/",
+    "cybersecurity": ".claude/cybersecurity-skills/skills/",
+    "scientific": ".claude/scientific-skills/skills/",
+    "commands": ".claude/commands/"
+  }
+}

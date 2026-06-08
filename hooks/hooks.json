@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node ./hooks/caverna-activate.js"
+      },
+      {
+        "command": "node ./hooks/profile-session.js"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "node ./hooks/caverna-mode-tracker.js"
+      },
+      {
+        "command": "node ./hooks/profile-tracker.js"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "node ./hooks/caverna-reinforce.js"
+      },
+      {
+        "command": "node ./hooks/domain-reinforce.js"
+      },
+      {
+        "command": "node ./hooks/git-safety-guard.js"
+      }
+    ]
+  }
+}

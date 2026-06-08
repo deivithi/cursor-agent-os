@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Batch Processing Result",
+  "type": "object",
+  "required": ["batch_id", "total_rows", "processed", "results"],
+  "properties": {
+    "batch_id": { "type": "string" },
+    "total_rows": { "type": "integer", "minimum": 0 },
+    "processed": { "type": "integer", "minimum": 0 },
+    "failed": { "type": "integer", "minimum": 0 },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["row", "status"],
+        "properties": {
+          "row": { "type": "integer" },
+          "status": { "enum": ["success", "error", "skipped"] },
+          "output": { "type": "string" },
+          "error": { "type": "string" }
+        }
+      }
+    }
+  }
+}

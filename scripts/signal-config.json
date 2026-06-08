@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "maxProfileItems": 5,
+  "signalExtraction": true,
+  "contextWindow": 3,
+  "signalCategories": {
+    "memory":     { "priority": "high",   "patterns": ["memory/*.md", "memory/**"] },
+    "config":     { "priority": "high",   "patterns": [".claude/settings*.json", ".claude/scripts/*", "CLAUDE.md", "AGENTS.md"] },
+    "skill":      { "priority": "medium", "patterns": [".claude/skills/*/SKILL.md", ".claude/commands/*.md", ".claude/skills/**"] },
+    "project":    { "priority": "medium", "patterns": ["Aria/**", "ai-powered-landing/**", "ouroboros/**"] },
+    "automation": { "priority": "low",    "patterns": ["automacoes/**", "scripts/**", ".mcp.json"] }
+  }
+}

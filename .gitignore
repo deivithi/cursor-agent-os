@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Node
+node_modules/
+.package-lock.json
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache & temp
+*.pyc
+.pytest_cache/
+.tmp*
+*.log
+cache/
+*.db-shm
+*.db-wal
+
+# Binary / media
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Audio / large cache
+audio_cache/
+image_cache/
+
+# Sensitive
+auth.json
+auth.lock
+*.pem
+*.key
+
+# Cursor/Copilot binary
+*.vsix
+
+# DeepSeek GUI workspace
+.deepseekgui/
+
+# Nested git repos (managed independently)
+worktrees/
+webwright/
+cybersecurity-skills/
+

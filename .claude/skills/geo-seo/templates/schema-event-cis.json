@@ -1,0 +1,69 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Método CIS Presencial",
+  "description": "Imersão de 3 dias de desenvolvimento pessoal com Método CIS (Coaching Integral Sistêmico) criado por Paulo Vieira. Transformação de crenças, despertar de propósito e construção de plano de alta performance.",
+  "image": "https://febracis.com.br/eventos/metodo-cis-hero.jpg",
+  "startDate": "2026-05-15T09:00:00-03:00",
+  "endDate": "2026-05-17T18:00:00-03:00",
+  "doorTime": "2026-05-15T08:00:00-03:00",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "Place",
+    "name": "Centro de Eventos Febracis",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. Principal, 1000",
+      "addressLocality": "Fortaleza",
+      "addressRegion": "CE",
+      "postalCode": "60000-000",
+      "addressCountry": "BR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -3.7327,
+      "longitude": -38.5267
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Febracis",
+    "url": "https://febracis.com.br",
+    "logo": "https://febracis.com.br/logo.png"
+  },
+  "performer": {
+    "@type": "Person",
+    "name": "Paulo Vieira",
+    "url": "https://febracis.com.br/paulo-vieira",
+    "jobTitle": "Fundador Febracis, Autor, Palestrante"
+  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Lote Promocional",
+      "url": "https://febracis.com.br/metodo-cis",
+      "price": "1997",
+      "priceCurrency": "BRL",
+      "availability": "https://schema.org/LimitedAvailability",
+      "validFrom": "2026-01-01T00:00:00-03:00",
+      "validThrough": "2026-03-31T23:59:59-03:00"
+    },
+    {
+      "@type": "Offer",
+      "name": "Lote Padrão",
+      "url": "https://febracis.com.br/metodo-cis",
+      "price": "2997",
+      "priceCurrency": "BRL",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-04-01T00:00:00-03:00"
+    }
+  ],
+  "inLanguage": "pt-BR",
+  "isAccessibleForFree": false,
+  "maximumAttendeeCapacity": 500,
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Profissionais, empreendedores, lideres e pessoas em busca de desenvolvimento pessoal"
+  }
+}

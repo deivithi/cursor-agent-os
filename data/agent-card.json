@@ -1,0 +1,98 @@
+{
+  "a2a_version": "1.0",
+  "agent_id": "claude-code-ouroboros",
+  "agent_type": "reasoning",
+  "name": "Claude Code — Ouroboros System",
+  "version": "1.0.0",
+  "description": "Agente de raciocínio com auto-aprimoramento recursivo. Acesso a código, MCP tools, 36+ skills e integração com n8n.",
+  "owner": "deivithi",
+  "environment": "local",
+  "capabilities": {
+    "domains": [
+      {
+        "name": "skills",
+        "description": "Avaliação e otimização de skills de agentes IA",
+        "skills": [
+          "lead-audit", "commission-audit", "code-review", "api-forge",
+          "runbook", "scaffolding", "cicd", "product-verification",
+          "error-alerting", "circuit-breaker", "content-deduplication",
+          "gepa-reflective", "guardrails", "agent-harness", "a2a-protocol"
+        ]
+      },
+      {
+        "name": "workflows",
+        "description": "Hardening e otimização de workflows n8n",
+        "workflow_ids": ["9eZbSAoiLNzymR54", "V9mdrHDTgO2KYJDO", "VMOVlhaxE4WgYhjw"]
+      },
+      {
+        "name": "code",
+        "description": "Análise, review e geração de código",
+        "languages": ["javascript", "python", "typescript", "bash", "sql"]
+      },
+      {
+        "name": "documents",
+        "description": "Geração de PDFs, planilhas e apresentações",
+        "formats": ["pdf", "xlsx", "pptx", "markdown"]
+      },
+      {
+        "name": "security",
+        "description": "572 skills de cybersecurity (OWASP, LGPD, hardening)",
+        "router": "/cyber"
+      },
+      {
+        "name": "science",
+        "description": "22 skills científicas e analíticas",
+        "router": "/science"
+      }
+    ],
+    "tools": {
+      "mcp_servers": 20,
+      "slash_commands": 30,
+      "typed_agents": ["worker", "explorer", "reviewer", "planner"],
+      "hooks": ["SessionStart", "PostToolUse", "Stop"]
+    },
+    "protocols": ["a2a-v1", "json-envelope", "file-drop"]
+  },
+  "supported_intents": [
+    "execute_task",
+    "report_result",
+    "health_check",
+    "evaluate_skill",
+    "review_code",
+    "generate_document"
+  ],
+  "endpoints": {
+    "inbox": ".claude/data/a2a-inbox/",
+    "outbox": ".claude/data/a2a-outbox/",
+    "webhook_callback": "http://localhost:5678/webhook/claude-callback"
+  },
+  "constraints": {
+    "max_payload_bytes": 1048576,
+    "max_concurrent_tasks": 5,
+    "session_timeout_minutes": 45,
+    "requires_auth": false
+  },
+  "metrics": {
+    "skills_evaluated": 6,
+    "skills_in_schedule": 12,
+    "workflows_baselined": 3,
+    "best_improvement": "+17.6% (lead-audit)"
+  },
+  "integrations": {
+    "n8n": {
+      "version": "2.40.0",
+      "api": "http://localhost:5678/api/v1",
+      "health": "http://localhost:5678/healthz"
+    },
+    "litellm": {
+      "version": "1.82.6",
+      "api": "http://localhost:4000/v1",
+      "models": ["cheap", "critical", "minimax-m2.7", "claude-sonnet", "gpt-4o-mini"]
+    },
+    "telegram": {
+      "chat_id": "6575007786",
+      "use": "notifications"
+    }
+  },
+  "updated_at": "2026-03-23T20:55:00-03:00"
+}

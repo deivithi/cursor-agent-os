@@ -1,0 +1,22 @@
+{
+  "description": "Global severity threshold configuration. Skills only report findings at or above the threshold.",
+  "default_threshold": "MEDIUM",
+  "levels": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"],
+  "overrides": {
+    "code-review": "MEDIUM",
+    "auto-pr-review": "MEDIUM",
+    "security-review": "LOW",
+    "lead-audit": "HIGH",
+    "commission-audit": "HIGH",
+    "n8n-hardening": "MEDIUM",
+    "product-verification": "LOW",
+    "hotfix": "CRITICAL"
+  },
+  "labels": {
+    "CRITICAL": "P0 - Bloqueia deploy/operação",
+    "HIGH": "P1 - Deve ser corrigido antes de merge",
+    "MEDIUM": "P2 - Corrigir em breve",
+    "LOW": "P3 - Nice to fix",
+    "INFO": "Observação, sem ação necessária"
+  }
+}

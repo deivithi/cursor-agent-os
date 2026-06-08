@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "profiles": [
+    {
+      "id": "febracis-salesforce",
+      "file": "febracis-salesforce.md",
+      "pathPatterns": ["febracis", "salesforce", "lead-audit", "commission", "comiss"],
+      "branchPatterns": ["febracis", "salesforce", "lead", "comiss"]
+    },
+    {
+      "id": "aria-dev",
+      "file": "aria-dev.md",
+      "pathPatterns": ["aria", "pulso-finance", "pulsofinance"],
+      "branchPatterns": ["aria", "pulso"]
+    },
+    {
+      "id": "automation",
+      "file": "automation.md",
+      "pathPatterns": ["n8n", "workflow", "automacao", "automations", "integration"],
+      "branchPatterns": ["n8n", "automation", "workflow"]
+    }
+  ],
+  "activationRules": [
+    {
+      "id": "golang-activate",
+      "file": "golang-activate.md",
+      "skill": "golang",
+      "keywords": [
+        "go", "golang", ".go", "goroutine", "channel", "go mod", "go build",
+        "go test", "chi", "cobra", "pgx", "grpc-go", "microservico go", "microserviço go"
+      ],
+      "workspaceMarkers": ["go.mod", "go.work"]
+    },
+    {
+      "id": "geo-seo-activate",
+      "file": "geo-seo-activate.md",
+      "skill": "geo-seo",
+      "keywords": [
+        "geo", "generative engine optimization", "llms.txt", "citability",
+        "schema.org", "json-ld", "gptbot", "perplexity", "ai search", "search ia"
+      ],
+      "workspaceMarkers": []
+    },
+    {
+      "id": "supabase-factory-activate",
+      "file": "supabase-factory-activate.md",
+      "skill": "supabase-factory",
+      "keywords": [
+        "criar banco", "novo banco supabase", "provisionar supabase", "novo schema",
+        "supabase branch", "onde subo essa tabela", "modularizar public"
+      ],
+      "workspaceMarkers": ["supabase/config.toml", "supabase/migrations"]
+    }
+  ]
+}

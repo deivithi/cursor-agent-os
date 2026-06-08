@@ -1,0 +1,55 @@
+/**
+ * Route: {{ROUTE_NAME}}
+ * Description: {{DESCRIPTION}}
+ * Scaffolded: {{TIMESTAMP}}
+ * Pattern: Aria API Route Standard
+ */
+
+import { z } from 'zod';
+
+// ─── Input Validation ────────────────────────────────────────
+const {{PASCAL_NAME}}Schema = z.object({
+  // Define your request fields here
+});
+
+type {{PASCAL_NAME}}Input = z.infer<typeof {{PASCAL_NAME}}Schema>;
+
+// ─── Response Type ───────────────────────────────────────────
+interface {{PASCAL_NAME}}Response {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+}
+
+// ─── Handler ─────────────────────────────────────────────────
+export async function handle{{PASCAL_NAME}}(req: Request): Promise<Response> {
+  try {
+    const body = await req.json();
+    const input = {{PASCAL_NAME}}Schema.parse(body);
+
+    // TODO: Implement business logic
+
+    return new Response(JSON.stringify({
+      success: true,
+      data: input,
+    } satisfies {{PASCAL_NAME}}Response), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors,
+      }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+    }
+
+    console.error('[{{ROUTE_NAME}}]', error);
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Internal server error',
+    }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+  }
+}

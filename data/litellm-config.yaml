@@ -1,0 +1,35 @@
+model_list:
+  # Modelos baratos para tarefas simples (enrichment, parsing, drafts)
+  - model_name: cheap
+    litellm_params:
+      model: openrouter/minimax/minimax-m2.7
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # Modelos criticos para tarefas complexas (arquitetura, security, refactoring)
+  - model_name: critical
+    litellm_params:
+      model: openrouter/anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # Aliases por modelo
+  - model_name: minimax-m2.7
+    litellm_params:
+      model: openrouter/minimax/minimax-m2.7
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: claude-sonnet
+    litellm_params:
+      model: openrouter/anthropic/claude-sonnet-4-20250514
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openrouter/openai/gpt-4o-mini
+      api_key: os.environ/OPENROUTER_API_KEY
+
+general_settings:
+  master_key: sk-litellm-local
+
+litellm_settings:
+  drop_params: true
+  request_timeout: 120

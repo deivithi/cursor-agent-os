@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-16_08-08",
+  "branch": "ouroboros/skills-2026-03-22",
+  "commit": "add257b",
+  "modified": ".claude/skills/clean-code-rules/SKILL.md,.claude/skills/deep-research-workspace/SKILL.md,.claude/skills/spec-phases/SKILL.md,.claude/skills/spec-verify/SKILL.md,.cursor/README.md,.cursor/skills/stack-automacoes/SKILL.md",
+  "staged": "",
+  "diff_stat": " 6 files changed, 242 insertions(+), 1 deletion(-)",
+  "recent_commits": "add257b docs(cursor): Agent Smith V6 skill + rules — Settings/CI spec e AGENTS|00e4ff0 docs(cursor): Agent Smith V6 stack skill + AGENTS/STACKS entries|5b3c796 feat(skills): absorb Together AI patterns — handoff graph, trigger evals, quality CI|49d36ef feat(cursor): Agent Skills no repo (.cursor/skills) e doc Skills vs Rules|a9913ca ouroboros/skills: evaluate code-review (10/10 — early stop)",
+  "open_items": "31",
+  "resumable": true
+}

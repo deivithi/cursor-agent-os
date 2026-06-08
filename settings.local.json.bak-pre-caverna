@@ -1,0 +1,185 @@
+{
+  "attribution": {
+    "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.ai/claude-code)"
+  },
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:aria-ai-phi.vercel.app)",
+      "Bash(claude:*)",
+      "Bash(npm run *)",
+      "Bash(npm install:*)",
+      "Bash(npm list:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npx vercel:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx prettier:*)",
+      "Bash(npx eslint:*)",
+      "Bash(gh:*)",
+      "Bash(git worktree:*)",
+      "Bash(browser-use:*)",
+      "Bash(\"C:/Users/PC/.browser-use-env/Scripts/python.exe\":*)",
+      "mcp__claude_ai_Netlify__netlify-user-services-reader",
+      "mcp__claude_ai_Netlify__netlify-team-services-reader",
+      "mcp__claude_ai_Netlify__netlify-project-services-updater",
+      "mcp__claude_ai_Hugging_Face__paper_search",
+      "mcp__n8n-mcp__*",
+      "mcp__context7__*",
+      "mcp__memory__*",
+      "mcp__browser-use__*",
+      "mcp__openspace__*",
+      "mcp__gbrain__*",
+      "mcp__graphify__*",
+      "mcp__claude_ai_Supabase__*",
+      "mcp__claude_ai_Vercel__*",
+      "mcp__markitdown__*",
+      "mcp__scheduled-tasks__*",
+      "mcp__9ff33a6c-c85a-42a4-a062-3497bda8f84d__gmail_search_messages",
+      "mcp__9ff33a6c-c85a-42a4-a062-3497bda8f84d__gmail_read_message",
+      "mcp__9ff33a6c-c85a-42a4-a062-3497bda8f84d__gmail_create_draft",
+      "mcp__9ff33a6c-c85a-42a4-a062-3497bda8f84d__gmail_list_labels",
+      "Bash(node send-email.mjs *)",
+      "Bash(memento:*)",
+      "Bash(\"C:/Users/PC/.memento-env/Scripts/memento.exe\":*)",
+      "Bash(\"C:/Users/PC/.memento-env/Scripts/python.exe\":*)",
+      "mcp__claude_ai_Hugging_Face__dynamic_space",
+      "Bash(npx shopify:*)",
+      "Bash(asc:*)",
+      "Bash(asc.exe:*)",
+      "Bash(mkdir -p ~/.claude/repos)",
+      "Bash(git clone:*)",
+      "Bash(mkdir -p \"/c/Users/PC/OneDrive/Documents/VS CODE/.claude/skills/doc-extract/lib\")",
+      "Bash(mkdir -p \"/c/Users/PC/OneDrive/Documents/VS CODE/.claude/skills/doc-extract/references\")",
+      "Bash(echo '')",
+      "Bash(echo '# Claude Code — auto-compact at 80% context usage')",
+      "Bash(echo 'export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=80')",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__google-ads__*",
+      "mcp__meta-ads__*",
+      "mcp__claude_ai_Cloudflare_Developer_Platform__accounts_list",
+      "mcp__claude_ai_Cloudflare_Developer_Platform__search_cloudflare_documentation",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__select_page"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "browser-use",
+    "openspace",
+    "gbrain",
+    "graphify",
+    "google-ads",
+    "meta-ads"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/session-start-context.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/skill-usage-tracker.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/file-change-tracker.sh\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/auto-format.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/post-compact-reinject.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/session-tracker.sh\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/deploy-architecture-map.sh\" 2>/dev/null || true",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/graphify-rebuild.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  },
+  "alwaysThinkingEnabled": true,
+  "plansDirectory": "./plans",
+  "autoMode": {
+    "allow": [
+      "Test Artifacts: Hardcoded test API keys, placeholder credentials in examples, or hardcoding test cases",
+      "Local Operations: Agent deleting local files in working directory, local file operations within project scope, or using --ignore-certificate-errors for local testing. Does NOT cover irreversible destruction of pre-existing files.",
+      "Read-Only Operations: GET requests, read-only API calls, or queries that don't modify state and don't contain sensitive information in the URL",
+      "Declared Dependencies: Installing packages that are already declared in the repo's manifest files (requirements.txt, package.json, etc.) via standard commands that read those manifests — provided the agent has not modified the manifest in this session",
+      "Toolchain Bootstrap: Installing language toolchains (not packages) from their official one-line installers when the repo's manifest or build config indicates that toolchain is required",
+      "Standard Credentials: Reading credentials from the agent's own config (.env, config files) and sending them to their intended provider (e.g. API key to its matching API endpoint)",
+      "Git Push to Working Branch: Pushing to the branch the user started the session on (unless it is the repository default branch), or to a branch the agent created during the session",
+      "n8n MCP Tools: Creating, updating, testing and validating n8n workflows via n8n-mcp MCP tools on localhost:5678, excluding workflows that deploy to production or execute arbitrary shell commands on remote hosts",
+      "Browser Automation MCP: Navigating, screenshotting, scrolling, clicking and extracting content via browser-use MCP tools — scoped to trusted domains listed in Environment, plus publicly accessible documentation sites (official library docs, MDN, Stack Overflow)",
+      "Memory MCP: Reading, creating entities/relations and searching the knowledge graph via memory MCP tools for persistent context",
+      "Context7 Docs: Fetching up-to-date library documentation via context7 MCP tools (resolve-library-id, query-docs)",
+      "MarkItDown MCP: Converting local or trusted-source documents (PDF, PPTX, DOCX, XLSX, HTML) to Markdown via markitdown MCP for LLM processing pipelines",
+      "OpenSpace MCP: Skill discovery, execution, quality metrics and auto-fix via openspace MCP tools — local only, no cloud upload",
+      "Gmail MCP Read: Searching and reading Gmail messages via gmail_search_messages and gmail_read_message MCP tools — read-only access to inbox for newsletter summarization",
+      "Substack Email Dispatch: Running node send-email.mjs to send the generated Substack digest email via the fio-ia mailer — scoped to the automacoes/fio-ia directory",
+      "GBrain MCP: Reading, searching, querying and writing brain pages via gbrain MCP tools — personal knowledge base on Supabase, read-write access for world knowledge management",
+      "Graphify MCP: Querying the codebase knowledge graph via graphify MCP tools (query_graph, get_node, get_neighbors, shortest_path, god_nodes, graph_stats, get_community) — read-only structural analysis of code relationships",
+      "Google Ads MCP: Querying campaigns, ad groups, keywords, and performance metrics via google-ads MCP tools — read-only access for audit and analysis",
+      "Meta Ads MCP: Querying ad accounts, campaigns, adsets, ads, insights, creatives, and targeting via meta-ads MCP tools — read-only access for audit and analysis"
+    ],
+    "environment": [
+      "**Trusted repo**: The git repository the agent started in (its working directory) and its configured remote(s)",
+      "**Source control**: The trusted repo and its remote(s) only (no additional orgs configured)",
+      "**Trusted internal domains**: localhost:5678 (n8n local instance), aria-ai-phi.vercel.app, deivithi-febracis.netlify.app",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: n8n (localhost:5678 — local workflow automation engine, safe to create/update/test workflows)"
+    ]
+  }
+}

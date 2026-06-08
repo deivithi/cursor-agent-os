@@ -1,0 +1,20 @@
+/**
+ * Component: {{COMPONENT_NAME}}
+ * Description: {{DESCRIPTION}}
+ * Scaffolded: {{TIMESTAMP}}
+ */
+
+interface {{COMPONENT_NAME}}Props {
+  // TODO: Define props
+  // title: string;
+  // onClick?: () => void;
+}
+
+export function {{COMPONENT_NAME}}({ /* destructure props */ }: {{COMPONENT_NAME}}Props) {
+  return (
+    <div className="{{CONTAINER_CLASS}}">
+      {/* TODO: Implement component */}
+      <p>{{COMPONENT_NAME}} component</p>
+    </div>
+  );
+}

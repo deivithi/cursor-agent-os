@@ -1,0 +1,468 @@
+{
+  "generatedAt": "2026-05-25T17:39:30.789Z",
+  "owner": "Deivithi / Febracis",
+  "policy": "dormant-not-deleted",
+  "tiers": {
+    "S": "Uso diário/semanal — manter ATIVO",
+    "A": "Stack Febracis/core — manter ATIVO",
+    "B": "Ocasional — desativar até precisar",
+    "C": "Sem uso comprovado — desativar (cache permanece)"
+  },
+  "plugins": [
+    {
+      "id": "appwrite-plugin",
+      "displayName": "appwrite-plugin",
+      "tier": "C",
+      "status": "dormant",
+      "description": "The Appwrite plugin for Cursor includes skills and MCP servers, allowing AI agents to access your projects and correctly integrate with your projects.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\appwrite-plugin\\ce71c971b0be9da5938bef0c3d20a73fa325e32d",
+      "skillCount": 10,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: appwrite-plugin",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "aws-amplify",
+      "displayName": "aws-amplify",
+      "tier": "C",
+      "status": "dormant",
+      "description": "",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\aws-amplify\\c4c054c956ca3db8d33f614bea8a68ed07704ec9",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: aws-amplify",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "aws-serverless",
+      "displayName": "aws-serverless",
+      "tier": "C",
+      "status": "dormant",
+      "description": "",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\aws-serverless\\c4c054c956ca3db8d33f614bea8a68ed07704ec9",
+      "skillCount": 4,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: aws-serverless",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "cli-for-agent",
+      "displayName": "cli-for-agent",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Patterns for designing CLIs that coding agents can run reliably: non-interactive flags, layered help with examples, pipelines, actionable errors, idempotency, and dry-run.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\cli-for-agent\\11ecc12a3ffc037b4ef3b64de2be449668e8afc7",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: cli-for-agent",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "displayName": "cloudflare",
+      "tier": "A",
+      "status": "active",
+      "description": "Skills for the Cloudflare developer platform: Workers, Durable Objects, Agents SDK, MCP servers, Wrangler CLI, and web performance",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\cloudflare\\fe4f2e9999991b36568e3d81a13de06a2b26bb20",
+      "skillCount": 9,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: cloudflare",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "cloudinary",
+      "displayName": "cloudinary",
+      "tier": "C",
+      "status": "dormant",
+      "description": "Use Cloudinary directly in Cursor. Upload, manage, optimize, and transform images and videos at scale using natural language.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\cloudinary\\7b443d7dbd607bfe4850d8cfcab6ba4cbf1a57c3",
+      "skillCount": 2,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: cloudinary",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "convex",
+      "displayName": "convex",
+      "tier": "A",
+      "status": "active",
+      "description": "Official Convex plugin for Cursor - reactive backend development with TypeScript, including rules, skills, MCP integration, and automation hooks",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\convex\\f104efb49a787a1ef4a6c84df496d58800ce334a",
+      "skillCount": 7,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: convex",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "create-plugin",
+      "displayName": "create-plugin",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Scaffold and validate new Cursor plugins. Handles directory setup, manifest generation, and pre-submission quality checks for the marketplace.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\create-plugin\\11ecc12a3ffc037b4ef3b64de2be449668e8afc7",
+      "skillCount": 2,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: create-plugin",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "datadog",
+      "displayName": "datadog",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Use Datadog directly in Cursor through a preconfigured Datadog MCP server. Query logs, metrics, traces, dashboards, and more through natural conversation. This plugin is in preview.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\datadog\\fb78760badbd29f081640ed8cd60b0884f4f99dd",
+      "skillCount": 3,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: datadog",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "deploy-on-aws",
+      "displayName": "deploy-on-aws",
+      "tier": "B",
+      "status": "dormant",
+      "description": "",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\deploy-on-aws\\437f4bed0bfd7367df7613ca932fe900f7e08d89",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: deploy-on-aws",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "figma",
+      "displayName": "figma",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Plugin that includes the Figma MCP server and Skills for common workflows",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\figma\\a742f0a700a7772ff5ed85f7c9fc1dad5afa9fcc",
+      "skillCount": 9,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: figma",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "firebase",
+      "displayName": "firebase",
+      "tier": "C",
+      "status": "dormant",
+      "description": "The official Firebase Cursor plugin. Prototype, build, and run modern apps with Firebase's backend and AI infrastructure.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\firebase\\bec78e7dace12670b3b3c5c63d7124cca5c2c8c9",
+      "skillCount": 11,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: firebase",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "firecrawl",
+      "displayName": "firecrawl",
+      "tier": "S",
+      "status": "active",
+      "description": "Web scraping, crawling, and search for AI agents. Gives Cursor full access to web content through the Firecrawl CLI.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\firecrawl\\80ce444eb020b5f41b34836c553f162d6113cd6f",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: firecrawl",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "functions",
+      "displayName": "functions",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Deploy serverless browser automation to Browserbase cloud. Create, test, and publish cloud functions for scheduled or webhook-triggered browser tasks.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\functions\\release_v0.2.4",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: functions",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "granola",
+      "displayName": "granola",
+      "tier": "S",
+      "status": "active",
+      "description": "Your meetings in your workflow. Granola gives Cursor access to what your team discussed, decided, and committed to.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\granola\\56583da6e4db7f311808543f18ac905b8de1ff85",
+      "skillCount": 3,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: granola",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "huggingface-skills",
+      "displayName": "huggingface-skills",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Agent Skills for AI/ML tasks including dataset creation, model training, evaluation, and research paper publishing on Hugging Face Hub",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\huggingface-skills\\5d88e21bff0495d5a900b2fbc5a36958366ee3e0",
+      "skillCount": 11,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: huggingface-skills",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "linear",
+      "displayName": "linear",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Cursor Plugin for Linear - enables AI assistants to manage issues, projects, documents, and more across your Linear workspace",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\linear\\c2c4cb2ab23206c9219b0dd31c9571e4c922faeb",
+      "skillCount": 0,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: linear",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "meta-quest-agentic-tools",
+      "displayName": "meta-quest-agentic-tools",
+      "tier": "C",
+      "status": "dormant",
+      "description": "Agent skills for Meta Quest and Horizon OS development — debugging, performance tracing, code review, porting guides, and best practices across Unity, Spatial SDK, Android, and WebXR. Uses hzdb (Horizon Debug Bridge) CLI",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\meta-quest-agentic-tools\\3564b4a06bf8981715207b00361f7495ae5c7e70",
+      "skillCount": 13,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: meta-quest-agentic-tools",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "miro",
+      "displayName": "miro",
+      "tier": "C",
+      "status": "dormant",
+      "description": "Secure access to Miro boards. Enables AI to read board context, create diagrams, and generate code with enterprise-grade security.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\miro\\9627168a40c694c61a8734cbcdd452d21e560bdc",
+      "skillCount": 1,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: miro",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "mongodb",
+      "displayName": "mongodb",
+      "tier": "C",
+      "status": "dormant",
+      "description": "Official Cursor plugin for MongoDB (MCP Server + Skills). Connect to databases, explore data, manage collections, optimize queries, generate reliable code, implement best practices, develop advanced features, and more.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\mongodb\\b6fcb1a2d83079becf1c9be23d66e1b71739d007",
+      "skillCount": 8,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: mongodb",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "postman",
+      "displayName": "postman",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Full API lifecycle management for Cursor. Sync collections, generate client code, discover APIs, run tests, create mocks, improve docs, and audit security. Powered by the Postman MCP Server.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\postman\\e760a8ae6eca277b90f764495490542651f4e0d2",
+      "skillCount": 3,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: postman",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "prisma",
+      "displayName": "Prisma",
+      "tier": "A",
+      "status": "active",
+      "description": "The official Prisma plugin for Cursor: MCP server integration, rules, skills, and automation for database development",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\prisma\\4584a0a9175ba74053d7ee946c6234d3369a5a33",
+      "skillCount": 40,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: Prisma",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "render",
+      "displayName": "render",
+      "tier": "A",
+      "status": "active",
+      "description": "Deploy, debug, and monitor applications on Render. Includes skills, rules, commands, an agent, MCP config, and hooks for the full Render workflow.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\render\\1d8fb10d0d901141211b79b0b1bdd0171a872d18",
+      "skillCount": 5,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: render",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "shopify-plugin",
+      "displayName": "shopify-plugin",
+      "tier": "C",
+      "status": "dormant",
+      "description": "Shopify developer tools for Cursor — search Shopify docs, generate and validate GraphQL, Liquid, and UI extension code. Skill scripts send usage telemetry (queries, code, model/client identifiers) to shopify.dev by defau",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\shopify-plugin\\c164cf45c4bc1d17bbc105168d99a4f744cfaac2",
+      "skillCount": 20,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: shopify-plugin",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "slack",
+      "displayName": "Slack",
+      "tier": "B",
+      "status": "dormant",
+      "description": "Slack MCP server. Search channels, send messages, and perform other Slack actions through MCP-compatible clients.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\slack\\b647da95db3920c5e2ca69d39de5627766296bab",
+      "skillCount": 0,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: Slack",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "supabase",
+      "displayName": "supabase",
+      "tier": "S",
+      "status": "active",
+      "description": "Access your Supabase projects and perform tasks like managing tables, fetching config, and querying data.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\supabase\\release_v0.1.4",
+      "skillCount": 2,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: supabase",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "vercel",
+      "displayName": "vercel",
+      "tier": "S",
+      "status": "active",
+      "description": "Build and deploy web apps and agents",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\vercel\\3d9d9cd0fe5d1bdaedb891135a5c45f19190b83f",
+      "skillCount": 42,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: vercel",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    },
+    {
+      "id": "zapier",
+      "displayName": "zapier",
+      "tier": "S",
+      "status": "active",
+      "description": "Connect 9,000+ apps to your AI workflow. Discover, enable, and execute Zapier actions directly from your client.",
+      "cachePath": "C:\\Users\\deivithi.lopes\\.cursor\\plugins\\cache\\cursor-public\\zapier\\ecd7c7220c63a62a9702b76276b6a05f740d8c18",
+      "skillCount": 3,
+      "reinstallSteps": [
+        "Abrir Cursor → Settings (Ctrl+,)",
+        "Ir em Plugins / Marketplace",
+        "Buscar: zapier",
+        "Clicar Enable / Install",
+        "Reiniciar Agent se MCP não conectar"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 28,
+    "active": 9,
+    "dormant": 19,
+    "skillsInCache": 213,
+    "dormantSkills": 101
+  }
+}

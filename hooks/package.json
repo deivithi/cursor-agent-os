@@ -1,0 +1,5 @@
+{
+  "type": "commonjs",
+  "name": "caverna-hooks",
+  "description": "Hooks Node.js da skill caverna (fork PT-BR do caveman)"
+}

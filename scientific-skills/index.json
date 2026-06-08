@@ -1,0 +1,170 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-03-15T00:00:00Z",
+  "source": "K-Dense-AI/claude-scientific-skills (selective install)",
+  "note": "22 scientific skills selected for PO Salesforce + AI Builder profile: data analysis, ML/AI, scientific computing, financial data, research methodology",
+  "total_skills": 22,
+  "categories": {
+    "scientific-computing": ["sympy", "simpy", "dask"],
+    "ml-ai": ["transformers", "scikit-learn", "pytorch-lightning", "shap", "pymc", "stable-baselines3", "umap-learn"],
+    "data-visualization": ["polars", "networkx", "plotly", "matplotlib", "seaborn", "exploratory-data-analysis"],
+    "financial-data": ["fred-economic-data", "alpha-vantage"],
+    "research-methodology": ["hypothesis-generation", "literature-review", "scientific-writing", "citation-management"]
+  },
+  "skills": [
+    {
+      "name": "alpha-vantage",
+      "category": "financial-data",
+      "description": "Access real-time and historical stock market data, forex rates, cryptocurrency prices, commodities, economic indicators, and 50+ technical indicators via the Alpha Vantage API. Use when fetching stock prices (OHLCV), company fundamentals (income statement, balance sheet, cash flow), earnings, options data, market news/sentiment, insider transactions, GDP, CPI, treasury yields, gold/silver/oil prices, Bitcoin/crypto prices, forex exchange rates, or calculating technical indicators (SMA, EMA, MACD, RSI, Bollinger Bands). Requires a free API key from alphavantage.co.",
+      "tags": ["finance", "stocks", "forex", "crypto", "commodities", "economic-indicators", "technical-indicators", "API", "OHLCV", "fundamentals"],
+      "path": "skills/alpha-vantage"
+    },
+    {
+      "name": "citation-management",
+      "category": "research-methodology",
+      "description": "Comprehensive citation management for academic research. Search Google Scholar and PubMed for papers, extract accurate metadata, validate citations, and generate properly formatted BibTeX entries. This skill should be used when you need to find papers, verify citation information, convert DOIs to BibTeX, or ensure reference accuracy in scientific writing.",
+      "tags": ["citations", "BibTeX", "Google Scholar", "PubMed", "DOI", "metadata", "references", "academic", "bibliography"],
+      "path": "skills/citation-management"
+    },
+    {
+      "name": "dask",
+      "category": "scientific-computing",
+      "description": "Distributed computing for larger-than-RAM pandas/NumPy workflows. Use when you need to scale existing pandas/NumPy code beyond memory or across clusters. Best for parallel file processing, distributed ML, integration with existing pandas code. For out-of-core analytics on single machine use vaex; for in-memory speed use polars.",
+      "tags": ["distributed-computing", "parallel", "larger-than-RAM", "dataframes", "arrays", "ETL", "big-data", "pandas", "numpy"],
+      "path": "skills/dask"
+    },
+    {
+      "name": "exploratory-data-analysis",
+      "category": "data-visualization",
+      "description": "Perform comprehensive exploratory data analysis on scientific data files across 200+ file formats. This skill should be used when analyzing any scientific data file to understand its structure, content, quality, and characteristics. Automatically detects file type and generates detailed markdown reports with format-specific analysis, quality metrics, and downstream analysis recommendations. Covers chemistry, bioinformatics, microscopy, spectroscopy, proteomics, metabolomics, and general scientific data formats.",
+      "tags": ["EDA", "data-analysis", "file-formats", "data-quality", "scientific-data", "reports", "statistics", "bioinformatics", "chemistry", "microscopy"],
+      "path": "skills/exploratory-data-analysis"
+    },
+    {
+      "name": "fred-economic-data",
+      "category": "financial-data",
+      "description": "Query FRED (Federal Reserve Economic Data) API for 800,000+ economic time series from 100+ sources. Access GDP, unemployment, inflation, interest rates, exchange rates, housing, and regional data. Use for macroeconomic analysis, financial research, policy studies, economic forecasting, and academic research requiring U.S. and international economic indicators.",
+      "tags": ["economics", "FRED", "GDP", "unemployment", "inflation", "interest-rates", "macroeconomics", "time-series", "API", "federal-reserve"],
+      "path": "skills/fred-economic-data"
+    },
+    {
+      "name": "hypothesis-generation",
+      "category": "research-methodology",
+      "description": "Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For open-ended ideation use scientific-brainstorming; for automated LLM-driven hypothesis testing on datasets use hypogenic.",
+      "tags": ["hypothesis", "scientific-method", "experiments", "predictions", "research", "mechanisms", "testability", "falsifiability"],
+      "path": "skills/hypothesis-generation"
+    },
+    {
+      "name": "literature-review",
+      "category": "research-methodology",
+      "description": "Conduct comprehensive, systematic literature reviews using multiple academic databases (PubMed, arXiv, bioRxiv, Semantic Scholar, etc.). This skill should be used when conducting systematic literature reviews, meta-analyses, research synthesis, or comprehensive literature searches across biomedical, scientific, and technical domains. Creates professionally formatted markdown documents and PDFs with verified citations in multiple citation styles (APA, Nature, Vancouver, etc.).",
+      "tags": ["literature-review", "systematic-review", "PubMed", "arXiv", "citations", "meta-analysis", "PRISMA", "academic", "research-synthesis"],
+      "path": "skills/literature-review"
+    },
+    {
+      "name": "matplotlib",
+      "category": "data-visualization",
+      "description": "Low-level plotting library for full customization. Use when you need fine-grained control over every plot element, creating novel plot types, or integrating with specific scientific workflows. Export to PNG/PDF/SVG for publication. For quick statistical plots use seaborn; for interactive plots use plotly; for publication-ready multi-panel figures with journal styling, use scientific-visualization.",
+      "tags": ["visualization", "plotting", "charts", "graphs", "publication", "PNG", "PDF", "SVG", "subplots", "customization"],
+      "path": "skills/matplotlib"
+    },
+    {
+      "name": "networkx",
+      "category": "data-visualization",
+      "description": "Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python. Use when working with network/graph data structures, analyzing relationships between entities, computing graph algorithms (shortest paths, centrality, clustering), detecting communities, generating synthetic networks, or visualizing network topologies. Applicable to social networks, biological networks, transportation systems, citation networks, and any domain involving pairwise relationships.",
+      "tags": ["graphs", "networks", "centrality", "community-detection", "shortest-path", "PageRank", "social-networks", "graph-algorithms", "visualization"],
+      "path": "skills/networkx"
+    },
+    {
+      "name": "plotly",
+      "category": "data-visualization",
+      "description": "Interactive visualization library. Use when you need hover info, zoom, pan, or web-embeddable charts. Best for dashboards, exploratory analysis, and presentations. For static publication figures use matplotlib or scientific-visualization.",
+      "tags": ["interactive", "visualization", "dashboards", "charts", "web", "hover", "zoom", "3D", "maps", "Dash"],
+      "path": "skills/plotly"
+    },
+    {
+      "name": "polars",
+      "category": "data-visualization",
+      "description": "Fast in-memory DataFrame library for datasets that fit in RAM. Use when pandas is too slow but data still fits in memory. Lazy evaluation, parallel execution, Apache Arrow backend. Best for 1-100GB datasets, ETL pipelines, faster pandas replacement. For larger-than-RAM data use dask or vaex.",
+      "tags": ["dataframes", "ETL", "lazy-evaluation", "parallel", "Apache-Arrow", "fast", "pandas-alternative", "data-processing"],
+      "path": "skills/polars"
+    },
+    {
+      "name": "pymc",
+      "category": "ml-ai",
+      "description": "Bayesian modeling with PyMC. Build hierarchical models, MCMC (NUTS), variational inference, LOO/WAIC comparison, posterior checks, for probabilistic programming and inference.",
+      "tags": ["Bayesian", "MCMC", "NUTS", "probabilistic-programming", "hierarchical-models", "variational-inference", "posterior", "priors", "ArviZ"],
+      "path": "skills/pymc"
+    },
+    {
+      "name": "pytorch-lightning",
+      "category": "ml-ai",
+      "description": "Deep learning framework (PyTorch Lightning). Organize PyTorch code into LightningModules, configure Trainers for multi-GPU/TPU, implement data pipelines, callbacks, logging (W&B, TensorBoard), distributed training (DDP, FSDP, DeepSpeed), for scalable neural network training.",
+      "tags": ["deep-learning", "PyTorch", "training", "multi-GPU", "TPU", "distributed", "callbacks", "logging", "neural-networks"],
+      "path": "skills/pytorch-lightning"
+    },
+    {
+      "name": "scikit-learn",
+      "category": "ml-ai",
+      "description": "Machine learning in Python with scikit-learn. Use when working with supervised learning (classification, regression), unsupervised learning (clustering, dimensionality reduction), model evaluation, hyperparameter tuning, preprocessing, or building ML pipelines. Provides comprehensive reference documentation for algorithms, preprocessing techniques, pipelines, and best practices.",
+      "tags": ["machine-learning", "classification", "regression", "clustering", "dimensionality-reduction", "pipelines", "preprocessing", "cross-validation", "hyperparameter-tuning"],
+      "path": "skills/scikit-learn"
+    },
+    {
+      "name": "scientific-writing",
+      "category": "research-methodology",
+      "description": "Core skill for the deep research and writing tool. Write scientific manuscripts in full paragraphs (never bullet points). Use two-stage process with (1) section outlines with key points using research-lookup then (2) convert to flowing prose. IMRAD structure, citations (APA/AMA/Vancouver), figures/tables, reporting guidelines (CONSORT/STROBE/PRISMA), for research papers and journal submissions.",
+      "tags": ["writing", "manuscripts", "IMRAD", "citations", "APA", "AMA", "Vancouver", "CONSORT", "STROBE", "PRISMA", "LaTeX", "publication"],
+      "path": "skills/scientific-writing"
+    },
+    {
+      "name": "seaborn",
+      "category": "data-visualization",
+      "description": "Statistical visualization with pandas integration. Use for quick exploration of distributions, relationships, and categorical comparisons with attractive defaults. Best for box plots, violin plots, pair plots, heatmaps. Built on matplotlib. For interactive plots use plotly; for publication styling use scientific-visualization.",
+      "tags": ["statistical-visualization", "pandas", "distributions", "heatmaps", "box-plots", "violin-plots", "pair-plots", "categorical", "themes"],
+      "path": "skills/seaborn"
+    },
+    {
+      "name": "shap",
+      "category": "ml-ai",
+      "description": "Model interpretability and explainability using SHAP (SHapley Additive exPlanations). Use this skill when explaining machine learning model predictions, computing feature importance, generating SHAP plots (waterfall, beeswarm, bar, scatter, force, heatmap), debugging models, analyzing model bias or fairness, comparing models, or implementing explainable AI. Works with tree-based models (XGBoost, LightGBM, Random Forest), deep learning (TensorFlow, PyTorch), linear models, and any black-box model.",
+      "tags": ["explainability", "interpretability", "feature-importance", "Shapley-values", "XAI", "model-debugging", "fairness", "bias", "SHAP-plots"],
+      "path": "skills/shap"
+    },
+    {
+      "name": "simpy",
+      "category": "scientific-computing",
+      "description": "Process-based discrete-event simulation framework in Python. Use this skill when building simulations of systems with processes, queues, resources, and time-based events such as manufacturing systems, service operations, network traffic, logistics, or any system where entities interact with shared resources over time.",
+      "tags": ["simulation", "discrete-event", "queues", "resources", "manufacturing", "logistics", "process-modeling", "capacity-planning"],
+      "path": "skills/simpy"
+    },
+    {
+      "name": "stable-baselines3",
+      "category": "ml-ai",
+      "description": "Production-ready reinforcement learning algorithms (PPO, SAC, DQN, TD3, DDPG, A2C) with scikit-learn-like API. Use for standard RL experiments, quick prototyping, and well-documented algorithm implementations. Best for single-agent RL with Gymnasium environments. For high-performance parallel training, multi-agent systems, or custom vectorized environments, use pufferlib instead.",
+      "tags": ["reinforcement-learning", "PPO", "SAC", "DQN", "TD3", "Gymnasium", "RL", "agents", "training"],
+      "path": "skills/stable-baselines3"
+    },
+    {
+      "name": "sympy",
+      "category": "scientific-computing",
+      "description": "Use this skill when working with symbolic mathematics in Python. This skill should be used for symbolic computation tasks including solving equations algebraically, performing calculus operations (derivatives, integrals, limits), manipulating algebraic expressions, working with matrices symbolically, physics calculations, number theory problems, geometry computations, and generating executable code from mathematical expressions. Apply this skill when the user needs exact symbolic results rather than numerical approximations, or when working with mathematical formulas that contain variables and parameters.",
+      "tags": ["symbolic-math", "algebra", "calculus", "equations", "matrices", "physics", "number-theory", "geometry", "LaTeX", "code-generation"],
+      "path": "skills/sympy"
+    },
+    {
+      "name": "transformers",
+      "category": "ml-ai",
+      "description": "This skill should be used when working with pre-trained transformer models for natural language processing, computer vision, audio, or multimodal tasks. Use for text generation, classification, question answering, translation, summarization, image classification, object detection, speech recognition, and fine-tuning models on custom datasets.",
+      "tags": ["NLP", "LLM", "text-generation", "classification", "fine-tuning", "Hugging-Face", "BERT", "GPT", "computer-vision", "audio"],
+      "path": "skills/transformers"
+    },
+    {
+      "name": "umap-learn",
+      "category": "ml-ai",
+      "description": "UMAP dimensionality reduction. Fast nonlinear manifold learning for 2D/3D visualization, clustering preprocessing (HDBSCAN), supervised/parametric UMAP, for high-dimensional data.",
+      "tags": ["dimensionality-reduction", "UMAP", "manifold-learning", "visualization", "clustering", "HDBSCAN", "embeddings", "high-dimensional"],
+      "path": "skills/umap-learn"
+    }
+  ]
+}

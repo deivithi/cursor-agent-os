@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-09_12-06",
+  "branch": "ouroboros/skills-2026-03-22",
+  "commit": "5b3c796",
+  "modified": ".cursor/README.md",
+  "staged": "",
+  "diff_stat": " 1 file changed, 1 insertion(+)",
+  "recent_commits": "5b3c796 feat(skills): absorb Together AI patterns — handoff graph, trigger evals, quality CI|49d36ef feat(cursor): Agent Skills no repo (.cursor/skills) e doc Skills vs Rules|a9913ca ouroboros/skills: evaluate code-review (10/10 — early stop)|6a53510 ouroboros/skills: evaluate code-review (10/10 — early stop)|97d25f4 ouroboros/skills: add quality checklist to lead-audit",
+  "open_items": "31",
+  "resumable": true
+}

@@ -1,0 +1,71 @@
+# golangci-lint config production-ready
+# Fonte: https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  go: "1.24"
+
+linters:
+  disable-all: true
+  enable:
+    # Correctness
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - bodyclose
+    - contextcheck
+    - errorlint
+    - rowserrcheck
+    - sqlclosecheck
+    # Style / Idioms
+    - gofmt
+    - goimports
+    - revive
+    - unconvert
+    - unparam
+    - gocritic
+    # Security
+    - gosec
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  errorlint:
+    errorf: true
+    asserts: true
+    comparison: true
+  revive:
+    rules:
+      - name: exported
+      - name: var-naming
+      - name: error-return
+      - name: error-naming
+      - name: if-return
+      - name: increment-decrement
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: unused-parameter
+  gosec:
+    excludes:
+      - G104  # audited error handling
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - performance
+      - style
+
+issues:
+  exclude-dirs:
+    - vendor
+    - .git
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec
+  max-issues-per-linter: 0
+  max-same-issues: 0
