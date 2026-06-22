@@ -52,6 +52,14 @@ auth.lock
 *.pem
 *.key
 
+# Secrets & runtime config (incidente 22/06/2026 — ver SECURITY.md)
+scripts/notify-config.json
+scripts/notify-config.local.json
+scripts/notify-config.*.json
+.env
+.env.*
+!.env.example
+
 # Cursor/Copilot binary
 *.vsix
 
