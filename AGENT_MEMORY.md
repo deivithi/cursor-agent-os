@@ -56,8 +56,11 @@
 - Detalhe: [SKILLS_INDEX.md](SKILLS_INDEX.md)
 
 ## GitHub CLI
-- gh instalado, conta **deivithi**
+- gh instalado, conta **deivithi** (ativa) + **deivithilopes-ai** (mirror)
 - Repos citados: febracis-dre-eventos, febracis-dre, declaw, pulsofinance, aria-agent, caverna, etc.
+- **Raiz Cursor Agent OS**: `https://github.com/deivithi/cursor-agent-os` (criado 22/06/2026, ver ADR-006)
+  - `origin` = deivithi/cursor-agent-os (conta ativa)
+  - `cloud` = deivithilopes-ai/cursor-agent-os (mirror, padrão declaw)
 
 ## Configurações
 - Shell: PowerShell

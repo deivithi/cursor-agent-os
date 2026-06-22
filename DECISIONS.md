@@ -115,3 +115,48 @@ Windows. Cron jobs ativos:
 de runtime (.ps1 vs Python) e pelo melhor encaixe de entrega no chat.
 
 ---
+
+## ADR-006: Raiz Cursor Agent OS publicada com dual-remote (origin + cloud)
+
+**Data:** 22/06/2026
+**Status:** Vigente
+
+**Decisão:** A raiz `Documents\Cursor` é publicada como repo público
+`cursor-agent-os` com dois remotes, seguindo o mesmo padrão do `declaw`:
+
+| Remote | Conta | Função |
+|--------|-------|--------|
+| `origin` | `deivithi/cursor-agent-os` | **Conta ativa** — git operations do dia-a-dia (push/fetch via gh CLI) |
+| `cloud` | `deivithilopes-ai/cursor-agent-os` | **Mirror** — espelho canônico, mesma URL relativa ao projeto |
+
+**Motivo:**
+- Padronizar com o ADR já estabelecido em `declaw` (mesmo padrão de 2 remotes).
+- Conta `deivithi` é a ativa no `gh auth` → `git push` resolve sem troca de identidade.
+- Conta `deivithilopes-ai` é a canônica em alguns projetos (declaw canonical) →
+  espelhamento preserva discoverability.
+- Repo público: config compartilhada (skills, agents, rules, scripts, memória)
+  é documentada como portável, sem informação sensível.
+- Conteúdo já foi auditado (auditoria 22/06/2026) e working tree está limpo.
+
+**Regras:**
+- Sempre `push` em `origin` primeiro; `cloud` é secundário.
+- Para sincronizar `cloud`: `git push cloud main` (ou configurar push default
+  para `both` em `.git/config`).
+- Manter ambos os repos com a mesma branch `main`; nenhum force-push.
+- Antes de qualquer push significativo, verificar com `gh api /repos/.../secret-scanning/alerts`
+  se há novos alertas de secret (ver ADR-006-apêndice abaixo).
+
+**Apêndice — primeiro push (22/06/2026):**
+- GitHub secret scanner bloqueou push inicial: `sk_liv...uvwx` detectado em
+  `skills/api-forge/references/security-patterns.md:778` (commit `11c846c`).
+- Análise: string é **exemplo de teste ofuscado** (não chave Stripe real);
+  push autorizado manualmente via
+  https://github.com/deivithi/cursor-agent-os/security/secret-scanning/unblock-secret/3FUkwg1myTlcheIOhfoy8UyjSsx.
+- Lição: **revisar skills de security/audit antes do primeiro push** —
+  exemplos de regex podem disparar scanners mesmo quando bem-intencionados.
+
+**Alternativa considerada:** repo privado — rejeitada pois o conteúdo já
+está no `Documents/` local (já "público" no disco) e skills são reutilizáveis
+por outros projetos. Mirror em conta secundária é mais simples que proteger.
+
+---

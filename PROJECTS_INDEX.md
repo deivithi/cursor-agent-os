@@ -8,9 +8,11 @@
 | Campo | Valor |
 |-------|-------|
 | Path | `C:\Users\deivithi.lopes\Documents\Cursor` |
-| Git | `main`, sem remote configurado |
+| Git | `main`, **dual-remote** (ADR-006) |
+| `origin` | `https://github.com/deivithi/cursor-agent-os.git` (conta ativa) |
+| `cloud` | `https://github.com/deivithilopes-ai/cursor-agent-os.git` (mirror) |
 | Propósito | Skills, rules, hooks, agents, scripts e memória compartilhada |
-| ADR | [DECISIONS.md](DECISIONS.md) ADR-001 — raiz não rastreia repos aninhados |
+| ADR | [DECISIONS.md](DECISIONS.md) ADR-001 — raiz não rastreia repos aninhados; **ADR-006 — raiz publicada com dual-remote** |
 
 ## Repositórios Git independentes (ignorados pela raiz)
 

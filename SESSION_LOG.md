@@ -1,6 +1,34 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 22/06/2026 — entrada da auditoria de docs pessoais + FIO-IA Hermes
+> Atualizado em: 22/06/2026 — entrada da auditoria de docs pessoais + FIO-IA Hermes + publicação dual-remote
+
+## 2026-06-22 — Publicação da raiz Documents\Cursor (dual-remote)
+
+### Objetivo
+- Publicar a raiz `Documents\Cursor` no GitHub seguindo o padrão `declaw` (ADR-006)
+
+### Ações realizadas
+- ✅ Criado repo público `cursor-agent-os` na conta `deivithi` (`origin`)
+- ✅ ADR-006 registrado — estratégia dual-remote (origin ativo + cloud mirror)
+- ✅ `PROJECTS_INDEX.md` e `AGENT_MEMORY.md` atualizados com URLs dos remotes
+- ⏸️ Push inicial **bloqueado pelo GitHub secret scanner**: string `sk_liv...uvwx` em
+  `skills/api-forge/references/security-patterns.md:778` (commit `11c846c`)
+  — é exemplo de teste ofuscado (não chave real), aguardando allow manual
+  via https://github.com/deivithi/cursor-agent-os/security/secret-scanning/unblock-secret/3FUkwg1myTlcheIOhfoy8UyjSsx
+- ⏸️ Mirror `deivithilopes-ai/cursor-agent-os` ainda não criado (depende do push inicial)
+
+### Pendências desta sessão
+- [ ] Usuário aprovar secret via link acima → permite `git push -u origin main`
+- [ ] Criar mirror `cursor-agent-os` em `deivithilopes-ai` → `git remote add cloud ...` → `git push -u cloud main`
+
+### Próxima ação (quando autorizado)
+1. `git push -u origin main` (push principal)
+2. `gh auth switch --user deivithilopes-ai` ou criar token dedicado
+3. `gh repo create cursor-agent-os --public --source=. --remote=cloud` (na conta secundária)
+4. `git push -u cloud main`
+5. Commit final: `chore(repo): publicar raiz no GitHub (dual-remote, ADR-006)`
+
+---
 
 ## 2026-06-22 — Auditoria de docs pessoais + FIO-IA canônico em Hermes
 
