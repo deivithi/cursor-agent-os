@@ -2,6 +2,42 @@
 
 > Atualizado em: 22/06/2026 — entrada da auditoria de docs pessoais + FIO-IA Hermes + publicação dual-remote
 
+## 2026-06-22 — Incidente de segurança: secrets expostos no push inicial
+
+### Resumo
+Primeira tentativa de publicação da raiz `Documents\Cursor` no GitHub
+(`origin = deivithi/cursor-agent-os`) acionou 3 alertas do secret scanner:
+Telegram Bot Token (`scripts/notify-config.json`, multi-repo leak),
+Stripe API Key em skill, Tailscale API Key em skill.
+
+### Ações tomadas
+- ✅ Backup completo em `~/Documents/cursor-agent-os-backup-20260622-111737.bundle`
+- ✅ `SECURITY.md` criado documentando incidente, política, pendências
+- ✅ `.gitignore` atualizado para bloquear `scripts/notify-config.json` + variantes
+- ✅ `git rm --cached scripts/notify-config.json` (arquivo preservado no disco)
+- ✅ `git remote remove origin` (dangling ref limpa)
+- ⏸️ **Deleção do repo `deivithi/cursor-agent-os` no GitHub pendente** —
+  `gh auth refresh -s delete_repo` precisa de autorização no browser.
+  **Você precisa rodar manualmente:**
+  ```
+  gh auth refresh -h github.com -s delete_repo
+  gh repo delete deivithi/cursor-agent-os --yes
+  ```
+- ⏸️ Revogação de tokens reais (Telegram/Stripe/Tailscale) — pendente decisão do usuário
+
+### Pendências (responsabilidade do usuário)
+- [ ] **URGENTE:** rodar `gh auth refresh -s delete_repo` no terminal + deletar origin
+- [ ] **URGENTE:** revogar Telegram Bot Token via @BotFather (CRÍTICO, leaked multi-repo)
+- [ ] Confirmar se Stripe `STRIPE_SECRET_KEY` (vibe-deploy-guard:107) é real
+- [ ] Confirmar se Tailscale `tskey-...eral` (cyber-deploying-tailscale:395) é real
+- [ ] Após revogação: considerar `git filter-repo` para reescrever histórico do `11c846c`
+      antes de republicar
+
+### Próxima ação quando autorizado
+Reescrever histórico + republicar com filtro (workflow documentado em SECURITY.md)
+
+---
+
 ## 2026-06-22 — Publicação da raiz Documents\Cursor (dual-remote)
 
 ### Objetivo
