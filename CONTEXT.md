@@ -11,11 +11,12 @@ Quando iniciar uma sessão, execute SEMPRE:
 
 1. ✅ **Ler este arquivo** (CONTEXT.md)
 2. ✅ **Ler** AGENT_MEMORY.md — identidade, stack, projetos, estrutura
-3. ✅ **Ler** DECISIONS.md — decisões de arquitetura e seus porquês
-4. ✅ **Ler** SESSION_LOG.md — últimas sessões e pendências
-5. ✅ **Ler** config.json — configuração ativa do ecossistema
-6. ✅ **Executar** git status na raiz e nos sub-repos ativos
-7. ✅ **Executar** gh auth status para verificar conectividade GitHub
+3. ✅ **Consultar** PROJECTS_INDEX.md e SKILLS_INDEX.md — inventário atualizado
+4. ✅ **Ler** DECISIONS.md — decisões de arquitetura e seus porquês
+5. ✅ **Ler** SESSION_LOG.md — últimas sessões e pendências
+6. ✅ **Ler** config.json — configuração ativa do ecossistema
+7. ✅ **Executar** git status na raiz e nos sub-repos ativos
+8. ✅ **Executar** gh auth status para verificar conectividade GitHub
 
 ---
 
@@ -36,6 +37,8 @@ Se o usuário pedir algo antes de você carregar o contexto, responda:
 | DECISIONS.md | ADR — decisões de arquitetura | A cada decisão técnica importante |
 | SESSION_LOG.md | Histórico de sessões | Ao final de CADA sessão |
 | config.json | Configuração ativa | Quando projetos ou preferências mudarem |
+| [PROJECTS_INDEX.md](PROJECTS_INDEX.md) | Inventário de repos, worktrees e deploys | Quando adicionar/mover/arquivar projeto |
+| [SKILLS_INDEX.md](SKILLS_INDEX.md) | Inventário de skills e sync Cursor | Quando adicionar skill ou mudar sync |
 
 ---
 

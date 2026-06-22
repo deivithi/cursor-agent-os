@@ -1,33 +1,78 @@
 {
   "user": {
     "name": "Deivithi",
-    "role": "Product Owner Salesforce",
+    "role": "Product Owner de Plataformas",
     "org": "Febracis",
     "areas": ["Vendas", "Educação"]
   },
+  "workspace": {
+    "root": "C:\\Users\\deivithi.lopes\\Documents\\Cursor",
+    "indexes": {
+      "projects": "PROJECTS_INDEX.md",
+      "skills": "SKILLS_INDEX.md"
+    }
+  },
   "stack": {
     "primary": ["Salesforce Sales", "Salesforce Service", "Salesforce Marketing", "Salesforce Experience"],
-    "development": ["Node.js", "TypeScript", "Supabase", "Vercel", "Netlify", "Shopify"],
-    "ai": ["Claude Code", "NotebookLM", "Hugging Face", "n8n"]
+    "development": ["Node.js", "TypeScript", "Python", "Supabase", "Vercel", "Netlify", "Shopify"],
+    "ai": ["Claude Code", "Cursor", "NotebookLM", "Hugging Face"],
+    "scheduler": ["Hermes (cron + skills + desktop GUI; perfil default)", "Task Scheduler (legado)"]
   },
   "active_projects": [
     {
       "name": "Aria",
       "type": "SaaS",
       "description": "Agente IA autônomo para PMEs",
-      "deploy": "Vercel"
+      "deploy": "Vercel",
+      "location": "external"
     },
     {
       "name": "FIO-IA",
       "type": "Automação",
-      "description": "Gerador autônomo de threads no X, 6x/dia",
-      "deploy": "Task Scheduler"
+      "description": "Gerador autônomo de fios (6 tweets) no X — conta @opanteranegra77",
+      "deploy": "Hermes cron (4×/dia BRT: 02:00, 08:00, 14:00, 20:00). Job gerar: bcbba63017bf. Job watchdog: c4b1e7326a7a.",
+      "delivery": "Chat Hermes (deliver=origin) + backup em state/email-corpo.txt",
+      "stack": "Node.js + skill humanizer (blader/humanizer 2.8.0)",
+      "location": "external",
+      "code_path": "C:\\Users\\deivithi.lopes\\OneDrive\\Documents\\VS CODE\\automacoes\\fio-ia",
+      "scripts_path": "%LOCALAPPDATA%\\hermes\\scripts\\ (check-fio-ia-hermes.py, fio-ia-hermes-prompt.md)"
     },
     {
       "name": "ai-landing",
       "type": "Landing Page",
       "description": "Captação de leads em eventos Febracis com IA + QR",
-      "deploy": "Netlify"
+      "deploy": "Netlify",
+      "path": "worktrees/festive-grothendieck"
+    },
+    {
+      "name": "DRE_Eventos",
+      "type": "App interno",
+      "description": "DRE Febracis — Flask + React",
+      "deploy": "dre-eventos-deivithi.zocomputer.io",
+      "path": "DRE_Eventos"
+    },
+    {
+      "name": "declaw",
+      "type": "SaaS server",
+      "description": "Spec-first factory v2.1.1 — deploy canônico em Zo Computer",
+      "remotes": {
+        "canonical": "https://github.com/deivithilopes-ai/declaw.git (alias: cloud)",
+        "mirror": "https://github.com/deivithi/declaw.git (alias: origin)"
+      },
+      "path": "declaw"
+    },
+    {
+      "name": "webwright",
+      "type": "Automação",
+      "description": "Playwright code-as-action",
+      "path": "webwright"
+    },
+    {
+      "name": "Pulso Finance",
+      "type": "App financeiro (conceitual)",
+      "description": "Gestão financeira pessoal. Estado 22/06/2026: apenas skill local pulso-finance v5.6.0 existe; repo github:pulsofinance NÃO clonado em Documents/",
+      "location": "skill-only",
+      "skill_path": "skills/pulso-finance"
     }
   ],
   "preferences": {
@@ -36,11 +81,13 @@
     "tz_offset": "-03:00",
     "date_format": "DD/MM/YYYY HH:MM BRT"
   },
-  "data_dir": ".claude/data",
+  "data_dir": "data",
   "skill_ecosystems": {
-    "custom": ".claude/skills/",
-    "cybersecurity": ".claude/cybersecurity-skills/skills/",
-    "scientific": ".claude/scientific-skills/skills/",
-    "commands": ".claude/commands/"
+    "custom": "skills/",
+    "cybersecurity": "cybersecurity-skills/skills/",
+    "scientific": "scientific-skills/skills/",
+    "commands": "commands/",
+    "cursor_sync_essential_count": 29,
+    "cursor_sync_script": "scripts/migrate-from-documents.ps1"
   }
 }
