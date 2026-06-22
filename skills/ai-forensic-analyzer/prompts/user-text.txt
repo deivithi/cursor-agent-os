@@ -1,0 +1,25 @@
+═══════════════════════════════════════════
+ANÁLISE FORENSE DE TEXTO
+═══════════════════════════════════════════
+
+**Tipo de conteúdo:** Texto
+**Modo de análise:** [quick / standard / deep]
+
+**Conteúdo para análise:**
+[COLE AQUI O TEXTO COMPLETO]
+
+**Contexto adicional (opcional):**
+[Ex: "Este texto foi publicado no LinkedIn", "É um artigo acadêmico", "Foi submetido como trabalho escolar", "Autor potencialmente não-nativo de inglês"]
+
+**Métricas de pré-processamento (se disponíveis):**
+- Burstiness: [valor]
+- Type-Token Ratio: [valor]
+- Tamanho total: [N] palavras / [N] caracteres
+- Densidade de conectivos: [valor]
+- Comprimento médio de sentença: [valor]
+- Desvio padrão de sentença: [valor]
+
+**Instruções extras (se houver):**
+[Ex: "Foco em sinais linguísticos", "Ignorar erros de formatação", "Autor é conhecido por escrever de forma técnica"]
+
+**⚠️ LEMBRETE:** Responda EXCLUSIVAMENTE com o JSON no schema definido. Nenhum texto antes ou depois.

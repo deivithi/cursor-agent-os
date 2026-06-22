@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AI Forensic Analyzer Output v2",
+  "description": "Schema de saída da análise forense multi-modal de conteúdo. Detecta geração por IA com evidências numeradas, scores por categoria e calibração de confiança.",
+  "type": "object",
+  "required": [
+    "veredito",
+    "confianca_geral",
+    "probabilidade_ia",
+    "resumo_executivo",
+    "categoria_scores",
+    "evidencias_a_favor_de_ia",
+    "evidencias_a_favor_de_humano",
+    "racional_geral",
+    "sugestoes_humanizacao",
+    "limites_da_analise",
+    "bias_warnings",
+    "versao_skill",
+    "modelo_usado",
+    "data_analise"
+  ],
+  "properties": {
+    "veredito": {
+      "type": "string",
+      "enum": ["IA", "Humano", "Misto", "Incerto"],
+      "description": "Veredito final da análise"
+    },
+    "confianca_geral": {
+      "type": "string",
+      "enum": ["Alta", "Média-Alta", "Média", "Baixa"],
+      "description": "Nível de confiança no veredito"
+    },
+    "probabilidade_ia": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Probabilidade percentual de o conteúdo ser gerado por IA"
+    },
+    "resumo_executivo": {
+      "type": "string",
+      "maxLength": 280,
+      "description": "Resumo de 1-2 frases com a conclusão principal"
+    },
+    "categoria_scores": {
+      "type": "object",
+      "description": "Score de probabilidade IA por categoria (0-100)",
+      "required": ["estatistico", "linguistico", "estilometrico", "estrutural", "artefatos_llm", "semantico"],
+      "properties": {
+        "estatistico": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: burstiness, perplexity, TTR, distribuição de sentenças"
+        },
+        "linguistico": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: conectivos LLM, diversidade sintática, profundidade de parse tree"
+        },
+        "estilometrico": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: voz passiva, nominalizações, comprimento médio de sentença"
+        },
+        "estrutural": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: template intro-conclusão, simetria de parágrafos, headings pattern"
+        },
+        "artefatos_llm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: alucinações, placeholders, self-references, conhecimento genérico"
+        },
+        "semantico": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: genericidade, profundidade conceitual, originalidade, nuance"
+        },
+        "multimodal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Sinais: metadados, ELA, noise patterns, artefatos de compressão (se aplicável)"
+        }
+      }
+    },
+    "evidencias_a_favor_de_ia": {
+      "type": "array",
+      "description": "Evidências que apontam para geração por IA",
+      "items": {
+        "type": "object",
+        "required": ["id", "descricao", "citacao_ou_exemplo", "confianca", "peso", "categoria"],
+        "properties": {
+          "id": { "type": "integer" },
+          "descricao": { "type": "string" },
+          "citacao_ou_exemplo": { "type": "string" },
+          "confianca": { "type": "string", "enum": ["Alta", "Média", "Baixa"] },
+          "peso": { "type": "string", "enum": ["Alto", "Médio", "Baixo"] },
+          "categoria": { "type": "string", "description": "Categoria do sinal (ex: Estatístico, Linguístico)" },
+          "sinal_id": { "type": "string", "description": "ID do sinal no catálogo (ex: S01, S15)" }
+        }
+      }
+    },
+    "evidencias_a_favor_de_humano": {
+      "type": "array",
+      "description": "Evidências que apontam para autoria humana",
+      "items": {
+        "type": "object",
+        "required": ["id", "descricao", "citacao_ou_exemplo", "confianca", "peso", "categoria"],
+        "properties": {
+          "id": { "type": "integer" },
+          "descricao": { "type": "string" },
+          "citacao_ou_exemplo": { "type": "string" },
+          "confianca": { "type": "string", "enum": ["Alta", "Média", "Baixa"] },
+          "peso": { "type": "string", "enum": ["Alto", "Médio", "Baixo"] },
+          "categoria": { "type": "string" },
+          "sinal_id": { "type": "string" }
+        }
+      }
+    },
+    "contra_evidencias": {
+      "type": "array",
+      "description": "Pares de evidências que se anulam ou contradizem mutuamente",
+      "items": {
+        "type": "object",
+        "required": ["evidencia_ia_id", "evidencia_humano_id", "razao"],
+        "properties": {
+          "evidencia_ia_id": { "type": "integer" },
+          "evidencia_humano_id": { "type": "integer" },
+          "razao": { "type": "string" }
+        }
+      }
+    },
+    "partes_mistas": {
+      "type": "string",
+      "description": "Se misto, descreve quais partes são IA e quais são humanas"
+    },
+    "racional_geral": {
+      "type": "string",
+      "description": "Pensamento passo a passo que levou ao veredito. Inclui ponderação das evidências."
+    },
+    "sinais_anti_evasao": {
+      "type": "array",
+      "description": "Indícios de que o conteúdo foi intencionalmente modificado para evadir detecção",
+      "items": {
+        "type": "object",
+        "required": ["descricao", "confianca"],
+        "properties": {
+          "descricao": { "type": "string" },
+          "confianca": { "type": "string", "enum": ["Alta", "Média", "Baixa"] },
+          "tecnica_suspeita": { "type": "string", "description": "Técnica de evasão suspeita (ex: paráfrase, inserção de erros, variação de conectivos)" }
+        }
+      }
+    },
+    "sugestoes_humanizacao": {
+      "type": "array",
+      "description": "Sugestões práticas para tornar o texto mais natural/humano",
+      "items": { "type": "string" }
+    },
+    "limites_da_analise": {
+      "type": "string",
+      "description": "Limitações desta análise: tamanho do texto, tipo de conteúdo, fatores que reduzem confiança"
+    },
+    "bias_warnings": {
+      "type": "array",
+      "description": "Alertas sobre possíveis vieses que afetam esta análise específica",
+      "items": {
+        "type": "object",
+        "required": ["tipo", "descricao", "risco_falso_positivo"],
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "non_native_english",
+              "neurodivergence",
+              "technical_content",
+              "creative_writing",
+              "short_text",
+              "translated_content",
+              "racial_bias",
+              "code_content"
+            ]
+          },
+          "descricao": { "type": "string" },
+          "risco_falso_positivo": { "type": "string", "enum": ["Alto", "Médio", "Baixo"] }
+        }
+      }
+    },
+    "nivel_admissibilidade": {
+      "type": "string",
+      "enum": ["Triagem apenas", "Análise complementar", "Inconclusivo — requer revisão humana"],
+      "description": "Se o resultado seria admissível como evidência ou serve apenas para triagem"
+    },
+    "recomendacao_uso": {
+      "type": "string",
+      "description": "Recomendação final sobre como usar (ou não) este resultado"
+    },
+    "modo_analise": {
+      "type": "string",
+      "enum": ["quick", "standard", "deep"],
+      "description": "Modo de análise utilizado"
+    },
+    "tipo_conteudo": {
+      "type": "string",
+      "enum": ["Texto", "Imagem", "Áudio", "Código", "Misto"],
+      "description": "Tipo de conteúdo analisado"
+    },
+    "metricas_pre_processamento": {
+      "type": "object",
+      "description": "Métricas calculadas na fase de pré-processamento (scripts)",
+      "properties": {
+        "burstiness": { "type": "number" },
+        "type_token_ratio": { "type": "number" },
+        "tamanho_total_caracteres": { "type": "integer" },
+        "tamanho_total_palavras": { "type": "integer" },
+        "densidade_conectivos": { "type": "number" },
+        "comprimento_medio_sentenca": { "type": "number" },
+        "desvio_padrao_sentenca": { "type": "number" }
+      }
+    },
+    "versao_skill": { "type": "string", "const": "ai-forensic-analyzer-v2.0" },
+    "modelo_usado": { "type": "string" },
+    "data_analise": { "type": "string" }
+  }
+}

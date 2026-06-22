@@ -1,0 +1,27 @@
+═══════════════════════════════════════════
+ANÁLISE FORENSE DE CÓDIGO-FONTE
+═══════════════════════════════════════════
+
+**Tipo de conteúdo:** Código
+**Modo de análise:** [quick / standard / deep]
+**Linguagem:** [Python / JavaScript / TypeScript / Go / Java / C# / Rust / outra]
+
+**Código para análise:**
+```[linguagem]
+[COLE AQUI O CÓDIGO COMPLETO]
+```
+
+**Contexto adicional (opcional):**
+[Ex: "Código de uma PR no GitHub", "Algoritmo de ordenação", "Função de API REST", "Exercício de programação", "Script de automação"]
+
+**Métricas de pré-processamento (se disponíveis):**
+- Densidade de comentários: [valor]
+- Complexidade ciclomática: [valor]
+- Número de funções/métodos: [N]
+- Proporção de nomes genéricos: [valor]
+- Cobertura de edge cases: [valor]
+
+**Instruções extras (se houver):**
+[Ex: "Foco em nomes de variáveis", "Verificar originalidade dos comentários", "Analisar tratamento de erros"]
+
+**⚠️ LEMBRETE:** Responda EXCLUSIVAMENTE com o JSON no schema definido. Nenhum texto antes ou depois.

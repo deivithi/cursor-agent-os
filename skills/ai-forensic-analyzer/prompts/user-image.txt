@@ -1,0 +1,32 @@
+═══════════════════════════════════════════
+ANÁLISE FORENSE DE IMAGEM
+═══════════════════════════════════════════
+
+**Tipo de conteúdo:** Imagem
+**Modo de análise:** [quick / standard / deep]
+
+**Descrição visual detalhada da imagem:**
+[Descreva a imagem em detalhes: o que aparece, cores, texturas, pessoas, objetos, texto visível, estilo artístico, qualidade]
+
+**Metadados da imagem (se disponíveis):**
+- Formato: [JPEG / PNG / WebP / GIF / TIFF]
+- Dimensões: [L x A pixels]
+- Tamanho do arquivo: [KB/MB]
+- Software/Câmera: [informação EXIF se disponível]
+- Data de criação/modificação: [datas se disponíveis]
+- GPS/ Localização: [se disponível]
+- C2PA/Provenance: [presente / ausente]
+
+**Resultados de pré-processamento (se disponíveis):**
+- Error Level Analysis (ELA): [achados]
+- Noise pattern analysis: [achados]
+- Compression artifacts: [achados]
+- GAN/Diffusion fingerprints: [achados]
+
+**Contexto adicional (opcional):**
+[Ex: "Imagem publicada em rede social", "Supostamente foto de celular", "Imagem de produto em e-commerce", "Gerada por Midjourney/DALL-E?"]
+
+**Instruções extras (se houver):**
+[Ex: "Foco em artefatos de geração", "Verificar consistência de iluminação e sombras", "Analisar texto na imagem (lettering)"]
+
+**⚠️ LEMBRETE:** Responda EXCLUSIVAMENTE com o JSON no schema definido. Nenhum texto antes ou depois.

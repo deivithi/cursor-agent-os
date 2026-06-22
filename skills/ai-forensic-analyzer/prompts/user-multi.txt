@@ -1,0 +1,38 @@
+═══════════════════════════════════════════
+ANÁLISE FORENSE DE CONTEÚDO MISTO
+═══════════════════════════════════════════
+
+**Tipo de conteúdo:** Misto (texto + imagem + outros)
+**Modo de análise:** [quick / standard / deep]
+
+**Componentes do conteúdo:**
+
+── COMPONENTE 1: TEXTO ──
+[COLE AQUI O TEXTO]
+
+── COMPONENTE 2: IMAGEM ──
+**Descrição visual:**
+[Descreva a imagem em detalhes]
+**Metadados (se disponíveis):**
+[EXIF, dimensões, formato, software, C2PA]
+
+── COMPONENTE 3: CÓDIGO (se aplicável) ──
+[COLE AQUI O CÓDIGO]
+
+── COMPONENTE 4: ÁUDIO (se aplicável) ──
+**Transcrição:**
+[COLE AQUI A TRANSCRIÇÃO]
+**Metadados (se disponíveis):**
+[Formato, duração, codec, características acústicas]
+
+**Relação entre os componentes:**
+[Ex: "O texto descreve a imagem", "O código gera a imagem", "O áudio é uma narração do texto", "São independentes"]
+
+**Contexto adicional (opcional):**
+[Ex: "Post completo de blog com texto + imagens", "README de projeto GitHub com screenshots", "Post de rede social com legenda + foto"]
+
+**Instruções extras (se houver):**
+[Ex: "Analisar cada componente separadamente e depois consolidar", "Foco na consistência entre texto e imagem"]
+
+**⚠️ LEMBRETE:** Responda EXCLUSIVAMENTE com o JSON no schema definido. Nenhum texto antes ou depois.
+No campo "partes_mistas", indique claramente quais componentes são IA e quais são humanos.

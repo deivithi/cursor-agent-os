@@ -1,0 +1,32 @@
+═══════════════════════════════════════════
+ANÁLISE FORENSE DE ÁUDIO
+═══════════════════════════════════════════
+
+**Tipo de conteúdo:** Áudio
+**Modo de análise:** [quick / standard / deep]
+
+**Transcrição do áudio:**
+[COLE AQUI A TRANSCRIÇÃO COMPLETA DO CONTEÚDO FALADO]
+
+**Metadados do áudio (se disponíveis):**
+- Formato: [MP3 / WAV / FLAC / AAC / OGG]
+- Duração: [MM:SS]
+- Sample rate: [Hz]
+- Bitrate: [kbps]
+- Codec: [informação se disponível]
+- Software de gravação/edição: [se disponível]
+
+**Características acústicas descritas (se disponíveis):**
+- Qualidade da voz: [natural / sintética / híbrida]
+- Presença de artefatos: [clicks, pops, distorção, ruído de fundo]
+- Entonação e prosódia: [natural / robótica / inconsistente]
+- Pausas e hesitações: [naturais / ausentes / artificiais]
+- Respiração: [audível / ausente]
+
+**Contexto adicional (opcional):**
+[Ex: "Gravação de podcast", "Mensagem de voz no WhatsApp", "Apresentação corporativa", "Suposto voice cloning", "Narração de audiobook"]
+
+**Instruções extras (se houver):**
+[Ex: "Foco em padrões de fala", "Verificar naturalidade da prosódia", "Analisar pausas e hesitações"]
+
+**⚠️ LEMBRETE:** Responda EXCLUSIVAMENTE com o JSON no schema definido. Nenhum texto antes ou depois.
