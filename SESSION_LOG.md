@@ -1,6 +1,6 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 22/06/2026 — entrada da auditoria de docs pessoais + FIO-IA Hermes + publicação dual-remote
+> Atualizado em: 22/06/2026 — auditoria + FIO-IA Hermes + incidente de segurança
 
 ## 2026-06-22 — Incidente de segurança: secrets expostos no push inicial
 
