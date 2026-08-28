@@ -41,6 +41,7 @@ $essentialSkills = @(
     "n8n-node-configuration",
     "n8n-validation-expert",
     "n8n-workflow-patterns",
+    "openwiki-personal-brain",
     "product-verification",
     "security-audit",
     "spec-driven-core",

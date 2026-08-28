@@ -99,3 +99,29 @@ Quando o usuário mencionar **criar agente, construir agente, agente IA, AgentSc
 | Agent | `ReActAgent` / `AgentBase` | Loop ReAct (Reason + Act) |
 | Pipeline | `MsgHub` + `sequential_pipeline` | Orquestração multi-agente |
 | MCP | `HttpStatelessClient` | Conexão nativa com MCP servers |
+
+---
+
+## 🕸️ GAN Graph Executável (Workflow engine)
+
+**Arquivo:** `.claude/workflows/gan-graph.js` — torna executável o grafo de 3 papéis do `agents/protocols/gan-loop.md` via tool `Workflow` do Claude Code.
+
+**Grafo por round:** `Generate (worker) → Review (reviewer CEGO — recebe só o spec, inspeciona o repo sozinho) → Evaluate (evaluator — julga o produto E audita se o reviewer deixou passar issues)`. Loop até convergência.
+
+**Invocação:** `Workflow({name: 'gan-graph', args: {task: '...'}})` — ou `scriptPath` apontando p/ o arquivo. `args` aceita objeto ou string JSON.
+
+| Arg | Default | Função |
+|---|---|---|
+| `task` | obrigatório | O que implementar |
+| `spec` | `null` | Se fornecido, pula fase Plan (planner.md) |
+| `maxRounds` | `3` | Modo simplificado do gan-loop.md; full loop = 5-15 |
+| `scoreMin` | `7.0` | Convergência: verdict PASS + score ≥ min + zero blocking |
+| `blockSeverities` | `['CRITICAL','HIGH']` | Severidades que impedem PASS (contrato `data/severity-config.json`) |
+| `workDir` | `null` | Restringe escopo de arquivos do worker/reviewer |
+| `reviewerModel` / `evaluatorModel` | herda sessão | Verificação em modelo mais barato (token-efficiency) |
+
+**Saídas de status:** `PASS` | `STAGNATION` (2 rounds sem redução de issues — adaptive-depth) | `MAX_ROUNDS` | `BLOCKED` | `AGENT_ERROR`.
+
+**Fonte única de verdade:** os prompts mandam cada subagente **ler** `agents/worker.md` / `reviewer.md` / `evaluator.md` / `planner.md` — a doutrina não é duplicada no script.
+
+🛡️ **Gate humano permanece:** task que toque cripto/LGPD/sanitização BD/operação destrutiva → worker retorna `blocked=true` e o grafo para com status `BLOCKED` (`rules/human-architectural-gate.md`).

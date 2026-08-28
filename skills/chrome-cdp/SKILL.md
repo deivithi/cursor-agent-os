@@ -35,6 +35,7 @@ tags:
 
 | Cenário | Abordagem | Como ativar |
 |---------|-----------|-------------|
+| **Grok Build** — Chrome logado, scrape, forms, E2E | **Browser Use plugin** | `grok plugin install browser-use --trust` → MCP `browser_exec` / `browser_screenshot`. Router: skill `browser-use-router` |
 | Debug live (console errors, DOM) | **Claude in Chrome** 🟢 | `claude --chrome` ou `/chrome` |
 | Verificação visual de UI | **Claude in Chrome** 🟢 | `/chrome` na sessão |
 | Navegação autenticada (Google, X, Notion) | **Claude in Chrome** 🟢 | Usa logins do Chrome principal |
@@ -224,6 +225,7 @@ agent-browser connect "ws://localhost:9222/devtools/page/TAB_ID"
 - Google bloqueia login em browsers automatizados — usar email/senha, não "Login com Google"
 
 ## 🔗 Related Skills
+- `browser-use-router` — Roteia Grok/Cursor/Claude para Browser Use 3.0 vs fetch vs DevTools
 - `product-verification` — Smoke tests e verificação E2E (usa browser-use como primário)
 - `webapp-testing` — Testes com Playwright para apps locais
 - `runbook` — Investigação estruturada quando verificação revela falhas

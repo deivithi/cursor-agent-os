@@ -26,3 +26,12 @@ C:\Users\deivithi.lopes\Documents\Cursor
 - declaw (GitHub: deivithi/declaw)
 - webwright
 - cybersecurity-skills (GitHub: mukul975/Anthropic-Cybersecurity-Skills)
+
+## 🧪 Gauntlet (obrigatório — ADR-008)
+
+O operador NÃO lê código gerado por agentes. Confiança = gauntlet automatizado.
+
+- Antes de declarar tarefa completa: execute `rules/gauntlet-protocol.md`
+- Se o projeto tem `GAUNTLET.md` próprio, use-o como extensão do mínimo
+- Nunca declare "pronto" sem report de gauntlet (§7 do protocolo)
+- Gap policy: bloquear em prod/deploy; flag+propor em protótipos

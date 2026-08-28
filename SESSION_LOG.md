@@ -1,6 +1,74 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 22/06/2026 — auditoria + FIO-IA Hermes + incidente de segurança
+> Atualizado em: 24/07/2026 — Claude Code configurado para o gateway Token Plan
+
+## 2026-07-24 — Claude Code → gateway Bailian Token Plan (modelos "nossos")
+
+### Resumo
+Claude Code (2.1.218) reconfigurado para usar por padrão o gateway Bailian
+Token Plan (Singapura) via endpoint Anthropic-compatible nativo, sem proxy.
+Antes apontava para a Anthropic real (plano Max, `claude-fable-5[1m]`).
+
+### Ações realizadas
+- ✅ `~/.claude/settings.json`: `"model"` → `qwen3.8-max-preview` + bloco `env`
+  (`ANTHROPIC_BASE_URL=https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic`,
+  `ANTHROPIC_MODEL`, `ANTHROPIC_SMALL_FAST_MODEL=qwen3.6-flash`,
+  `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1`). Backup: `settings.json.bak-2026-07-24`.
+- ✅ `ANTHROPIC_AUTH_TOKEN` persistido no ambiente do usuário via `setx`
+  (cópia de `BAILIAN_TOKEN_PLAN_API_KEY`; valor não exibido). Exige novo terminal.
+- ✅ Criado `scripts/claude-tp.ps1` (switcher; `-List` com status e `-Plan` que
+  consulta ao vivo os modelos incluídos no Token Plan via `GET /v1/models`).
+
+### Validação (round-trip `claude --model <id> -p ping`)
+- ✅ Funcionam (6): qwen3.8-max-preview (padrão), qwen3.7-max, qwen3.7-plus,
+  qwen3.6-flash (small-fast), deepseek-v4-pro, glm-5.2.
+- ❌ deepseek-v4-flash e kimi-k2.7-code → 403 `AccessDenied.Unpurchased`.
+  **Causa raiz:** NÃO estão incluídos no Token Plan. `GET /v1/models` lista
+  exatos 8 modelos: deepseek-v4-pro, glm-5.2, qwen3.6-flash, qwen3.7-max,
+  qwen3.7-plus, qwen3.8-max-preview, wan2.7-image, wan2.7-image-pro.
+  **Ativação:** é contratação/assinatura — upgrade do Token Plan no console
+  (My Subscriptions) ou chave pay-as-you-go separada; não via chave de API.
+- ❌ qwen3.5-omni-plus → 400 "Model not exist" (não exposto no modo Anthropic).
+- ℹ️ Aviso esperado: "claude.ai connectors disabled ... auth source takes
+  precedence" — token do Token Plan sobrepõe o login Max (objetivo do "substituir padrão").
+
+### Reversão
+Restaurar `~/.claude/settings.json.bak-2026-07-24` + `setx ANTHROPIC_AUTH_TOKEN ""`
++ novo terminal.
+
+---
+
+## 2026-07-16 — Cursor updater: correção persistente do lock em resources
+
+### Causa comprovada
+- O Inno updater falhou às 08:29 com `Acesso negado (os error 5)` ao remover
+  `%LOCALAPPDATA%\Programs\cursor\resources`.
+- Dois `node.exe` embutidos do Cursor, ambos executando `mongodb-mcp-server`,
+  permaneceram órfãos e seguraram a pasta.
+- A versão 3.11.25 ficou assinada e completa em `_`, enquanto `Cursor.exe` e
+  `cursor.cmd` desapareceram da raiz.
+- A tarefa `Cursor-Update-Guard` era horária: rodou às 08:27 e perdeu a falha
+  das 08:29. Os watchdogs versionados estavam desativados como no-op.
+
+### Ações realizadas
+- ✅ Encerrados apenas os dois helpers órfãos.
+- ✅ Validada assinatura `Anysphere, Inc.` do staging 3.11.25 e concluído o swap.
+- ✅ Substituído o no-op por watchdog persistente de 2 segundos, com mutex,
+  filtro estreito de processo, proteção durante updater e auto-reparo assinado.
+- ✅ Criado `scripts/install-cursor-update-watchdog.ps1` e instalada a única
+  tarefa `Febracis-Cursor-UpdateWatchdog` via `wscript.exe` invisível.
+- ✅ `Atualizar-Cursor-Seguro.ps1` agora valida/reinstala a tarefa preventiva.
+- ✅ Política atualizada em `docs/CURSOR_UPDATE_POLICY.md` e ADR-007 criado.
+
+### Validação
+- ✅ Órfão sintético do helper foi encerrado automaticamente em menos de 6 s.
+- ✅ Cursor 3.11.25 abriu e permaneceu vivo por 12 s com o watchdog ativo.
+- ✅ `cursor --version`: `3.11.25`, commit
+  `fc2563ec93d793fc275eef734405a4fdf8b47b20`, x64.
+- ✅ Uma instalação User, nenhuma System, nenhum staging `_`.
+- ✅ Auditor `-ValidateOnly` retornou sucesso.
+
+---
 
 ## 2026-06-22 — Incidente de segurança: secrets expostos no push inicial
 

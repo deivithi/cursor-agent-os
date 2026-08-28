@@ -14,6 +14,9 @@ $userProduct = Join-Path $userRoot "resources\app\product.json"
 $userStaging = Join-Path $userRoot "_"
 $systemRoot = Join-Path $env:ProgramFiles "cursor"
 $systemBin = Join-Path $systemRoot "resources\app\bin"
+$watchdogTaskName = "Febracis-Cursor-UpdateWatchdog"
+$watchdogScript = Join-Path $PSScriptRoot "cursor-update-watchdog.ps1"
+$watchdogInstaller = Join-Path $PSScriptRoot "install-cursor-update-watchdog.ps1"
 $logDir = Join-Path $env:LOCALAPPDATA "febracis-logs"
 $logPath = Join-Path $logDir ("cursor-user-update-{0}.log" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
 
@@ -146,6 +149,11 @@ function Test-CursorUserPolicy {
     $machineCursorPath = @(Get-PathEntries -Target "Machine" | Where-Object { $_ -match "cursor" })
     $userCursorPath = @(Get-PathEntries -Target "User" | Where-Object { $_ -match "cursor" })
     $productVersion = Get-ProductVersion
+    $watchdogTask = Get-ScheduledTask -TaskName $watchdogTaskName -ErrorAction SilentlyContinue
+    $watchdogProcesses = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
+        $_.Name -ieq "powershell.exe" -and
+        $_.CommandLine -like "*-File*cursor-update-watchdog.ps1*"
+    })
 
     if ($userEntries.Count -ne 1) {
         $errors.Add("Esperada exatamente 1 instalacao Cursor (User) em $userRoot; encontrado $($userEntries.Count).")
@@ -165,6 +173,20 @@ function Test-CursorUserPolicy {
 
     if (Test-Path -LiteralPath $userStaging) {
         $errors.Add("Staging pendente detectado em $userStaging. Repare a instalacao antes de atualizar.")
+    }
+
+    if (-not $watchdogTask) {
+        $errors.Add("Tarefa preventiva $watchdogTaskName nao encontrada.")
+    } elseif ($watchdogTask.State -ne "Running") {
+        $errors.Add("Tarefa preventiva $watchdogTaskName nao esta Running; estado=$($watchdogTask.State).")
+    }
+
+    if (-not (Test-Path -LiteralPath $watchdogScript)) {
+        $errors.Add("Script preventivo nao encontrado em $watchdogScript.")
+    }
+
+    if ($watchdogProcesses.Count -ne 1) {
+        $errors.Add("Esperado exatamente 1 processo watchdog ativo; encontrado $($watchdogProcesses.Count).")
     }
 
     if (@($machineCursorPath | Where-Object { $_.TrimEnd("\") -ieq $systemBin.TrimEnd("\") }).Count -gt 0) {
@@ -208,12 +230,17 @@ function Test-CursorUserPolicy {
 
 try {
     Write-UpdateLog "Inicio. ValidateOnly=$ValidateOnly RepairUserInstall=$RepairUserInstall OpenAfterUpdate=$OpenAfterUpdate Log=$logPath"
-    Write-UpdateLog "Politica: Cursor User install em $userRoot; atualizacao nativa do Cursor; sem System install em Program Files."
+    Write-UpdateLog "Politica: Cursor User em $userRoot; updater nativo protegido por watchdog invisivel; sem System install em Program Files."
 
     if ($RepairUserInstall) {
         Stop-CursorManagedProcesses
         Invoke-SystemInstallRemoval
         Set-UserPathCanonical
+        if (-not (Test-Path -LiteralPath $watchdogInstaller)) {
+            throw "Instalador do watchdog nao encontrado: $watchdogInstaller"
+        }
+        Write-UpdateLog "Reinstalando tarefa preventiva $watchdogTaskName."
+        & $watchdogInstaller | ForEach-Object { Write-UpdateLog ($_ | Out-String).Trim() }
     }
 
     $health = Test-CursorUserPolicy -StrictProcesses:$RepairUserInstall

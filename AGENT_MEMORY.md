@@ -62,11 +62,19 @@
   - `origin` = deivithi/cursor-agent-os (conta ativa)
   - `cloud` = deivithilopes-ai/cursor-agent-os (mirror, padrão declaw)
 
+## OpenWiki Personal Brain (jul/2026)
+- **Wiki path:** `~/.openwiki/wiki` — memória **proativa** (ingestão X/bookmarks → Markdown local)
+- **Papel:** complementa CONTEXT/AGENT_MEMORY (reativo); não substitui
+- **INSTRUCTIONS:** `~/.openwiki/INSTRUCTIONS.md` — bookmarks/favoritos têm peso maior na síntese
+- **Hermes cron:** job `f8a2b1c4d6e9` — `openwiki personal --update` diário às **06:00 BRT** (script `openwiki-personal-update.py`)
+- **Auth X:** requer `OPENWIKI_X_CLIENT_ID` + créditos API (pay-per-use); `OPENWIKI_X_CLIENT_SECRET` opcional (só se client confidential — PKCE / clientAuth none); secrets só em `~/.openwiki/.env`
+- **Skill:** `skills/openwiki-personal-brain/`
+
 ## Configurações
 - Shell: PowerShell
 - Sync agendado: Task Scheduler `\Febracis-Cursor-SyncDaily` (quando configurado)
 - Log sync: `%LOCALAPPDATA%\febracis-logs\cursor-sync.log`
-- Cursor no Windows: instalação única System em `C:\Program Files\cursor`, atualizada por `scripts/Atualizar-Cursor-Seguro.ps1` via `winget` elevado; não usar instalação User/AppData nem editar arquivos internos do Cursor para controlar update
+- Cursor no Windows: instalação única User em `%LOCALAPPDATA%\Programs\cursor`, canal nativo protegido pela tarefa invisível persistente `Febracis-Cursor-UpdateWatchdog`; `scripts/Atualizar-Cursor-Seguro.ps1` audita/repara a instalação e a tarefa. Não manter cópia System em `C:\Program Files\cursor`.
 
 ## Última atualização
 - **22/06/2026** — Auditoria completa dos docs pessoais corrigiu: FIO-IA migrado para Hermes cron (4×/dia, ADR-005), Hermes adicionado ao stack, declaw deploy canônico = Zo Computer, Pulso Finance marcado como conceitual (skill-only), webwright PRs #5/#10 registrados, DRE watcher fix registrado, Hermes skills catalogadas, n8n movido para automation.

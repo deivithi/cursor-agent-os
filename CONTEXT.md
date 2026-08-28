@@ -15,8 +15,11 @@ Quando iniciar uma sessão, execute SEMPRE:
 4. ✅ **Ler** DECISIONS.md — decisões de arquitetura e seus porquês
 5. ✅ **Ler** SESSION_LOG.md — últimas sessões e pendências
 6. ✅ **Ler** config.json — configuração ativa do ecossistema
-7. ✅ **Executar** git status na raiz e nos sub-repos ativos
-8. ✅ **Executar** gh auth status para verificar conectividade GitHub
+7. ✅ **Ler** rules/gauntlet-protocol.md — protocolo de verificação (ADR-008)
+8. ✅ **Verificar** se o projeto ativo tem `GAUNTLET.md` na raiz
+9. ✅ **Executar** git status na raiz e nos sub-repos ativos
+10. ✅ **Executar** gh auth status para verificar conectividade GitHub
+11. ✅ **Se a tarefa precisa de sinais salvos no X** → ler `~/.openwiki/wiki` (OpenWiki Personal Brain; ver skill `openwiki-personal-brain`)
 
 ---
 
@@ -39,6 +42,8 @@ Se o usuário pedir algo antes de você carregar o contexto, responda:
 | config.json | Configuração ativa | Quando projetos ou preferências mudarem |
 | [PROJECTS_INDEX.md](PROJECTS_INDEX.md) | Inventário de repos, worktrees e deploys | Quando adicionar/mover/arquivar projeto |
 | [SKILLS_INDEX.md](SKILLS_INDEX.md) | Inventário de skills e sync Cursor | Quando adicionar skill ou mudar sync |
+| rules/gauntlet-protocol.md | Protocolo de verificação universal (ADR-008) | Quando mudar política de qualidade |
+| QWEN.md | Protocolo operacional Qwen Code | Quando mudar regras de sessão |
 
 ---
 

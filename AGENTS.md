@@ -12,6 +12,17 @@ uma sessão neste diretório.
 - **Fuso:** America/Sao_Paulo (BRT, GMT-3)
 - **Idioma:** pt-BR
 
+## Filosofia Operacional (ADR-008)
+
+O operador **NÃO lê código gerado por agentes**. A confiança vem
+exclusivamente do gauntlet automatizado (testes, lint, coverage,
+mutation testing, reviewer-agent). Todo agente DEVE executar o
+gauntlet aplicável antes de declarar qualquer entrega completa.
+
+Protocolo completo: `rules/gauntlet-protocol.md`
+
+---
+
 ## Regra de Inicialização
 
 Antes de executar qualquer tarefa, leia:
@@ -21,6 +32,7 @@ Antes de executar qualquer tarefa, leia:
 3. DECISIONS.md     — ADR (decisões de arquitetura)
 4. SESSION_LOG.md   — Últimas sessões e pendências
 5. config.json      — Configuração ativa do ecossistema
+6. rules/gauntlet-protocol.md — Protocolo de verificação (gauntlet)
 
 ## Comandos Rápidos
 

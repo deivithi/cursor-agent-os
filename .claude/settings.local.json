@@ -5,7 +5,8 @@
       "PowerShell($base = \"C:\\\\Users\\\\deivithi.lopes\\\\Documents\\\\Cursor\"; Test-Path \"$base\\\\.claude\\\\skills\"; Test-Path \"$base\\\\.claude\\\\agents\"; Test-Path \"$base\\\\.claude\\\\commands\")",
       "PowerShell(winget upgrade *)",
       "PowerShell(claude *)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "PowerShell(try { \\(Get-Command ccusage -ErrorAction Stop\\).Source } catch { \"ccusage: nao instalado\" }; try { \\(Get-Command bun -ErrorAction Stop\\).Source } catch { \"bun: nao instalado\" }; try { \\(Get-Command node -ErrorAction Stop\\).Source } catch { \"node: nao instalado\" })"
     ]
   },
   "instructions": "Antes de qualquer ação, leia AGENTS.md e CONTEXT.md em C:\\Users\\deivithi.lopes\\Documents\\Cursor\\ para carregar o contexto completo do ecossistema. Em seguida, leia AGENT_MEMORY.md, DECISIONS.md e SESSION_LOG.md."

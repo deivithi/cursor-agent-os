@@ -75,3 +75,8 @@ cybersecurity-skills/
 DRE_Eventos/
 declaw/
 
+# Scratch & temporary probe scripts in root
+/_*.py
+/*_tmp.py
+/*_tmp*.py
+.omc/

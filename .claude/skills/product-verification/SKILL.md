@@ -43,11 +43,13 @@ tags:
 |---------|-----------|-------|
 | Smoke test, scraping, verificação rápida | **browser-use** | Daemon ~50ms, JSON output |
 | Verificações paralelas | **browser-use** | Named sessions |
+| **Grok Build** — mesmo fluxo no Chrome logado | **plugin browser-use** | MCP `browser_exec` + `browser_screenshot` (skill `browser-use-router`) |
 | Chrome logado (Salesforce, X, Google) | **Claude in Chrome** 🟢 | `claude --chrome` ou `/chrome` |
 | Chrome logado (headless/batch) | **agent-browser + CDP** 🔵 | Perfil com login (fallback) |
 | Upload de arquivo em form | **agent-browser** | `upload @eN` nativo |
 
 ## 🔗 Related Skills
+- `browser-use-router` — Qual canal de browser (Grok plugin / CLI 3.0 / Agent Reach / DevTools)
 - `runbook` — Use se a verificação revelar um padrão de falha conhecido
 - `cicd` — Use para re-deploy após correção de bug encontrado
 - `scaffolding` — Use para gerar fixtures de teste ausentes

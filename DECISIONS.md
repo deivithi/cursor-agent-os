@@ -160,3 +160,63 @@ está no `Documents/` local (já "público" no disco) e skills são reutilizáve
 por outros projetos. Mirror em conta secundária é mais simples que proteger.
 
 ---
+
+## ADR-007: Cursor User com watchdog persistente contra helpers órfãos
+
+**Data:** 16/07/2026
+**Status:** Vigente — substitui a política operacional do ADR-004
+
+**Decisão:** manter uma única instalação User em
+`%LOCALAPPDATA%\Programs\cursor` e proteger o updater nativo com a tarefa
+invisível persistente `Febracis-Cursor-UpdateWatchdog`, executada a cada 2
+segundos enquanto o usuário está logado.
+
+**Causa comprovada:** MCPs stdio iniciados pelo Cursor deixaram processos
+`resources\app\resources\helpers\node.exe` vivos após o fechamento do app.
+Esses processos mantiveram `resources` bloqueado; o Inno updater terminou com
+`Acesso negado (os error 5)`, removeu o executável da raiz e deixou a versão
+3.11.25 assinada no staging `_`. A tarefa horária existente havia rodado dois
+minutos antes da falha e não cobria a janela crítica.
+
+**Regras:**
+- encerrar somente o helper `node.exe` embutido e somente quando o
+  `Cursor.exe` principal não estiver aberto;
+- não interferir enquanto um updater do Cursor estiver ativo;
+- auto-reparar staging somente com assinatura Authenticode válida da
+  `Anysphere, Inc.` e ausência do executável principal;
+- usar uma única tarefa versionada, invisível e com mutex contra duplicidade;
+- validar por comportamento com órfão sintético, não apenas por status da tarefa;
+- `Atualizar-Cursor-Seguro.ps1 -RepairUserInstall` reinstala a proteção.
+
+**Alternativas rejeitadas:** tarefa horária (perde a corrida do updater),
+watchdog desativado/no-op (não previne recorrência), matar todo processo dentro
+da instalação (risco de interromper uso normal) e retornar ao canal System
+(reintroduz conflito de escopo/permissão já observado).
+
+---
+
+## ADR-008: Gauntlet como protocolo universal de confiança
+
+**Data:** 23/07/2026
+**Decisão:** Nenhum agente declara entrega completa sem executar o gauntlet
+automatizado aplicável (testes, lint, type-check, coverage, reviewer-agent).
+Protocolo formalizado em `rules/gauntlet-protocol.md`.
+
+**Motivo:**
+- O operador não lê código gerado por agentes — estratégia deliberada de
+  produtividade (única forma de escalar sem virar gargalo de revisão manual)
+- Confiança deve vir de verificação mecânica, não de inspeção humana
+- Cada projeto pode estender o mínimo universal via `GAUNTLET.md` próprio
+- Gap policy contexto-dependente: bloquear em prod, flag em protótipo
+
+**Componentes:**
+- `rules/gauntlet-protocol.md` — protocolo central (hierarquia, mínimos por stack, gap policy)
+- `_templates/GAUNTLET.md` — template para projetos
+- `QWEN.md` — enforcement para Qwen Code
+- `.cursorrules` §Gauntlet — enforcement para Cursor
+- `AGENTS.md` §Filosofia Operacional — enforcement para qualquer agente
+
+**Alternativa considerada:** Revisão manual de código pelo operador —
+rejeitada por não escalar e contradizer a filosofia de produtividade.
+
+---
