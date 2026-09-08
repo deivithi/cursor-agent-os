@@ -279,3 +279,32 @@ executa a alternativa correta sem perguntar `[s/n]`.
 rejeitada pelo operador.
 
 ---
+
+## ADR-011: Máxima autonomia + skill em toda ação
+
+**Data:** 08/09/2026
+**Decisão:** Se o operador pediu, o agente faz — máxima autonomia. Antes de
+qualquer ação, casar o pedido com o catálogo de skills e usar a skill que
+potencializa o trabalho. Não perguntar se deve usar.
+
+**Motivo:**
+- Pedido direto e permanente: o operador não quer só conversar; quer execução
+- O workspace tem 800+ skills mapeadas; ignorá-las é desperdício
+- Escolher skill é trabalho do agente, não do operador
+
+**Como casar:**
+1. `SKILLS_INDEX.md` (custom / cyber / scientific)
+2. Skills já no contexto da sessão
+3. Agency agents se o tema bater — skill interna tem prioridade
+
+**Não cobre:** carve-outs de irreversibilidade (ADR-009/010) permanecem.
+
+**Componentes:**
+- `rules/plan-and-execute.md` — passo 2 do ciclo + seção ADR-011
+- `~/.cursor/rules/plan-and-execute.mdc`
+- `AGENT_MEMORY.md` + `AGENTS.md`
+
+**Alternativa considerada:** Usar skill só quando o operador citar o nome —
+rejeitada ("para toda e qualquer ação, veja se alguma skill faz sentido").
+
+---

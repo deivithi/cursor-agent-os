@@ -26,6 +26,9 @@ irreversibilidade permanecem (`rules/plan-and-execute.md`).
 ADR-010: operador não é o depurador. Erro/falha/instrução subótima →
 agente resolve. Sem lista de problemas, sem challenge `[s/n]`.
 
+ADR-011: pediu → faz. Toda ação casa com skill (`SKILLS_INDEX.md`).
+Match → usa, sem perguntar.
+
 ## 📁 Diretório Raiz
 C:\Users\deivithi.lopes\Documents\Cursor
 

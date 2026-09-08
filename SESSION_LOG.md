@@ -1,6 +1,20 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 08/09/2026 — ADR-009 + ADR-010 (resolve, não transfere)
+> Atualizado em: 08/09/2026 — ADR-009 + ADR-010 + ADR-011 (autonomia + skill)
+
+## 2026-09-08 — ADR-011: máxima autonomia + skill em toda ação
+
+### Resumo
+Operador gravou: pediu → faz. Toda ação casa com o catálogo de skills;
+match → usa, sem perguntar.
+
+### Ações realizadas
+- ✅ `rules/plan-and-execute.md` — passo skill no ciclo + seção ADR-011
+- ✅ `plan-and-execute.mdc` (alwaysApply) atualizado
+- ✅ ADR-011 em `DECISIONS.md`
+- ✅ `AGENTS.md` + `AGENT_MEMORY.md` + `.cursorrules` + `CONTEXT.md`
+
+---
 
 ## 2026-09-08 — ADR-010: agente resolve; operador não é o depurador
 

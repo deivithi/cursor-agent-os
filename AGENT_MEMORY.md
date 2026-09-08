@@ -27,6 +27,13 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-010**:
 - Relato ao operador = resultado feito, não lista de problemas.
 - Fonte: `rules/anti-sycophancy.md` + `rules/plan-and-execute.md`
 
+Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-011**:
+
+- Pediu → faz. Máxima autonomia além de conversar.
+- **Toda ação** casa com o catálogo de skills (`SKILLS_INDEX.md` + contexto da sessão). Match → carregar `SKILL.md` e potencializar. Sem perguntar se deve usar.
+- Skill interna vence agency agent. Sem match → segue direto.
+- Fonte: `rules/plan-and-execute.md`
+
 ## Stack
 - Salesforce (Sales, Service, Marketing, Experience)
 - Node.js, TypeScript, Python
@@ -96,5 +103,5 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-010**:
 - Cursor no Windows: instalação única User em `%LOCALAPPDATA%\Programs\cursor`, canal nativo protegido pela tarefa invisível persistente `Febracis-Cursor-UpdateWatchdog`; `scripts/Atualizar-Cursor-Seguro.ps1` audita/repara a instalação e a tarefa. Não manter cópia System em `C:\Program Files\cursor`.
 
 ## Última atualização
-- **08/09/2026** — ADR-009 + ADR-010: auto-approve; entender → plano → executar; agente resolve sem transferir erro/challenge ao operador.
+- **08/09/2026** — ADR-009/010/011: auto-approve; resolver sem transferir; pediu → faz; toda ação casa com skill.
 - **22/06/2026** — Auditoria completa dos docs pessoais corrigiu: FIO-IA migrado para Hermes cron (4×/dia, ADR-005), Hermes adicionado ao stack, declaw deploy canônico = Zo Computer, Pulso Finance marcado como conceitual (skill-only), webwright PRs #5/#10 registrados, DRE watcher fix registrado, Hermes skills catalogadas, n8n movido para automation.

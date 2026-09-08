@@ -35,6 +35,9 @@ Rule: `rules/plan-and-execute.md`. Carve-outs de irreversibilidade permanecem
 **ADR-010:** o operador não é o depurador. Erro, falha ou instrução subótima →
 o agente resolve, sem apontar challenge nem devolver a decisão. Relato = feito.
 
+**ADR-011:** pediu → faz (máxima autonomia). Toda ação casa com skill do
+catálogo (`SKILLS_INDEX.md`). Match → usa. Não pergunta.
+
 ---
 
 ## Regra de Inicialização
@@ -47,7 +50,7 @@ Antes de executar qualquer tarefa, leia:
 4. SESSION_LOG.md   — Últimas sessões e pendências
 5. config.json      — Configuração ativa do ecossistema
 6. rules/gauntlet-protocol.md — Protocolo de verificação (gauntlet)
-7. rules/plan-and-execute.md — Auto-approve + entender → plano → executar
+7. rules/plan-and-execute.md — Auto-approve + autonomia + skill em toda ação
 
 ## Comandos Rápidos
 

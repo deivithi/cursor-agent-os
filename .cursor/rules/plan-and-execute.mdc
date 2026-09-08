@@ -1,5 +1,5 @@
 ---
-description: Auto-approve permanente — entender o pedido, montar plano e executar sem esperar OK (ADR-009)
+description: Auto-approve + máxima autonomia + skill em toda ação (ADR-009/010/011)
 alwaysApply: true
 ---
 
@@ -12,12 +12,15 @@ Sessão padrão = **auto-approve**. Não perguntar "posso executar?" nem entrega
 Ciclo travado:
 
 1. Entender o que foi pedido (objetivo, restrições, fora de escopo)
-2. Montar plano curto com passos verificáveis
-3. Executar o plano no mesmo turno
-4. Gauntlet (ADR-008) antes de declarar done
+2. Casar com skill do catálogo (`SKILLS_INDEX.md`) — match → carregar SKILL.md. Não perguntar.
+3. Montar plano curto com passos verificáveis
+4. Executar no mesmo turno, máxima autonomia. Pediu → faz.
+5. Gauntlet (ADR-008) antes de declarar done
 
 ADR-010: o operador não é o depurador. Erro/falha/instrução subótima → agente resolve. Sem lista de problemas, sem challenge `[s/n]`. Relato = resultado feito.
 
-Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido; apontar erros para o operador resolver.
+ADR-011: toda ação passa por match de skill. Skill interna > agency agent. Sem match → segue direto.
+
+Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido; apontar erros para o operador resolver; agir sem checar skill.
 
 Carve-outs (auto-approve NÃO cobre): DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.
