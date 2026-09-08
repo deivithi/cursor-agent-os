@@ -55,7 +55,7 @@
 ## 📌 Gerenciamento de Tarefas
 
 1. Planejar em `tasks/todo.md` com itens verificáveis
-2. Confirmar plano antes de implementar
+2. Executar o plano imediatamente após montá-lo (ADR-009). Não esperar OK do operador
 3. Marcar progresso conforme avança
 4. Resumo de alto nível em cada etapa
 5. Capturar lições em `tasks/lessons.md`

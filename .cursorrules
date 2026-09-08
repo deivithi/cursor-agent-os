@@ -17,6 +17,12 @@ nesta ordem:
 **NÃO PULE ESTA ETAPA.** Mesmo que o usuário peça algo
 direto, carregue o contexto primeiro.
 
+## ▶️ Auto-approve + plano (ADR-009)
+
+Sessão padrão = auto-approve. Entender o pedido → montar plano → executar.
+Não perguntar "posso?" nem entregar só o plano. Carve-outs de
+irreversibilidade permanecem (`rules/plan-and-execute.md`).
+
 ## 📁 Diretório Raiz
 C:\Users\deivithi.lopes\Documents\Cursor
 

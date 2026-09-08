@@ -1,0 +1,21 @@
+---
+description: Auto-approve permanente — entender o pedido, montar plano e executar sem esperar OK (ADR-009)
+alwaysApply: true
+---
+
+# Entender → Plano → Executar (auto-approve)
+
+Declaração do operador (08/09/2026, confiança 0.95). ADR-009.
+
+Sessão padrão = **auto-approve**. Não perguntar "posso executar?" nem entregar só o plano.
+
+Ciclo travado:
+
+1. Entender o que foi pedido (objetivo, restrições, fora de escopo)
+2. Montar plano curto com passos verificáveis
+3. Executar o plano no mesmo turno
+4. Gauntlet (ADR-008) antes de declarar done
+
+Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido.
+
+Carve-outs (auto-approve NÃO cobre): DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.

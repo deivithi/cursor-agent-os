@@ -21,6 +21,17 @@ gauntlet aplicável antes de declarar qualquer entrega completa.
 
 Protocolo completo: `rules/gauntlet-protocol.md`
 
+## Protocolo operacional (ADR-009)
+
+Sessão padrão = **auto-approve**. Ciclo travado:
+
+1. Entender o que foi pedido
+2. Montar um plano curto
+3. Executar o plano no mesmo turno (não esperar "pode ir")
+
+Rule: `rules/plan-and-execute.md`. Carve-outs de irreversibilidade permanecem
+(gate humano em cripto/LGPD/sanitização BD, DROP, force-push, deploy prod).
+
 ---
 
 ## Regra de Inicialização
@@ -33,6 +44,7 @@ Antes de executar qualquer tarefa, leia:
 4. SESSION_LOG.md   — Últimas sessões e pendências
 5. config.json      — Configuração ativa do ecossistema
 6. rules/gauntlet-protocol.md — Protocolo de verificação (gauntlet)
+7. rules/plan-and-execute.md — Auto-approve + entender → plano → executar
 
 ## Comandos Rápidos
 

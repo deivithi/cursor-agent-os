@@ -8,6 +8,17 @@
 - Idioma: pt-BR
 - Fuso: America/Sao_Paulo (GMT-3)
 
+## Protocolo operacional (ADR-009) — permanente
+
+Declaração direta do operador em 08/09/2026 (confiança 0.95):
+
+- Sessão padrão = **auto-approve**. Não perguntar "posso executar?" em trabalho reversível.
+- Ciclo travado: **entender o pedido → montar plano → executar o plano**.
+- Não entregar só o plano e esperar OK. Plano Mode não é gate humano.
+- Gauntlet (ADR-008) continua obrigatório antes de declarar done.
+- Carve-outs intactos: DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.
+- Fonte: `rules/plan-and-execute.md`
+
 ## Stack
 - Salesforce (Sales, Service, Marketing, Experience)
 - Node.js, TypeScript, Python
@@ -77,4 +88,5 @@
 - Cursor no Windows: instalação única User em `%LOCALAPPDATA%\Programs\cursor`, canal nativo protegido pela tarefa invisível persistente `Febracis-Cursor-UpdateWatchdog`; `scripts/Atualizar-Cursor-Seguro.ps1` audita/repara a instalação e a tarefa. Não manter cópia System em `C:\Program Files\cursor`.
 
 ## Última atualização
+- **08/09/2026** — ADR-009: auto-approve permanente; ciclo entender → plano → executar. Carve-outs de irreversibilidade intactos.
 - **22/06/2026** — Auditoria completa dos docs pessoais corrigiu: FIO-IA migrado para Hermes cron (4×/dia, ADR-005), Hermes adicionado ao stack, declaw deploy canônico = Zo Computer, Pulso Finance marcado como conceitual (skill-only), webwright PRs #5/#10 registrados, DRE watcher fix registrado, Hermes skills catalogadas, n8n movido para automation.

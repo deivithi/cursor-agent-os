@@ -1,6 +1,38 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 24/07/2026 — Claude Code configurado para o gateway Token Plan
+> Atualizado em: 08/09/2026 — ADR-009 auto-approve + entender → plano → executar
+
+## 2026-09-08 — Protocolo permanente: auto-approve + plano + execução
+
+### Resumo
+Operador gravou regra permanente: sessão sempre em auto-approve; agente
+entende o pedido, monta plano e executa sem esperar OK. Carve-outs de
+irreversibilidade mantidos.
+
+### Ações realizadas
+- ✅ `rules/plan-and-execute.md` (canônico)
+- ✅ `~/.cursor/rules/plan-and-execute.mdc` (alwaysApply)
+- ✅ ADR-009 em `DECISIONS.md`
+- ✅ `AGENTS.md` + `AGENT_MEMORY.md` + `.cursorrules`
+- ✅ `workflow-patterns.md` item 2: deixa de "confirmar plano"
+
+---
+
+## 2026-09-01 — Construção de 5 habilidades de agente de alto impacto
+
+### Resumo
+Desenvolvimento completo de 5 novas skills customizadas no ecossistema (`skills/`), totalizando 110 custom skills. Foco em PO Salesforce Febracis, automação do Gauntlet Protocol (ADR-008), orquestração Composio, síntese OpenWiki → FIO-IA e integridade do DRE no Zo Computer.
+
+### Ações realizadas
+- ✅ Criada skill `salesforce-bdd-spec-architect` (SKILL.md, salesforce-patterns.md, gherkin-salesforce-templates.md, validate-salesforce-spec.py)
+- ✅ Criada skill `gauntlet-self-healer` (SKILL.md, gauntlet-error-taxonomy.md, gauntlet-runner.py)
+- ✅ Criada skill `composio-tool-orchestrator` (SKILL.md, composio-apps-reference.md, composio-bridge.py)
+- ✅ Criada skill `openwiki-fio-synthesizer` (SKILL.md, humanizer-fio-rules.md, synthesize-openwiki-fio.py)
+- ✅ Criada skill `dre-zo-integrity-guard` (SKILL.md, dre-financial-rules.md, dre-integrity-check.py)
+- ✅ Atualizado `SKILLS_INDEX.md` (contagem de skills custom: 105 → 110 + novos agrupamentos)
+- ✅ Executados testes sintéticos e de compilação em 100% dos scripts criados.
+
+---
 
 ## 2026-07-24 — Claude Code → gateway Bailian Token Plan (modelos "nossos")
 

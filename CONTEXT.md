@@ -16,10 +16,11 @@ Quando iniciar uma sessão, execute SEMPRE:
 5. ✅ **Ler** SESSION_LOG.md — últimas sessões e pendências
 6. ✅ **Ler** config.json — configuração ativa do ecossistema
 7. ✅ **Ler** rules/gauntlet-protocol.md — protocolo de verificação (ADR-008)
-8. ✅ **Verificar** se o projeto ativo tem `GAUNTLET.md` na raiz
-9. ✅ **Executar** git status na raiz e nos sub-repos ativos
-10. ✅ **Executar** gh auth status para verificar conectividade GitHub
-11. ✅ **Se a tarefa precisa de sinais salvos no X** → ler `~/.openwiki/wiki` (OpenWiki Personal Brain; ver skill `openwiki-personal-brain`)
+8. ✅ **Ler** rules/plan-and-execute.md — auto-approve + entender → plano → executar (ADR-009)
+9. ✅ **Verificar** se o projeto ativo tem `GAUNTLET.md` na raiz
+10. ✅ **Executar** git status na raiz e nos sub-repos ativos
+11. ✅ **Executar** gh auth status para verificar conectividade GitHub
+12. ✅ **Se a tarefa precisa de sinais salvos no X** → ler `~/.openwiki/wiki` (OpenWiki Personal Brain; ver skill `openwiki-personal-brain`)
 
 ---
 
@@ -43,6 +44,7 @@ Se o usuário pedir algo antes de você carregar o contexto, responda:
 | [PROJECTS_INDEX.md](PROJECTS_INDEX.md) | Inventário de repos, worktrees e deploys | Quando adicionar/mover/arquivar projeto |
 | [SKILLS_INDEX.md](SKILLS_INDEX.md) | Inventário de skills e sync Cursor | Quando adicionar skill ou mudar sync |
 | rules/gauntlet-protocol.md | Protocolo de verificação universal (ADR-008) | Quando mudar política de qualidade |
+| rules/plan-and-execute.md | Auto-approve + entender → plano → executar (ADR-009) | Quando mudar o ciclo operacional |
 | QWEN.md | Protocolo operacional Qwen Code | Quando mudar regras de sessão |
 
 ---

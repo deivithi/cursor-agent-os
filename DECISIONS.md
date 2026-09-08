@@ -220,3 +220,33 @@ Protocolo formalizado em `rules/gauntlet-protocol.md`.
 rejeitada por não escalar e contradizer a filosofia de produtividade.
 
 ---
+
+## ADR-009: Auto-approve + entender → plano → executar
+
+**Data:** 08/09/2026
+**Decisão:** Toda sessão opera em auto-approve. O agente deve entender o
+pedido, montar um plano e executar o plano no mesmo turno. Não espera
+confirmação para trabalho reversível no workspace.
+
+**Motivo:**
+- Pedido direto e permanente do operador (Deivithi Lopes)
+- "Confirmar plano antes de implementar" virava gargalo humano — o mesmo
+  que ADR-008 removeu da revisão de código
+- Plano continua obrigatório; o que cai é a espera de OK
+
+**Não cobre (carve-outs absolutos):**
+- Operações destrutivas / irreversíveis (`sandbox-dangerous.md`)
+- Cripto / LGPD / sanitização de BD (`human-architectural-gate.md`)
+- `--dangerously-skip-permissions` fora de sandbox
+
+**Componentes:**
+- `rules/plan-and-execute.md` — protocolo
+- `~/.cursor/rules/plan-and-execute.mdc` — alwaysApply no Cursor
+- `AGENTS.md` §Protocolo operacional
+- `AGENT_MEMORY.md` §Protocolo operacional
+- `workflow-patterns.md` item 2 do gerenciamento de tarefas — atualizado
+
+**Alternativa considerada:** Manter confirmação de plano em tarefas não
+triviais — rejeitada pelo operador ("sempre auto-approve", "execute o plano").
+
+---
