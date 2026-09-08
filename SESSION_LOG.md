@@ -1,6 +1,65 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 08/09/2026 — ADR-009 + ADR-010 + ADR-011 (autonomia + skill)
+> Atualizado em: 08/09/2026 — manutenção da máquina (LogGuard, apps, WU)
+
+## 2026-09-08 — Manutenção da máquina: diagnóstico + execução segura
+
+### Resumo
+Diagnóstico read-only seguido de manutenção sem fechar apps nem reiniciar.
+Tarefa Codex LogGuard corrigida, 2 apps atualizados, segurança do Windows
+mapeada mas bloqueada por falta de elevação (0x80240044).
+
+### Ações realizadas
+- ✅ `Febracis-Codex-LogGuard-Audit`: executável apontava para
+  `pwsh.exe` 7.6.4 inexistente → trocado pelo shim estável
+  `%LOCALAPPDATA%\Microsoft\WindowsApps\pwsh.exe` (gatilhos/args intactos).
+  Auditoria manual: `healthy=true, protected=true`, trigger íntegro.
+- ✅ winget: GitHub CLI 2.93.0 → 2.100.0; VCRedist x86 14.51.36231 → 36247.
+- ✅ USB "Generic Mass-Storage" sem mídia (VID_1908/PID_0226) = provável
+  leitor de cartões vazio; erros disk-11 históricos atribuídos a ele, não
+  aos SSDs (ambos Healthy/Online, sem WHEA em 7 dias).
+- ⚠️ Windows Update (KB5124008 + KB5126052 + MSRT): instalação falhou com
+  `0x80240044 WU_E_PER_MACHINE_UPDATE_ACCESS_DENIED` — sessão não elevada.
+  Requer janela com PowerShell admin (sem reboot forçado por mim).
+- ⏸️ Adiado de propósito: apps em uso (Node, Telegram, MiniMax, Open Design,
+  Antigravity, Git, WSL, ZCode, QoderWork, Outlook), drivers/firmware
+  (Realtek 2017, Lenovo 1.47, Senary) e qualquer reboot.
+
+### Estado final
+- RAM livre ~11,4 GB, CPU 4%, C: 178 GB livres, Bitdefender ativo,
+  `RebootRequired=false`. Nada quebrado; nenhuma alteração fora do pedido.
+
+## 2026-09-08 — Falhas de hooks no Grok (timeout em massa)
+
+### Resumo
+Cada tool no Grok disparava 3+ hooks (Orca PowerShell + Claude settings
+importados). Timeout 10–15s. Isolado por runtime (ADR-012).
+
+### Causa
+- Grok importava `~/.claude/settings.json` e `~/.cursor/hooks.json`
+- Orca via `powershell -EncodedCommand` (~startup 2–8s, timeout 10s)
+- `readStdinJson()` esperava EOF; Grok nem sempre fecha stdin
+- prettier inline com `$f`/`$j` → Grok: env var obrigatória ausente
+- `hook-healthcheck --audit` em todo prompt do Cursor
+
+### Ações
+- ✅ `compat.claude.hooks = false` + `compat.cursor.hooks = false`
+- ✅ Orca: `grok-hook.cmd` / `cursor-hook.cmd` / `claude-hook.cmd` direto
+- ✅ `readStdinJson` timeout 1,5s fail-open
+- ✅ `prettier-after-edit.js` (sem `$` no command)
+- ✅ Cursor hooks: paths absolutos, sem audit por prompt
+- ✅ ADR-012
+
+### Gauntlet
+- `test-hooks-failopen.js`: 3/3 PASS (profile-session 1725ms com stdin aberto)
+- Orca cmd sem env: 40–48ms exit 0
+- `hook-healthcheck --check`: 2 arquivos user-owned, 0 erros
+
+### Pendência
+Nova sessão Grok para carregar `config.toml`. Esta sessão ainda usa o
+conjunto antigo de hooks.
+
+---
 
 ## 2026-09-08 — ADR-011: máxima autonomia + skill em toda ação
 
