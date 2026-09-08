@@ -32,6 +32,9 @@ Sessão padrão = **auto-approve**. Ciclo travado:
 Rule: `rules/plan-and-execute.md`. Carve-outs de irreversibilidade permanecem
 (gate humano em cripto/LGPD/sanitização BD, DROP, force-push, deploy prod).
 
+**ADR-010:** o operador não é o depurador. Erro, falha ou instrução subótima →
+o agente resolve, sem apontar challenge nem devolver a decisão. Relato = feito.
+
 ---
 
 ## Regra de Inicialização

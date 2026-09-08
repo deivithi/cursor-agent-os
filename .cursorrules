@@ -23,6 +23,9 @@ Sessão padrão = auto-approve. Entender o pedido → montar plano → executar.
 Não perguntar "posso?" nem entregar só o plano. Carve-outs de
 irreversibilidade permanecem (`rules/plan-and-execute.md`).
 
+ADR-010: operador não é o depurador. Erro/falha/instrução subótima →
+agente resolve. Sem lista de problemas, sem challenge `[s/n]`.
+
 ## 📁 Diretório Raiz
 C:\Users\deivithi.lopes\Documents\Cursor
 

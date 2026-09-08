@@ -19,6 +19,14 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95):
 - Carve-outs intactos: DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.
 - Fonte: `rules/plan-and-execute.md`
 
+Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-010**:
+
+- O operador **não** é o depurador. Agente diagnostica, corrige e revalida.
+- Proibido apontar erros, falhas ou challenges para o operador resolver.
+- Instrução subótima → executar a alternativa correta, sem `[s/n]`.
+- Relato ao operador = resultado feito, não lista de problemas.
+- Fonte: `rules/anti-sycophancy.md` + `rules/plan-and-execute.md`
+
 ## Stack
 - Salesforce (Sales, Service, Marketing, Experience)
 - Node.js, TypeScript, Python
@@ -88,5 +96,5 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95):
 - Cursor no Windows: instalação única User em `%LOCALAPPDATA%\Programs\cursor`, canal nativo protegido pela tarefa invisível persistente `Febracis-Cursor-UpdateWatchdog`; `scripts/Atualizar-Cursor-Seguro.ps1` audita/repara a instalação e a tarefa. Não manter cópia System em `C:\Program Files\cursor`.
 
 ## Última atualização
-- **08/09/2026** — ADR-009: auto-approve permanente; ciclo entender → plano → executar. Carve-outs de irreversibilidade intactos.
+- **08/09/2026** — ADR-009 + ADR-010: auto-approve; entender → plano → executar; agente resolve sem transferir erro/challenge ao operador.
 - **22/06/2026** — Auditoria completa dos docs pessoais corrigiu: FIO-IA migrado para Hermes cron (4×/dia, ADR-005), Hermes adicionado ao stack, declaw deploy canônico = Zo Computer, Pulso Finance marcado como conceitual (skill-only), webwright PRs #5/#10 registrados, DRE watcher fix registrado, Hermes skills catalogadas, n8n movido para automation.

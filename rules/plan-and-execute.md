@@ -13,12 +13,19 @@ Pedido → entender o que foi pedido → montar plano curto → executar o plano
 3. **Executar** — no mesmo turno. Sessão padrão = **auto-approve**.
 4. **Gauntlet** — ADR-008 antes de declarar done.
 
+## Resolve, não transfere (ADR-010)
+
+O operador não é o depurador. Erro, falha, gap ou instrução subótima →
+o agente corrige/escolhe o caminho certo e segue. Sem lista de problemas,
+sem "challenge", sem "você decide". Relato = resultado feito.
+
 ## Proibido
 
 - Perguntar "posso executar?" / "prossigo?" em trabalho reversível no workspace
 - Entregar só o plano e esperar "pode ir"
 - Sair editando sem ter entendido o pedido
 - Usar Plan Mode como gate de aprovação humana (plano interno + execução, não espera de OK)
+- Apontar erros/falhas/desafios para o operador resolver no lugar do agente
 
 ## Carve-outs (auto-approve NÃO cobre)
 
@@ -34,4 +41,5 @@ Estes ainda exigem confirmação explícita — `sandbox-dangerous.md` + `human-
 ## Relação com outras rules
 
 - Substitui "confirmar plano antes de implementar" em `workflow-patterns.md`
-- Não enfraquece gauntlet, test-integrity, nem o gate humano de irreversibilidade
+- ADR-010 substitui challenge `[s/n]` de `anti-sycophancy.md` — resolve a alternativa correta
+- Não enfraquece gauntlet, test-integrity (não apagar teste), nem o gate humano de irreversibilidade

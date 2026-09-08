@@ -16,6 +16,8 @@ Ciclo travado:
 3. Executar o plano no mesmo turno
 4. Gauntlet (ADR-008) antes de declarar done
 
-Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido.
+ADR-010: o operador não é o depurador. Erro/falha/instrução subótima → agente resolve. Sem lista de problemas, sem challenge `[s/n]`. Relato = resultado feito.
+
+Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido; apontar erros para o operador resolver.
 
 Carve-outs (auto-approve NÃO cobre): DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.

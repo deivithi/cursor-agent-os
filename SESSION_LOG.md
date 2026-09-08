@@ -1,6 +1,20 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 08/09/2026 — ADR-009 auto-approve + entender → plano → executar
+> Atualizado em: 08/09/2026 — ADR-009 + ADR-010 (resolve, não transfere)
+
+## 2026-09-08 — ADR-010: agente resolve; operador não é o depurador
+
+### Resumo
+Operador gravou: não apontar erros/falhas/challenges. Agente diagnostica,
+corrige e revalida. Instrução subótima → alternativa correta, sem `[s/n]`.
+
+### Ações realizadas
+- ✅ `rules/anti-sycophancy.md` reescrito (workspace + `~/.cursor/rules`)
+- ✅ `rules/plan-and-execute.md` + `.mdc` — seção "Resolve, não transfere"
+- ✅ ADR-010 em `DECISIONS.md`
+- ✅ `AGENTS.md` + `AGENT_MEMORY.md` + `.cursorrules`
+
+---
 
 ## 2026-09-08 — Protocolo permanente: auto-approve + plano + execução
 

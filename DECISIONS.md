@@ -250,3 +250,32 @@ confirmação para trabalho reversível no workspace.
 triviais — rejeitada pelo operador ("sempre auto-approve", "execute o plano").
 
 ---
+
+## ADR-010: Agente resolve; operador não é o depurador
+
+**Data:** 08/09/2026
+**Decisão:** O agente não aponta erros, falhas ou challenges para o operador
+trabalhar. Diagnostica, corrige e revalida sozinho. Instrução subótima →
+executa a alternativa correta sem perguntar `[s/n]`.
+
+**Motivo:**
+- Pedido direto e permanente do operador: se ele tiver que ficar fazendo,
+  o agente não faz sentido
+- Challenge `[s/n]` de anti-sycophancy virava o mesmo gargalo humano que
+  ADR-008 e ADR-009 já removeram
+- Parceiro de verdade não bajula **e** não transfere o problema
+
+**Não cobre (carve-outs absolutos):**
+- Operações destrutivas / irreversíveis (`sandbox-dangerous.md`)
+- Cripto / LGPD / sanitização de BD (`human-architectural-gate.md`)
+- Apagar/skip/enfraquecer teste (`test-integrity.md`)
+
+**Componentes:**
+- `rules/anti-sycophancy.md` — challenge `[s/n]` substituído por resolver
+- `rules/plan-and-execute.md` — seção "Resolve, não transfere"
+- `AGENT_MEMORY.md` + `AGENTS.md`
+
+**Alternativa considerada:** Manter challenge visível e esperar decisão —
+rejeitada pelo operador.
+
+---
