@@ -1,0 +1,26 @@
+{
+  "title": "skill-doctor — auditoria de skills (45d)",
+  "handle": "deivithi · cursor-agent-os",
+  "harness": "cursor",
+  "generated_at": "2026-09-18T19:12:11.348227+00:00",
+  "scores": {
+    "efficiency": 0.8,
+    "code_quality": 0.6,
+    "skill_coverage": 1.0,
+    "overall": 0.76
+  },
+  "stats": {
+    "sessions_analyzed": 12,
+    "sessions_scanned": 251,
+    "skills_found": 950,
+    "skills_used": 80,
+    "window_days": 45
+  },
+  "top_findings": [
+    "Screenshot/smoke flailing on the DRE path: em 42a7bcc3 e ca8a5f08 cerca de metade de 120 e 133 tool calls perseguiu UM screenshot por VM Playwright, cursor-ide-browser, plugin-playwright e um serve temporário em prod /static — dre-eventos-ops deveria fixar um único pipeline de screenshot e um único lugar para as credenciais de smoke (login caiu em '1234' hardcoded após ~8 greps).",
+    "Gotchas de encoding Windows + env vars se repetem a cada run tipo F0: 9ec687b0 precisou de 3 tentativas do golden (SECRET_KEY ausente, crash cp1252 no write_text, PYTHONUTF8=1) e 9dcfe8b1 corrigiu um write silencioso com encoding='utf-8' em scripts/verify/golden.py; documentar env obrigatórias + UTF-8 no dre-eventos-ops encerra a recorrência.",
+    "Gate de escopo ausente no início: ebec1ba2 rodou um estudo DRE de duas fases dentro de uma sessão POS-only e descartou tudo como 'sessão errada' (189 tool calls), e 1b47d58a entregou a feature Foto sem orçado e refez depois do feedback — o contrato-tarefa-agente (4 blocos) deveria rodar antes do build."
+  ],
+  "suggestions": [],
+  "cta_url": ""
+}
