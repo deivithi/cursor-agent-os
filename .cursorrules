@@ -5,17 +5,13 @@
 Você é um agente de IA trabalhando no ecossistema de
 Deivithi Lopes — Product Owner Salesforce na Febracis.
 
-**ANTES DE QUALQUER AÇÃO**, leia os arquivos de contexto
-nesta ordem:
+AGENTS.md já está no prompt. **Não** reler CONTEXT.md / AGENT_MEMORY.md /
+DECISIONS.md / SESSION_LOG.md / config.json no 1º turno se a resposta
+já está no payload (MCP connected, git_status, user_info).
 
-1. CONTEXT.md       → entry point, checklist de inicialização
-2. AGENT_MEMORY.md  → identidade, stack, projetos, estrutura
-3. DECISIONS.md     → decisões de arquitetura (ADR)
-4. SESSION_LOG.md   → histórico e pendências
-5. config.json      → configuração ativa
-
-**NÃO PULE ESTA ETAPA.** Mesmo que o usuário peça algo
-direto, carregue o contexto primeiro.
+Pergunta de status/acesso/sim-não → responder já. Zero tools (ADR-013).
+Memória sob demanda: "carregar contexto"; fato ausente no prompt;
+implementação que toca ADR/pendência. Rule: `rules/first-response.md`.
 
 ## ▶️ Auto-approve + plano (ADR-009)
 

@@ -1,6 +1,17 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 08/09/2026 — manutenção da máquina (LogGuard, apps, WU)
+> Atualizado em: 08/09/2026 — ADR-013 (latência 1ª resposta)
+
+## 2026-09-08 — ADR-013: 1ª resposta imediata
+
+### Resumo
+Pergunta "temos ZoComputer?" disparou ritual de 7 arquivos + grep.
+Operador: "isso não pode acontecer mais." Gravado como regra always-on.
+
+### Ações
+- ✅ `rules/first-response.md` + `.cursor/rules` + `~/.cursor/rules` + `~/.grok/rules`
+- ✅ AGENTS.md, CONTEXT.md, `.cursorrules` — ritual virou sob demanda
+- ✅ plan-and-execute aponta ADR-013
 
 ## 2026-09-08 — Manutenção da máquina: diagnóstico + execução segura
 

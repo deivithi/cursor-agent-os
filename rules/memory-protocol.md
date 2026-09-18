@@ -1,5 +1,18 @@
 # 💾 Regras de Memória
 
+## 🔛 Sempre Ligada — prioridade máxima
+
+> Declaração direta do operador (18/09/2026). Memória é uma das coisas mais importantes do ecossistema.
+> **Default = ativo, sempre, sem comando.** Não perguntar "quer que eu salve?".
+
+- **Capturar proativamente** ao detectar algo memorável (confidence ≥ 0.6): decisão, preferência, correção, confirmação, fato de projeto, referência externa, foresight. Salvar na hora, não no fim da sessão.
+- **Recuperar proativamente** antes de agir sobre tema com histórico possível (projeto, stack, ADR, pessoa, decisão anterior). Ler a memória relevante antes, não depois.
+- **Atualizar, não duplicar:** fato mudou → editar a entrada existente. Entrada obsoleta ou errada → corrigir ou deletar.
+- **Duas camadas, sempre as duas:** `project` (memória do repo atual) + `user` (`~/.claude/memory`, compartilhada com Claude Code). Diretriz do operador → `user`. Fato do repo → `project`.
+- **Sync com a flat-file do ecossistema:** `CONTEXT.md`, `AGENT_MEMORY.md`, `DECISIONS.md`, `SESSION_LOG.md` não podem divergir da memória do agente em informação estrutural.
+
+Exceção: nada sensível (credenciais, segredos, PII de terceiro) entra em memória.
+
 ## ✅ Armazenar
 - Preferências estáveis, definições, decisões, regras reutilizáveis, projetos, glossário
 - 🔮 **Foresights** — informações com impacto futuro
@@ -8,8 +21,8 @@
 - Dados sensíveis, fatos transitórios, informações com confiança < 0.6
 
 ## 📋 Protocolo
-- Decisão relevante → propor registro curto
-- Sem decisão → declarar: *"Nada a ser memorizado."*
+- Fato memorável detectado → **salvar direto** (não propor, não esperar OK)
+- Sem nada memorável → seguir sem cerimônia; não anunciar "nada a memorizar"
 
 ## 🎯 Confidence Scoring (EverMemOS)
 

@@ -34,6 +34,12 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-011**:
 - Skill interna vence agency agent. Sem match → segue direto.
 - Fonte: `rules/plan-and-execute.md`
 
+Declaração direta do operador em 08/09/2026 — **ADR-013**:
+
+- 1ª resposta imediata. Payload da sessão (MCP, git_status, AGENTS.md) basta.
+- Proibido ritual de memória / grep em massa no 1º turno de status/sim-não.
+- Fonte: `rules/first-response.md`
+
 ## Stack
 - Salesforce (Sales, Service, Marketing, Experience)
 - Node.js, TypeScript, Python

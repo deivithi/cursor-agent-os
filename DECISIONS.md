@@ -2,6 +2,46 @@
 
 > Iniciado em: 08/06/2026
 
+## ADR-013: 1ª resposta imediata; memória sob demanda
+
+**Data:** 08/09/2026
+**Decisão:** Ritual de 7 arquivos de memória **não** roda no 1º turno.
+Se o payload da sessão já responde (MCP connected, git_status, user_info,
+AGENTS.md), o agente responde já — zero tools.
+
+**Motivo:** Pedido "temos acesso ao ZoComputer?" disparou Read/Grep de
+CONTEXT, SESSION_LOG, SKILLS_INDEX antes de olhar o MCP já conectado.
+Operador: "isso não pode acontecer mais."
+
+**Alternativa considerada:** manter "carregar contexto primeiro" em toda
+tarefa — rejeitada. AGENTS.md já é always-on; reler é latência inútil.
+
+**Componentes:**
+- `rules/first-response.md`
+- `.cursor/rules/first-response.mdc` + `~/.cursor/rules/first-response.mdc`
+- `~/.grok/rules/first-response.md`
+- `AGENTS.md`, `CONTEXT.md`, `.cursorrules`, `rules/plan-and-execute.md`
+
+---
+
+## ADR-012: Grok não importa hooks Claude/Cursor
+
+**Data:** 08/09/2026
+**Decisão:** Em `~/.grok/config.toml`, `compat.claude.hooks = false` e
+`compat.cursor.hooks = false`. Grok só executa `~/.grok/hooks/*.json`.
+Cursor e Claude Code continuam com os próprios arquivos.
+
+**Motivo:** Grok mesclava os três harnesses. Cada PreToolUse disparava
+Orca via PowerShell EncodedCommand (3×) + scripts Node que esperavam
+EOF no stdin + prettier com `$f` (Grok exige env var). Resultado:
+timeout 10–15s em quase toda tool, dezenas de falhas por turno.
+
+**Alternativa considerada:** manter o import e só acelerar os scripts —
+rejeitado. Os payloads e o stdin de cada harness são incompatíveis;
+isolamento por runtime é o contrato certo.
+
+---
+
 ## ADR-001: Raiz não rastreia repositórios aninhados
 
 **Data:** 08/06/2026
@@ -214,7 +254,7 @@ Protocolo formalizado em `rules/gauntlet-protocol.md`.
 - `_templates/GAUNTLET.md` — template para projetos
 - `QWEN.md` — enforcement para Qwen Code
 - `.cursorrules` §Gauntlet — enforcement para Cursor
-- `AGENTS.md` §Filosofia Operacional — enforcement para qualquer agente
+- `AGENTS.md` §5 (Entregas) + `rules/gauntlet-protocol.md` — enforcement para qualquer agente
 
 **Alternativa considerada:** Revisão manual de código pelo operador —
 rejeitada por não escalar e contradizer a filosofia de produtividade.
@@ -242,7 +282,7 @@ confirmação para trabalho reversível no workspace.
 **Componentes:**
 - `rules/plan-and-execute.md` — protocolo
 - `~/.cursor/rules/plan-and-execute.mdc` — alwaysApply no Cursor
-- `AGENTS.md` §Protocolo operacional
+- `AGENTS.md` §5 (Entregas) + `rules/plan-and-execute.md` — protocolo operacional
 - `AGENT_MEMORY.md` §Protocolo operacional
 - `workflow-patterns.md` item 2 do gerenciamento de tarefas — atualizado
 

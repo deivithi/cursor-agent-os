@@ -14,6 +14,9 @@ Pedido → entender → match skill → plano curto → executar (máxima autono
 4. **Executar** — no mesmo turno, máxima autonomia. Pediu → faz.
 5. **Gauntlet** — ADR-008 antes de declarar done.
 
+**ADR-013:** se o payload da sessão já responde (MCP, git_status, user_info),
+1ª resposta = já. Zero tools. Não abrir ritual de memória. `rules/first-response.md`.
+
 ## Resolve, não transfere (ADR-010)
 
 O operador não é o depurador. Erro, falha, gap ou instrução subótima →

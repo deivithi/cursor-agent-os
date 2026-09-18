@@ -1,34 +1,33 @@
 # CONTEXT.md — Ponto de Entrada do Agente
 
-> ⚠️ **LEIA-ME PRIMEIRO**: Este arquivo deve ser lido pelo agente no início de TODA sessão.
-> Ele referencia todos os arquivos de memória que compõem o contexto completo.
+> Entry point da memória. **Não** bloquear o 1º turno. AGENTS.md já está no prompt.
+> Ritual abaixo = sob demanda (ADR-013). Ver `rules/first-response.md`.
 
 ---
 
-## 📋 Checklist de Inicialização do Agente
+## 📋 Checklist de memória (sob demanda)
 
-Quando iniciar uma sessão, execute SEMPRE:
+**Não** executar no 1º turno de pergunta de status/acesso/sim-não.
+AGENTS.md, git_status e MCP connected já vêm no payload.
 
-1. ✅ **Ler este arquivo** (CONTEXT.md)
-2. ✅ **Ler** AGENT_MEMORY.md — identidade, stack, projetos, estrutura
-3. ✅ **Consultar** PROJECTS_INDEX.md e SKILLS_INDEX.md — inventário atualizado
-4. ✅ **Ler** DECISIONS.md — decisões de arquitetura e seus porquês
-5. ✅ **Ler** SESSION_LOG.md — últimas sessões e pendências
-6. ✅ **Ler** config.json — configuração ativa do ecossistema
-7. ✅ **Ler** rules/gauntlet-protocol.md — protocolo de verificação (ADR-008)
-8. ✅ **Ler** rules/plan-and-execute.md — auto-approve + autonomia + skill em toda ação (ADR-009/010/011)
-9. ✅ **Verificar** se o projeto ativo tem `GAUNTLET.md` na raiz
-10. ✅ **Executar** git status na raiz e nos sub-repos ativos
-11. ✅ **Executar** gh auth status para verificar conectividade GitHub
-12. ✅ **Se a tarefa precisa de sinais salvos no X** → ler `~/.openwiki/wiki` (OpenWiki Personal Brain; ver skill `openwiki-personal-brain`)
+Gatilhos: user diz "carregar contexto"; falta fato que não está no prompt;
+implementação toca ADR / pendência / stack / projeto.
+
+1. AGENT_MEMORY.md — identidade, stack, projetos
+2. PROJECTS_INDEX.md + SKILLS_INDEX.md — inventário
+3. DECISIONS.md — ADRs
+4. SESSION_LOG.md — pendências
+5. config.json — config ativa
+6. `GAUNTLET.md` do projeto ativo, se existir
+7. git status / `gh auth` só se a tarefa for git/GitHub
+8. Sinais no X → `~/.openwiki/wiki` (skill `openwiki-personal-brain`)
 
 ---
 
 ## 🚨 REGRA DE OURO
 
-**NUNCA comece uma sessão sem ler estes arquivos.**
-Se o usuário pedir algo antes de você carregar o contexto, responda:
-"Deixe-me carregar seu contexto primeiro..." e leia os arquivos acima.
+Pergunta simples → responde já. Zero "carregar contexto primeiro".
+Memória completa só nos gatilhos acima.
 
 ---
 
@@ -45,39 +44,62 @@ Se o usuário pedir algo antes de você carregar o contexto, responda:
 | [SKILLS_INDEX.md](SKILLS_INDEX.md) | Inventário de skills e sync Cursor | Quando adicionar skill ou mudar sync |
 | rules/gauntlet-protocol.md | Protocolo de verificação universal (ADR-008) | Quando mudar política de qualidade |
 | rules/plan-and-execute.md | Auto-approve + autonomia + skill em toda ação (ADR-009/010/011) | Quando mudar o ciclo operacional |
+| rules/first-response.md | 1ª resposta imediata; memória sob demanda (ADR-013) | Quando mudar política de latência |
 | QWEN.md | Protocolo operacional Qwen Code | Quando mudar regras de sessão |
+
+---
+
+## 📁 Estrutura do Workspace
+
+```
+C:\Users\deivithi.lopes\Documents\Cursor\
+├── AGENTS.md          ← regras globais v3.0 (auto-carregado por agentes)
+├── CONTEXT.md         ← entry point do sistema de memória
+├── AGENT_MEMORY.md    ← fatos permanentes
+├── DECISIONS.md       ← decisões de arquitetura (ADR)
+├── SESSION_LOG.md     ← histórico de sessões
+├── config.json        ← configuração do ecossistema
+├── .cursorrules       ← regras para Cursor IDE
+├── .claude/           ← configuração Claude Code (agents/, commands/, skills/, settings.local.json)
+├── worktrees/         ← 13 projetos (cada um repo Git independente)
+├── DRE_Eventos/       ← App Flask/React (GitHub: deivithi/febracis-dre-eventos)
+├── declaw/            ← DeClaw (GitHub: deivithi/declaw)
+├── webwright/         ← WebWright
+├── skills/            ← skills globais
+├── rules/             ← regras globais
+├── scripts/           ← scripts utilitários
+└── agents/            ← templates de agentes
+```
 
 ---
 
 ## 🧠 Ciclo de Memória
 
-`	ext
-INÍCIO DA SESSÃO
+```
+1º TURNO
   ↓
-Ler CONTEXT.md (este arquivo)
+Payload já tem AGENTS.md + MCP + git_status → RESPONDER
   ↓
-Ler AGENT_MEMORY.md + DECISIONS.md + SESSION_LOG.md
-  ↓
-Executar verificações (git status, gh auth)
+Só então, se o pedido precisar: memória / git / gh
   ↓
 TRABALHAR NA SESSÃO
   ↓
 FIM DA SESSÃO
   ↓
-Atualizar SESSION_LOG.md com o que foi feito
+Atualizar SESSION_LOG.md
   ↓
-Atualizar AGENT_MEMORY.md se houve mudanças estruturais
+AGENT_MEMORY.md se mudou stack/projeto
   ↓
-Criar ADR em DECISIONS.md se houve decisão arquitetural
+ADR em DECISIONS.md se houve decisão
   ↓
-git commit -m ""session: resumo do que foi feito""
-`
+git commit -m "session: resumo"
+```
 
 ---
 
 ## ⚡ Comandos Rápidos
 
 O usuário pode usar estes atalhos:
-- "carregar contexto" → lê todos os arquivos de memória
+- "carregar contexto" → lê os arquivos de memória (único gatilho explícito do ritual)
 - "salvar progresso" → atualiza SESSION_LOG.md + git commit
 - "nova decisão: <título>" → cria nova entrada em DECISIONS.md

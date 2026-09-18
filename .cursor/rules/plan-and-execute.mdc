@@ -17,6 +17,8 @@ Ciclo travado:
 4. Executar no mesmo turno, máxima autonomia. Pediu → faz.
 5. Gauntlet (ADR-008) antes de declarar done
 
+ADR-013: se o payload da sessão já responde (MCP, git_status, user_info), 1ª resposta = já. Zero tools. Não abrir ritual de memória.
+
 ADR-010: o operador não é o depurador. Erro/falha/instrução subótima → agente resolve. Sem lista de problemas, sem challenge `[s/n]`. Relato = resultado feito.
 
 ADR-011: toda ação passa por match de skill. Skill interna > agency agent. Sem match → segue direto.

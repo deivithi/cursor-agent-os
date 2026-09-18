@@ -1,0 +1,18 @@
+---
+description: 1ª resposta imediata. Proíbe ritual de memória em pergunta simples (ADR-013).
+alwaysApply: true
+---
+
+# Latência da 1ª resposta (ADR-013)
+
+AGENTS.md já está no prompt. **Não** reler CONTEXT / AGENT_MEMORY / DECISIONS / SESSION_LOG / SKILLS_INDEX / config.json no 1º turno se a resposta já está no payload (MCP connected, git_status, user_info, system-reminder).
+
+Zero tools: status/acesso/sim-não; dado já no system-reminder; ack curto.
+
+Proibido no 1º turno desses pedidos: "carregar contexto primeiro"; grep/read em massa; abrir 7 arquivos de memória antes de falar.
+
+Carregar memória só quando: user diz "carregar contexto"; falta fato que não está no prompt; implementação toca ADR/pendência/stack.
+
+Match de skill (ADR-011) = catálogo já injetado. Só abrir SKILL.md se o pedido for a ação da skill.
+
+Fonte: `rules/first-response.md`
