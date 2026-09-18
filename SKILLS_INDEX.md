@@ -1,13 +1,13 @@
 # SKILLS_INDEX — Inventário de Skills
 
-> Atualizado: 15/07/2026  
+> Atualizado: 01/09/2026  
 > Entry point de memória: [CONTEXT.md](CONTEXT.md)
 
 ## Resumo por origem
 
 | Origem | Path | Quantidade | Prefixo / notas |
 |--------|------|------------|-----------------|
-| Custom Febracis | `skills/` | **105** (+ `_templates`) | Sem prefixo; foco PO, n8n, spec, Supabase, Febracis |
+| Custom Febracis | `skills/` | **110** (+ `_templates`) | Sem prefixo; foco PO, Salesforce, Gauntlet, n8n, spec, Supabase, Febracis |
 | Cybersecurity | `cybersecurity-skills/skills/` | **736** | `cyber-*` no nome da pasta |
 | Scientific | `scientific-skills/skills/` | **22** | `sci-*` no Cursor global |
 | WebWright | `webwright/skills/` | **1** | `webwright` |
@@ -29,20 +29,20 @@ powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\Documents\Cursor\scri
 
 ## Custom skills (`skills/`) — lista completa
 
-`_templates`, `a2a-protocol`, `ads-live`, `ag-ui-protocol`, `agent-builder`, `agent-harness`, `agent-reach`, `agent-skill-patterns`, `alpha-loop`, `anatomy-of-agent-harness`, `api-forge`, `api-to-mcp`, `app-store-connect`, `artifact-factory`, `auto-pr-review`, `automations`, `autonomous-agent-loop`, `batch-processing`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `chrome-cdp`, `cicd`, `circuit-breaker`, `clean-code-rules`, `clean-room-engineering`, `cloudflare-mesh`, `code-review`, `codebase-graph`, `commission-audit`, `compliance-agent`, `content-deduplication`, `context-engineering`, `corrective-rag`, `data-charts`, `decision-council`, `deep-research-workspace`, `delegate-task`, `doc-extract`, `docx`, `error-alerting`, `frontend-design`, `gbrain`, `geo-seo`, `gepa-reflective`, `github-mentions`, `golang`, `graphify`, `guardrails`, `image-gen-free`, `insforge`, `knowledge-graph`, `last30`, `lead-audit`, `markdown-slides`, `mcp-builder`, `mcp-rl`, `memento-skills`, `mermaid-diagrams`, `minimax-pdf`, `minimax-xlsx`, `music-gen-free`, `mythos`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `observability`, `openwiki-personal-brain`, `pptx-generator`, `product-verification`, `pulso-finance`, `runbook`, `scaffolding`, `secure-agent-harness-patterns`, `security-audit`, `skill-architect`, `skill-discovery`, `spec-driven-core`, `spec-enrich`, `spec-epic`, `spec-evaluate`, `spec-phases`, `spec-planner`, `spec-review`, `spec-verify`, `spec-yolo`, `strix`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `trace-capability`, `tts-free`, `ui-forge`, `universal-docs`, `vibe-deploy-guard`, `video-compose`, `web-artifacts-builder`, `web-research`, `webapp-testing`
+`_templates`, `a2a-protocol`, `ads-live`, `ag-ui-protocol`, `agent-builder`, `agent-harness`, `agent-reach`, `agent-skill-patterns`, `alpha-loop`, `anatomy-of-agent-harness`, `api-forge`, `api-to-mcp`, `app-store-connect`, `artifact-factory`, `auto-pr-review`, `automations`, `autonomous-agent-loop`, `batch-processing`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `chrome-cdp`, `cicd`, `circuit-breaker`, `clean-code-rules`, `clean-room-engineering`, `cloudflare-mesh`, `code-review`, `codebase-graph`, `commission-audit`, `compliance-agent`, `composio-tool-orchestrator`, `content-deduplication`, `context-engineering`, `corrective-rag`, `data-charts`, `decision-council`, `deep-research-workspace`, `delegate-task`, `doc-extract`, `docx`, `dre-zo-integrity-guard`, `error-alerting`, `frontend-design`, `gauntlet-self-healer`, `gbrain`, `geo-seo`, `gepa-reflective`, `github-mentions`, `golang`, `graphify`, `guardrails`, `image-gen-free`, `insforge`, `knowledge-graph`, `last30`, `lead-audit`, `markdown-slides`, `mcp-builder`, `mcp-rl`, `memento-skills`, `mermaid-diagrams`, `minimax-pdf`, `minimax-xlsx`, `music-gen-free`, `mythos`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `observability`, `openwiki-fio-synthesizer`, `openwiki-personal-brain`, `pptx-generator`, `product-verification`, `pulso-finance`, `runbook`, `salesforce-bdd-spec-architect`, `scaffolding`, `secure-agent-harness-patterns`, `security-audit`, `skill-architect`, `skill-discovery`, `spec-driven-core`, `spec-enrich`, `spec-epic`, `spec-evaluate`, `spec-phases`, `spec-planner`, `spec-review`, `spec-verify`, `spec-yolo`, `strix`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `trace-capability`, `tts-free`, `ui-forge`, `universal-docs`, `vibe-deploy-guard`, `video-compose`, `web-artifacts-builder`, `web-research`, `webapp-testing`
 
 ### Agrupamento por domínio (custom)
 
 | Domínio | Skills (exemplos) |
-|---------|-------------------|
-| Febracis / negócio | `lead-audit`, `commission-audit`, `pulso-finance`, `runbook` |
+|---|---|
+| Febracis / Salesforce / Negócio | `salesforce-bdd-spec-architect`, `lead-audit`, `commission-audit`, `dre-zo-integrity-guard`, `pulso-finance`, `runbook` |
+| Gauntlet / Qualidade / Segurança | `gauntlet-self-healer`, `code-review`, `security-audit`, `product-verification`, `vibe-deploy-guard`, `strix`, `mythos` |
 | Spec / Traycer | `spec-driven-core`, `spec-planner`, `spec-review`, `spec-verify`, `spec-epic`, `spec-phases`, `spec-yolo`, `spec-enrich`, `spec-evaluate` |
-| n8n | `n8n-*` (7 skills) |
+| Integrações & Conectores | `composio-tool-orchestrator`, `openwiki-fio-synthesizer`, `openwiki-personal-brain`, `n8n-*` (7 skills), `api-forge` |
 | Supabase | `supabase-docs`, `supabase-factory`, `supabase-postgres` |
 | Caverna / tokens | `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review` |
-| Qualidade / segurança | `code-review`, `security-audit`, `product-verification`, `vibe-deploy-guard`, `strix`, `mythos` |
 | Conteúdo / mídia | `artifact-factory`, `doc-extract`, `docx`, `minimax-pdf`, `markdown-slides`, `tts-free`, `video-compose`, `image-gen-free`, `music-gen-free` |
-| Agentes / harness | `agent-builder`, `agent-harness`, `anatomy-of-agent-harness`, `autonomous-agent-loop`, `guardrails`, `trace-capability`, `openwiki-personal-brain` |
+| Agentes / harness | `agent-builder`, `agent-harness`, `anatomy-of-agent-harness`, `autonomous-agent-loop`, `guardrails`, `trace-capability` |
 
 ## Scientific skills (22)
 
