@@ -41,25 +41,44 @@ function getCavernaSkillPath() {
   return null;
 }
 
-function readStdinJson() {
+function readStdinJson(timeoutMs) {
+  const maxMs = Number.isFinite(timeoutMs) ? timeoutMs : 1500;
   return new Promise((resolve) => {
     let input = '';
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (chunk) => { input += chunk; });
-    process.stdin.on('end', () => {
+    let settled = false;
+
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      try {
+        process.stdin.pause();
+      } catch {
+        /* ignore */
+      }
       if (!input.trim()) {
         resolve(null);
         return;
       }
       try {
         resolve(JSON.parse(input));
-      } catch (e) {
+      } catch {
         resolve(null);
       }
-    });
+    };
+
     if (process.stdin.isTTY) {
       resolve(null);
+      return;
     }
+
+    const timer = setTimeout(finish, maxMs);
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (chunk) => {
+      input += chunk;
+    });
+    process.stdin.on('end', finish);
+    process.stdin.on('error', finish);
   });
 }
 

@@ -10,6 +10,22 @@
 
 **Não duplicar lógica.** Fonte única: `Documents/Cursor/hooks/`. Sync via `migrate-from-documents.ps1`.
 
+## Grok Build TUI (2026-09-08)
+
+Grok importa `~/.claude/settings.json` e `~/.cursor/hooks.json` por default (`compat.*.hooks = true`). Isso disparava **3+ hooks PowerShell por tool** (Orca EncodedCommand + profile/domain + prettier com `$f`), todos lendo stdin até EOF → timeout 10–15s em quase toda chamada.
+
+Isolamento:
+
+| Runtime | Hooks que rodam |
+|---------|-----------------|
+| **Grok** | só `~/.grok/hooks/*.json` (Orca `grok-hook.cmd` direto, sem PowerShell) |
+| **Cursor** | `~/.cursor/hooks.json` |
+| **Claude Code** | `~/.claude/settings.json` |
+
+Travas em `~/.grok/config.toml`: `compat.claude.hooks = false` e `compat.cursor.hooks = false`.
+
+Orca: chamar `*.cmd` direto. `readStdinJson()` tem timeout 1,5s (fail-open). `prettier-after-edit.js` não usa `$` no command string.
+
 ## Cursor Hooks (`~/.cursor/hooks.json`)
 
 | Evento | Script | Função |
@@ -17,8 +33,15 @@
 | `sessionStart` | `caverna-activate.js` | Injeta ruleset completo (`additional_context`) |
 | `beforeSubmitPrompt` | `caverna-mode-tracker.js` | `/caverna`, ativação PT-BR, flag de modo |
 | `beforeSubmitPrompt` | `profile-tracker.js` | `/profile`, keywords → domain rules |
+| `sessionStart` | `profile-session.js` | Profile + domain rules |
+| `sessionStart` | `agent-reach-path.ps1` | PATH do Agent Reach |
+| `beforeSubmitPrompt` | `caverna-mode-tracker.js` | `/caverna`, ativação PT-BR, flag de modo |
+| `beforeSubmitPrompt` | `profile-tracker.js` | `/profile`, keywords → domain rules |
+| `preToolUse` | `git-safety-guard.js` | Guard de git/test-integrity |
 | `preToolUse` | `caverna-reinforce.js` | Reforço caverna via `agent_message` |
 | `preToolUse` | `domain-reinforce.js` | Lembrete das domain rules ativas |
+
+Orca (`cursor-hook.cmd`) roda em sessionStart / beforeSubmitPrompt / preToolUse / postToolUse / stop. Sem PowerShell EncodedCommand. Sem `hook-healthcheck --audit` em todo prompt.
 
 ## Profiles + domain rules
 

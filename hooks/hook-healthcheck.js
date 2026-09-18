@@ -128,6 +128,15 @@ function isOfficialPluginPath(filePath) {
   return OFFICIAL_PLUGIN_MARKERS.some((m) => normalized.includes(m.toLowerCase()));
 }
 
+function isThirdPartyPluginHook(filePath) {
+  const normalized = filePath.replace(/\\/g, "/").toLowerCase();
+  return (
+    normalized.includes("/plugins/cache/") ||
+    normalized.includes("/plugins/marketplaces/") ||
+    normalized.includes("/examples/hooks.json")
+  );
+}
+
 /**
  * @param {string} filePath
  * @returns {boolean}
@@ -482,8 +491,9 @@ function timestampFolder() {
  * @returns {boolean}
  */
 function isAuditScope(filePath) {
-  if (!modeAudit) return true;
-  return isUserOwnedHookFile(filePath);
+  if (modeAudit) return isUserOwnedHookFile(filePath);
+  if (args.includes("--deep")) return true;
+  return !isThirdPartyPluginHook(filePath);
 }
 
 /**
