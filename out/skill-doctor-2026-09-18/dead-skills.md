@@ -27,7 +27,7 @@ cyber-acquiring-disk-image-with-dd-and-dcfldd, cyber-analyzing-active-directory-
 
 sci-alpha-vantage, sci-citation-management, sci-dask, sci-exploratory-data-analysis, sci-fred-economic-data, sci-hypothesis-generation, sci-literature-review, sci-matplotlib, sci-networkx, sci-plotly, sci-polars, sci-pymc, sci-pytorch-lightning, sci-scientific-writing, sci-scikit-learn, sci-seaborn, sci-shap, sci-simpy, sci-stable-baselines3, sci-sympy, sci-transformers, sci-umap-learn
 
-## Nao-cyber/sci (112) — candidatas reais a arquivar
+## Nao-cyber/sci (112) — 68 mantidas (citadas em SKILLS_INDEX/rules) · 44 orfas NAO arquivadas (repo VS CODE, familias coerentes)
 
 - `_templates` — >
 - `a2a-protocol` — >
