@@ -96,7 +96,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - **Produção:** VM Zo 24/7; código em `main`; deploy via `git pull` + restart; refresh de dados na VM
 - **Fontes canônicas:** `README.md`, `docs/AGENT_CONTEXT_DRE.md`, `docs/spec/README.md`, `docs/spec/10-operacao-zo.md`, `docs/spec/03-dre-business-rules.md`, `.hermes.md`, `.cursor/skills/dre-eventos/SKILL.md`
 - **Regra de segurança:** nunca versionar `.env`, credenciais, snapshots grandes, logs sensíveis ou dados brutos com PII
-- **Working tree do projeto:** `main` em `5f113aa` após deploy final da documentação v1.42; permanece apenas `docs/analysis/` não rastreado, preservado sem staging
+- **Working tree do projeto:** `main` em `d25f1f4` após deploy final da documentação v1.42; permanece apenas `docs/analysis/` não rastreado, preservado sem staging
 - **Acesso Zo:** MCP global `cursor-to-zo2` em `%USERPROFILE%\.cursor\mcp.json` confirmado; helper canônico `scripts/probes/refresh_dre_cache_tmp.py` executou diagnósticos da VM com sucesso. `FABRIC_AUTH_MODE=unknown` na VM; Fabric segue PC + sync.
 - **Verificação:** 595 testes, Ruff, build frontend e UI Playwright 45/45 passaram; smoke de produção 43/43 passou; deploy final `5f113aa` respondeu health HTTP 200 com `db=ok`. `py -3` global não tem `psycopg2`.
 

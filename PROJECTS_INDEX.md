@@ -18,7 +18,7 @@
 
 | Projeto | Path | Stack | Remote / status (21/09/2026) |
 |---------|------|-------|------------------------------|
-| **DRE_Eventos** | `DRE_Eventos/` | Flask + React, DRE Febracis Eventos | `origin/main` — deploy final `5f113aa` (v1.42.0). Working tree: apenas `?? docs/analysis/` não rastreado. |
+| **DRE_Eventos** | `DRE_Eventos/` | Flask + React, DRE Febracis Eventos | `origin/main` — deploy final `d25f1f4` (v1.42.0). Working tree: apenas `?? docs/analysis/` não rastreado. |
 | **declaw** | `declaw/` | Spec-first factory v2.1.1, **deploy Zo Computer** (não Electron desktop) | **2 remotes:** `cloud` (deivithilopes-ai/declaw, canonical) + `origin` (deivithi/declaw, mirror). Último: `8fb344c docs: record Zo local smoke validation in STATUS`. |
 | **webwright** | `webwright/` | Python + Playwright, automação web | `origin/main` (microsoft/webwright). PRs #5 + #10 merged: image_qa/self_reflection via model configurado, dedupe inner-tool routing, persistent local browser. |
 | **cybersecurity-skills** | `cybersecurity-skills/` | Fork mukul975, ~736 skills `cyber-*` | `origin/main` (mukul975/Anthropic-Cybersecurity-Skills) — **behind 137** no upstream, working tree com D locais. |
