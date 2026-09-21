@@ -1,6 +1,6 @@
 # PROJECTS_INDEX — Inventário de Projetos
 
-> Atualizado: 16/06/2026  
+> Atualizado: 21/09/2026
 > Raiz: `C:\Users\deivithi.lopes\Documents\Cursor`
 
 ## Monorepo de configuração (raiz)
@@ -16,12 +16,20 @@
 
 ## Repositórios Git independentes (ignorados pela raiz)
 
-| Projeto | Path | Stack | Remote / status (22/06/2026) |
+| Projeto | Path | Stack | Remote / status (21/09/2026) |
 |---------|------|-------|------------------------------|
-| **DRE_Eventos** | `DRE_Eventos/` | Flask + React, DRE Febracis | `origin/main` (deivithi/febracis-dre-eventos) — último: `04266f4 chore(dre): sync docs and skill`. Working tree: skill `dre-eventos/SKILL.md` + 7 scripts Python modificados (briefing_data, refresh_cache, upload_chunks_to_zo, etc.). |
+| **DRE_Eventos** | `DRE_Eventos/` | Flask + React, DRE Febracis Eventos | `origin/main` — deploy final `5f113aa` (v1.42.0). Working tree: apenas `?? docs/analysis/` não rastreado. |
 | **declaw** | `declaw/` | Spec-first factory v2.1.1, **deploy Zo Computer** (não Electron desktop) | **2 remotes:** `cloud` (deivithilopes-ai/declaw, canonical) + `origin` (deivithi/declaw, mirror). Último: `8fb344c docs: record Zo local smoke validation in STATUS`. |
 | **webwright** | `webwright/` | Python + Playwright, automação web | `origin/main` (microsoft/webwright). PRs #5 + #10 merged: image_qa/self_reflection via model configurado, dedupe inner-tool routing, persistent local browser. |
 | **cybersecurity-skills** | `cybersecurity-skills/` | Fork mukul975, ~736 skills `cyber-*` | `origin/main` (mukul975/Anthropic-Cybersecurity-Skills) — **behind 137** no upstream, working tree com D locais. |
+
+### DRE Eventos — mapa local (verificado 21/09/2026)
+
+- Cópia canônica: `C:\Users\deivithi.lopes\Documents\Cursor\DRE_Eventos`
+- Cópia de trabalho adicional: `worktrees\dre-eventos-fix`, mesmo remote, commit `d95783b`, aproximadamente 147 commits atrás; não usar como fonte canônica
+- Repositórios relacionados: `deivithi/febracis-dre` (portal React/TypeScript + Supabase/Vercel) e `deivithi/dre-eventos-ops` (operação/skills/helpers; não é a aplicação principal)
+- Arquitetura: backend Flask/Waitress + snapshots Parquet + Postgres auth/chat; frontend React 18/Vite/TypeScript/Tailwind
+- Testes: 595 itens coletáveis no ambiente `.venv`; não usar o Python global sem `psycopg2`
 
 ### Deploy / prod (referência)
 
@@ -54,7 +62,8 @@ Citados em memória / GitHub — não versionados na raiz:
 |------|-------|
 | **Aria** | Agente IA PMEs, Vercel |
 | **FIO-IA** | Threads X, Task Scheduler |
-| **febracis-dre** | Repo GitHub relacionado a DRE |
+| **febracis-dre** | Repo GitHub relacionado: portal React/TypeScript + Supabase/Vercel |
+| **dre-eventos-ops** | Repo GitHub relacionado: operação, automações e helpers do DRE Eventos |
 | **Pulso Finance** | App financeiro (`pulsofinance` no GitHub) |
 
 ## Outras coleções na raiz (não são “apps”)

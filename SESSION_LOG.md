@@ -1,6 +1,6 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 08/09/2026 — ADR-013 (latência 1ª resposta)
+> Atualizado em: 21/09/2026 — mapeamento persistente do DRE Eventos
 
 ## 2026-09-08 — ADR-013: 1ª resposta imediata
 
@@ -372,8 +372,39 @@ Reescrever histórico + republicar com filtro (workflow documentado em SECURITY.
 ### Pendências
 - [ ] Criar repo remoto no GitHub para a raiz
 - [ ] Conectar worktrees a remotes específicos
-- [ ] Configurar DRE_Eventos com remote correto
+- [x] Configurar DRE_Eventos com remote correto
 - [ ] Pipeline de deploy do ai-landing
+
+---
+
+## 2026-09-21 — Mapeamento persistente do DRE Eventos
+
+### Resultado
+- ✅ Confirmada a cópia canônica em `DRE_Eventos/`, com remote `deivithi/febracis-dre-eventos`, branch `main` e commit `682cedf`.
+- ✅ Identificada a cópia adicional `worktrees/dre-eventos-fix`; a cópia temporária em `%LOCALAPPDATA%/Temp` não foi tratada como fonte.
+- ✅ Consolidada a distinção entre a aplicação principal, o portal relacionado `febracis-dre` e o repositório operacional `dre-eventos-ops`.
+- ✅ Atualizados `AGENT_MEMORY.md`, `PROJECTS_INDEX.md`, `CONTEXT.md`, `DRE_Eventos/AGENTS.md` e `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md`.
+- ✅ Suíte completa passou no `.venv`: 595 testes; o Python global não possui `psycopg2`.
+- ⚠️ Verificação posterior encontrou 1 falha em `tests/test_fotos.py` (`maxlength="240"` ausente em `templates/partials/dre_table.html`); o build frontend passou via `npm.cmd run build`.
+- ✅ Produção respondeu `/api/health` com banco, Hermes e LLM operacionais; acesso administrativo à VM Zo e validação individual de Fabric/TOTVS/Sheets permanecem não confirmados.
+
+### Regra de continuidade
+- Para qualquer sessão sobre DRE Eventos, começar por `DRE_Eventos/AGENTS.md`, `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md` e `DRE_Eventos/README.md`; não ingerir snapshots, logs, `.env`, credenciais ou dados brutos na memória.
+
+## 2026-09-21 — Infraestrutura canônica do ecossistema
+
+- ✅ Registrado como contexto permanente: ZoComputer é a VM principal.
+- ✅ Registrado como contexto permanente: PostgreSQL na ZoComputer é o banco principal com componentes em produção.
+- ✅ Registrado: ZoComputer, Vercel e Cloudflare são os destinos recorrentes de runtime/deploy.
+- ✅ Registrada a recuperação automática desse contexto em toda sessão, sem comandos ou configuração extra do operador.
+
+## 2026-09-21 — Auditoria e entrega: Foto no Relatório do Evento
+
+- ✅ Auditado o trabalho do agente Grok: feature `ac01a4d` e smoke inicial publicado em `ac5d8d6`.
+- ✅ Confirmado comportamento correto: botão admin-only no Relatório, modal compartilhado, `POST /api/fotos` inalterado, `/fotos` somente reprodução e payload v2 imutável.
+- ✅ Validação local: 595 testes, Ruff, build frontend e Playwright UI 45/45 PASS.
+- ✅ Validação de produção: smoke 43/43 PASS, `foto_payload_version=2`, PDF válido, autorização 403, totais vivos com delta zero e foto legada intacta.
+- ✅ Documentação sincronizada e deploy final em `5f113aa`; health Zo HTTP 200 com `db=ok` após restart.
 
 ---
 

@@ -62,7 +62,7 @@ C:\Users\deivithi.lopes\Documents\Cursor\
 ├── .cursorrules       ← regras para Cursor IDE
 ├── .claude/           ← configuração Claude Code (agents/, commands/, skills/, settings.local.json)
 ├── worktrees/         ← 13 projetos (cada um repo Git independente)
-├── DRE_Eventos/       ← App Flask/React (GitHub: deivithi/febracis-dre-eventos)
+├── DRE_Eventos/       ← App Flask/React; mapa: DRE_Eventos/docs/AGENT_CONTEXT_DRE.md
 ├── declaw/            ← DeClaw (GitHub: deivithi/declaw)
 ├── webwright/         ← WebWright
 ├── skills/            ← skills globais
@@ -70,6 +70,13 @@ C:\Users\deivithi.lopes\Documents\Cursor\
 ├── scripts/           ← scripts utilitários
 └── agents/            ← templates de agentes
 ```
+
+## Infraestrutura padrão
+
+- **ZoComputer** é a VM principal do ecossistema.
+- **PostgreSQL na ZoComputer** é o banco principal, com componentes em produção.
+- **ZoComputer, Vercel e Cloudflare** são os destinos recorrentes de runtime/deploy.
+- Esse contexto deve ser recuperado automaticamente antes de qualquer trabalho; credenciais permanecem nos conectores/cofres/ambientes locais e nunca entram na memória.
 
 ---
 
