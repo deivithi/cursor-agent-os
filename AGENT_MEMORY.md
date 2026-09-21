@@ -59,6 +59,11 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - **Destinos recorrentes:** ZoComputer, Vercel e Cloudflare. Identificar o destino pelo projeto antes de executar deploy ou alteração operacional.
 - **Regra de continuidade:** recuperar esse contexto automaticamente em toda sessão, junto com o mapa do projeto, sem depender de comandos extras ou nova configuração manual.
 
+## Auditoria profunda DRE Eventos — 2026-09-21
+- Rodada de hardening publicada e deployada: sessões `auth_epoch`, pool Postgres thread-safe/timeouts, contexto do chat server-authoritative, locks on-demand, lock de refresh órfão, CI frontend/type-check/build, Actions pinadas, CSP/ARIA/focus trap e dependências frontend atualizadas.
+- Evidências: 649 testes, Ruff, build frontend, `npm audit` com 0 vulnerabilidades, CSP chat PASS, UI Fotos 45/45, smoke produção 43/43, health Zo HTTP 200/db ok.
+- Pendências explícitas: restore real de backup, criptografia de backup, E2E de login com Postgres real, acessibilidade completa do chat React e locks distribuídos para múltiplas réplicas.
+
 ## Projetos ativos (negócio + deploy)
 1. **Aria** — Agente IA autônomo para PMEs (Vercel)
 |2. **FIO-IA** — Gerador autônomo de fios no X (fio = 6 tweets), 4×/dia via Hermes cron (02/08/14/20 BRT), entrega no chat Hermes + backup em `state/email-corpo.txt` (legacy: Task Scheduler `.ps1`)

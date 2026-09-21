@@ -406,6 +406,14 @@ Reescrever histórico + republicar com filtro (workflow documentado em SECURITY.
 - ✅ Validação de produção: smoke 43/43 PASS, `foto_payload_version=2`, PDF válido, autorização 403, totais vivos com delta zero e foto legada intacta.
 - ✅ Documentação sincronizada e deploy final em `5f113aa`; health Zo HTTP 200 com `db=ok` após restart.
 
+## 2026-09-21 — Auditoria profunda e hardening da aplicação
+
+- ✅ Corrigidos riscos de sessão, pool Postgres, contexto adulterável do chat, locks, CI, dependências frontend, cache-bust e acessibilidade.
+- ✅ `npm audit` terminou com 0 vulnerabilidades após atualização do lockfile.
+- ✅ Validação acumulada: 649 testes, Ruff, build frontend, CSP PASS, UI Fotos 45/45 e smoke produção 43/43.
+- ✅ Deploy final validado com HTTP 200 e `db=ok`.
+- 📌 Pendências mantidas com evidência: restore/criptografia de backup, login E2E real, acessibilidade completa do chat React e coordenação distribuída.
+
 ---
 
 ## 2026-06-08 17:00 BRT — Conexão com Composio.dev CLI (WSL)
