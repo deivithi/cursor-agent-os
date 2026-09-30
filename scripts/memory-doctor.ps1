@@ -239,7 +239,6 @@ $syncTask = $scheduledTasks | Where-Object { $_.name -eq 'Febracis-Cursor-SyncDa
 $syncTaskName = $syncTask.name
 $syncTaskState = $syncTask.state
 $syncTaskLastRun = $syncTask.last
-$syncTaskHealthy = $syncTask.healthy
 $deadTasks = @($scheduledTasks | Where-Object { -not $_.healthy })
 
 # ---- scheduler do Hermes: jobs enabled mas ticker parado = automação morta em silêncio
@@ -555,7 +554,11 @@ foreach ($w in $worktrees) {
   $L.Add('| ' + (Code $w.name) + ' | ' + (Code $w.head) + ' | ' + $w.tracked + ' | ' + $subst + ' |')
 }
 $L.Add('')
-$L.Add('O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário. As 11 pastas de 1 a 5 arquivos são shells; `determined-wu-3787c2` (17), `festive-grothendieck` (21) e `dre-eventos-fix` (157) têm conteúdo.')
+$L.Add('O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário. As ' + $worktreeShells.Count + ' pastas de 1 a 5 arquivos são shells; `determined-wu-3787c2` (17), `festive-grothendieck` (21) e `dre-eventos-fix` (157) têm conteúdo.')
+$L.Add('')
+if ($rootDirtyIgnored.Count -gt 0) {
+  $L.Add('A sujeira da raiz **ignora** o artefato gerado (`MEMORY_STATE.md`), que não é trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há ' + $rootDirtyIgnored.Count + ' caminho(s) nessa condição.')
+}
 $L.Add('')
 $L.Add('## Datas declaradas vs. hoje')
 $L.Add('')
