@@ -27,7 +27,7 @@ o disco, todas da mesma natureza — número à mão envelhecendo em silêncio:
 | `dre-eventos-fix` | "≈147 commits atrás" | 161 |
 | `pulso-finance` | v5.6.0 | v5.0.0 em todas as 7 cópias |
 | FIO-IA | "4×/dia BRT" | jobs `enabled` mas scheduler parado desde 08/07 |
-| Handle do X | `@opanteraos` | `@opanteranegra77` (8 arquivos contra 1; a evidência citada na correção tinha um caminho errado — o real é `skills/openwiki-fio-synthesizer/references/humanizer-fio-rules.md`) |
+| Handle do X | `@opanteraos` | `@opanteranegra77` (9 arquivos canônicos contra 1; a evidência citada na primeira correção tinha um caminho errado — o real é `skills/openwiki-fio-synthesizer/references/humanizer-fio-rules.md`) |
 | Worktrees | 13 (`CONTEXT.md`) e 14 (`AGENT_MEMORY`) | 14 |
 | Versão das Regras | v3.0 | v3.0.1 (hoje v3.0.2) |
 

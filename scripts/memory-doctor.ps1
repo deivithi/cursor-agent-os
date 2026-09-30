@@ -115,7 +115,7 @@ function Test-GitRepo([string]$p) {
   return ''
 }
 
-function Get-RepoInfo([string]$relative, [switch]$IgnoreGenerated) {
+function Get-RepoInfo([string]$relative) {
   $abs = Join-Path $Root $relative
   $info = [ordered]@{
     path    = $relative
@@ -139,11 +139,7 @@ function Get-RepoInfo([string]$relative, [switch]$IgnoreGenerated) {
     if ($parts.Count -gt 2) { $info.subject = $parts[2] }
   }
   $statusLines = Get-GitStatusLines $abs
-  if ($IgnoreGenerated) {
-    # Artefatos que o próprio gerador produz não contam como trabalho pendente: senão o
-    # snapshot é estale-por-construção (publicá-lo limpa a sujeira que ele acabou de denunciar).
-    $statusLines = @($statusLines | Where-Object { $_ -notmatch 'MEMORY_STATE\.md' })
-  }
+
   $info.dirtyN = $statusLines.Count
   $lr = Invoke-Git $abs @('rev-list', '--left-right', '--count', 'origin/main...HEAD')
   if ($lr -match '^(\d+)\s+(\d+)$') { $info.behind = $Matches[1]; $info.ahead = $Matches[2] }
@@ -206,13 +202,40 @@ foreach ($d in $worktreeDirs) {
   $worktrees += [pscustomobject]@{ name = $d.Name; repo = [bool]$gitKind; gitKind = $gitKind; head = $head; tracked = $tracked }
 }
 $worktreeRepos = @($worktrees | Where-Object { $_.repo })
-# "shell vazio" é juízo: um diretório com 1 arquivo rastreado não tem código substantivo.
-# O corte em 10 é heurístico e está declarado como tal — não é um fato binário.
-$worktreeShells = @($worktrees | Where-Object { $_.repo -and $_.tracked -le 10 })
+# "shell vazio" é juízo, não fato binário: um diretório com 1 arquivo rastreado não tem código
+# substantivo. O corte está declarado como heurística (aparece na saída) e é parâmetro único.
+$shellThreshold = 10
+$worktreeSubstantive = @($worktrees | Where-Object { $_.repo -and $_.tracked -gt $shellThreshold })
+$worktreeShells = @($worktrees | Where-Object { $_.repo -and $_.tracked -le $shellThreshold })
 
 $repoList = @('DRE_Eventos', 'declaw', 'webwright', 'cybersecurity-skills', 'scientific-skills', 'worktrees\dre-eventos-fix')
 $repos = @()
 foreach ($r in $repoList) { $repos += (Get-RepoInfo $r) }
+
+# Worktrees REGISTRADOS pelo repo raiz — vivem fora de worktrees\ e são invisíveis ao laço acima.
+# Uma auditoria de 30/09/2026 achou 6.119 caminhos pendentes em `.claude/worktrees/…` que o
+# "Estado do ecossistema" simplesmente não mostrava. Usar `git worktree list` é a fonte correta:
+# os 14 de worktrees\ NÃO aparecem nele (têm .git próprio, não são worktrees do raiz).
+$worktreeExtra = @()
+$wtRaw = Invoke-Git $Root @('worktree', 'list', '--porcelain')
+if ($wtRaw) {
+  $currentPath = ''
+  foreach ($wtLine in ($wtRaw -split "`n")) {
+    if ($wtLine -match '^worktree\s+(.+)$') {
+      $currentPath = $Matches[1].Trim()
+      continue
+    }
+    if ($wtLine -match '^branch\s+(.+)$' -and $currentPath) {
+      $branch = $Matches[1].Trim()
+      $norm = $currentPath.Replace('/', '\')
+      if ($norm -and ($norm.TrimEnd('\') -ne $Root.TrimEnd('\'))) {
+        $dirtyN = (Get-GitStatusLines $norm).Count
+        $worktreeExtra += [pscustomobject]@{ path = $norm; branch = $branch; dirtyN = $dirtyN }
+      }
+      $currentPath = ''
+    }
+  }
+}
 
 # ---- tarefas agendadas do pipeline Cursor/Febracis
 $scheduledTaskNames = @(
@@ -252,13 +275,33 @@ $hermesEnabledJobs = 0
 $hermesPausedJobs = 0
 $hermesStalled = $false
 $hermesJobs = @()
+$hermesParseFailed = $false
 if (Test-Path $hermesTickerFile) { $hermesTickerDate = (Get-Item $hermesTickerFile).LastWriteTime }
 if (Test-Path $hermesJobsFile) {
   $raw = Get-Content $hermesJobsFile -Raw -ErrorAction SilentlyContinue
+  # Parsing de verdade: a estrutura é { "jobs": [ { id, name, enabled, … } ] }. Regex de janela
+  # falhava porque `name` e `enabled` ficam separados por objetos aninhados com chaves — a lista
+  # por-job saía vazia em silêncio, e o doctor dizia "3 jobs enabled" sem saber quais.
+  # Fallback para contagem bruta só se o JSON não parsear.
   $hermesEnabledJobs = ([regex]::Matches($raw, '"enabled"\s*:\s*true')).Count
   $hermesPausedJobs = ([regex]::Matches($raw, '"enabled"\s*:\s*false')).Count
-  foreach ($m in [regex]::Matches($raw, '"name"\s*:\s*"([^"]+)"[^}]*?"enabled"\s*:\s*(true|false)')) {
-    $hermesJobs += [pscustomobject]@{ name = $m.Groups[1].Value; enabled = ($m.Groups[2].Value -eq 'true') }
+  try {
+    $parsed = $raw | ConvertFrom-Json -ErrorAction Stop
+    if ($parsed.jobs) {
+      $hermesEnabledJobs = @($parsed.jobs | Where-Object { $_.enabled -eq $true }).Count
+      $hermesPausedJobs = @($parsed.jobs | Where-Object { $_.enabled -ne $true }).Count
+      foreach ($job in $parsed.jobs) {
+        $jobName = if ($job.name) { [string]$job.name } else { [string]$job.id }
+        $hermesJobs += [pscustomobject]@{
+          name    = $jobName
+          enabled = ($job.enabled -eq $true)
+          lastRun = if ($job.last_run_at) { [string]$job.last_run_at } else { '' }
+        }
+      }
+    }
+  } catch {
+    # JSON inválido: mantém as contagens brutas e deixa a lista vazia, declarando isso na saída.
+    $hermesParseFailed = $true
   }
 }
 if ($hermesTickerDate) { $hermesStalled = (($Today - $hermesTickerDate).TotalDays -gt 2) }
@@ -373,11 +416,17 @@ foreach ($name in $namedMemoryRefs) {
   if (-not (Test-Path (Join-Path $env:USERPROFILE ('.claude\memory\' + $name + '.md')))) { $brokenMemoryRefs += $name }
 }
 
-# estado do repo raiz — MEMORY_STATE.md é saída do próprio gerador e não conta como pendência
+# estado do repo raiz — arquivos que o PRÓPRIO sistema de memória gera/edita não contam como
+# trabalho pendente. Sem isso o snapshot é estale-por-construção: publicá-lo invalida o que ele
+# acabou de afirmar, e a Saúde oscila conforme o arquivo esteja ou não commitado.
+# Alternativa considerada e rejeitada: gerar o snapshot fora do repo medido — quebraria o
+# versionamento do estado, que é justamente o que dá continuidade entre máquinas.
+$memoryArtifacts = @('MEMORY_STATE\.md', 'scripts/memory-doctor\.ps1')
+$artifactPattern = ($memoryArtifacts -join '|')
 $rootParts = (Invoke-Git $Root @('log', '-1', '--format=%h%x09%ad%x09%s', '--date=short')) -split "`t", 3
 $rootDirtyAll = Get-GitStatusLines $Root
-$rootDirty = @($rootDirtyAll | Where-Object { $_ -notmatch 'MEMORY_STATE\.md' })
-$rootDirtyIgnored = @($rootDirtyAll | Where-Object { $_ -match 'MEMORY_STATE\.md' })
+$rootDirty = @($rootDirtyAll | Where-Object { $_ -notmatch $artifactPattern })
+$rootDirtyIgnored = @($rootDirtyAll | Where-Object { $_ -match $artifactPattern })
 
 # impressão digital estrutural — inclui o HEAD e a sujeira da raiz, senão é cega à deriva
 $fingerprintInput = @()
@@ -430,17 +479,24 @@ if ($sessionOrderBreaks.Count -gt 0) {
 if ($customNoManifest.Count -gt 0) {
   $staleReasons += ($customNoManifest.Count.ToString() + ' skill(s) sem SKILL.md em skills/')
 }
+
+# CONDIÇÕES DE AMBIENTE — reportadas com destaque, mas NÃO afetam a Saúde da memória.
+# Distinção que uma auditoria adversarial de 30/09/2026 obrigou a fazer: uma tarefa agendada
+# desligada é um problema de operação, não de memória. Misturar os dois tornava
+# `Saúde: ATUALIZADA` inalcançável e transformava a instrução de exigi-la em letra morta.
+# Reportar é obrigatório (senão o bloqueio fica invisível); contar para a saúde é errado.
+$envConditions = @()
 foreach ($t in $deadTasks) {
-  $staleReasons += ('tarefa agendada inativa: ' + $t.name + ' = ' + $t.state + ', última execução ' + $t.last)
+  $envConditions += ('tarefa agendada inativa: ' + $t.name + ' = ' + $t.state + ', última execução ' + $t.last)
 }
 if ($hermesStalled) {
-  $staleReasons += ('scheduler do Hermes parado desde ' + $hermesTickerDate.ToString('yyyy-MM-dd HH:mm') + ' — ' + $hermesEnabledJobs + ' job(s) enabled que não rodam')
+  $envConditions += ('scheduler do Hermes parado desde ' + $hermesTickerDate.ToString('yyyy-MM-dd HH:mm') + ' — ' + $hermesEnabledJobs + ' job(s) enabled que não rodam')
+}
+if ($worktreeExtra.Count -gt 0) {
+  $envConditions += ($worktreeExtra.Count.ToString() + ' worktree(s) do repo raiz fora de worktrees/ com trabalho pendente — fora do inventário até agora')
 }
 
-# Pendências CONHECIDAS E ACEITAS: condições deliberadas ou inofensivas que não indicam
-# memória desatualizada. Sem esta classe, `Saúde: ATUALIZADA` seria inalcançável por construção
-# e a instrução de exigir ATUALIZADA (rules/session-bootstrap.md) viraria letra morta.
-$openwikiEnvPath = Join-Path $env:USERPROFILE '.openwiki\.env'
+# Condições DELIBERADAS: conhecidas, inofensivas, não indicam memória desatualizada.
 if (($missingExternal -contains 'env do OpenWiki (~/.openwiki/.env)')) {
   $acceptedReasons += 'OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)'
 }
@@ -471,8 +527,17 @@ if ($acceptedReasons.Count -gt 0) {
 }
 $L.Add('**Fingerprint estrutural:** ' + (Code $Fingerprint))
 $L.Add('')
-$L.Add('> `Saúde: ATUALIZADA` significa **zero pendência acionável**. As linhas marcadas `aceito` são')
-$L.Add('> condições deliberadas ou inofensivas — não indicam memória desatualizada.')
+$L.Add('> `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são')
+$L.Add('> condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:')
+$L.Add('> aparecem aqui para não ficarem invisíveis, mas não indicam memória desatualizada.')
+$L.Add('')
+$L.Add('## Condições de ambiente (não afetam a Saúde da memória)')
+$L.Add('')
+if ($envConditions.Count -eq 0) {
+  $L.Add('Nenhuma. Tarefas agendadas e scheduler operando.')
+} else {
+  foreach ($c in $envConditions) { $L.Add('- ' + $c) }
+}
 $L.Add('')
 $L.Add('## Inventário (contado no disco)')
 $L.Add('')
@@ -505,7 +570,9 @@ $L.Add('|---|---|---|')
 foreach ($t in $scheduledTasks) {
   $lastLabel = if ($t.last) { $t.last } else { 'nunca registrada' }
   $mark = if ($t.healthy) { '' } else { ' **inativa**' }
-  $L.Add('| ' + (Code $t.name) + ' | ' + $t.state + $mark + ' | ' + $lastLabel + ' |')
+  $isSyncTask = ($t.name -eq $syncTaskName)
+  $taskLabel = if ($isSyncTask) { (Code $t.name) + ' (sync de skills)' } else { Code $t.name }
+  $L.Add('| ' + $taskLabel + ' | ' + $t.state + $mark + ' | ' + $lastLabel + ' |')
 }
 $L.Add('')
 $L.Add('## Scheduler do Hermes')
@@ -518,13 +585,24 @@ if (-not $hermesTickerDate) {
   $L.Add('|---|---|')
   $L.Add('| Último heartbeat do ticker | ' + $hermesTickerDate.ToString('yyyy-MM-dd HH:mm') + ' (' + $hermesAge + ' dias) |')
   $L.Add('| Jobs habilitados | ' + $hermesEnabledJobs + ' |')
+  $L.Add('| Jobs pausados | ' + $hermesPausedJobs + ' |')
   $hermesLabel = if ($hermesStalled) { '**parado** — jobs enabled que não rodam' } else { 'operando' }
   $L.Add('| Veredito | ' + $hermesLabel + ' |')
   if ($hermesJobs.Count -gt 0) {
     $L.Add('')
+    $L.Add('| Job | Estado | Última execução |')
+    $L.Add('|---|---|---|')
     foreach ($j in $hermesJobs) {
-      $L.Add('- ' + (Code $j.name) + ' — ' + $(if ($j.enabled) { 'enabled' } else { 'pausado' }))
+      $jState = if ($j.enabled) { 'enabled' } else { 'pausado' }
+      $jLast = if ($j.lastRun) { $j.lastRun } else { 'nunca' }
+      $L.Add('| ' + (Code $j.name) + ' | ' + $jState + ' | ' + $jLast + ' |')
     }
+  } elseif ($hermesParseFailed) {
+    $L.Add('')
+    $L.Add('A lista por-job não pôde ser lida: ' + (Code 'jobs.json') + ' não parseou como JSON. As contagens acima vêm de regex bruto.')
+  } else {
+    $L.Add('')
+    $L.Add('A lista por-job saiu **vazia mesmo com o JSON válido** — isso é bug de parsing, não ausência de jobs. Investigar antes de confiar no número acima.')
   }
 }
 $L.Add('')
@@ -544,22 +622,43 @@ $L.Add('| ' + (Code '.') + ' (raiz) | ' + (Code $rootParts[0]) + ' | ' + $rootPa
 $L.Add('')
 $L.Add('## Worktrees (' + $worktrees.Count + ')')
 $L.Add('')
-$L.Add('Repositórios independentes com ' + (Code '.git') + ' próprio — **diretório** em todos os 14, não arquivo (medido em 30/09/2026). Não são worktrees do repo raiz — ADR-003.')
+$L.Add('Repositórios independentes com ' + (Code '.git') + ' próprio — **diretório** em todos os ' + $worktrees.Count + ', não arquivo (medido nesta execução, não afirmado de memória). Não são worktrees do repo raiz — ADR-003.')
 $L.Add('')
-$L.Add('| Worktree | HEAD | Arquivos rastreados | Código substantivo |')
-$L.Add('|---|---|---|---|')
+$L.Add('| Worktree | HEAD | Arquivos rastreados | Marcador ' + (Code '.git') + ' | Código substantivo |')
+$L.Add('|---|---|---|---|---|')
 foreach ($w in $worktrees) {
-  $kind = if ($w.repo) { 'sim' } else { 'sem ' + (Code '.git') }
-  $subst = if (-not $w.repo) { 'n/a' } elseif ($w.tracked -le 10) { 'não (shell)' } else { 'sim' }
-  $L.Add('| ' + (Code $w.name) + ' | ' + (Code $w.head) + ' | ' + $w.tracked + ' | ' + $subst + ' |')
+  $kindLabel = if ($w.gitKind) { $w.gitKind } else { 'ausente' }
+  $subst = if (-not $w.repo) { 'n/a' } elseif ($w.tracked -le $shellThreshold) { 'não (shell)' } else { 'sim' }
+  $L.Add('| ' + (Code $w.name) + ' | ' + (Code $w.head) + ' | ' + $w.tracked + ' | ' + $kindLabel + ' | ' + $subst + ' |')
 }
 $L.Add('')
-$L.Add('O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário. As ' + $worktreeShells.Count + ' pastas de 1 a 5 arquivos são shells; `determined-wu-3787c2` (17), `festive-grothendieck` (21) e `dre-eventos-fix` (157) têm conteúdo.')
+$L.Add('O corte em ' + $shellThreshold + ' arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário.')
+if ($worktreeSubstantive.Count -gt 0) {
+  $L.Add('Acima do corte (' + $worktreeSubstantive.Count + '): ' + (($worktreeSubstantive | ForEach-Object { Code $_.name }) -join ', ') + '.')
+}
+if ($worktreeShells.Count -gt 0) {
+  $L.Add('No corte ou abaixo (' + $worktreeShells.Count + '): ' + (($worktreeShells | ForEach-Object { Code $_.name }) -join ', ') + '.')
+}
 $L.Add('')
 if ($rootDirtyIgnored.Count -gt 0) {
-  $L.Add('A sujeira da raiz **ignora** o artefato gerado (`MEMORY_STATE.md`), que não é trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há ' + $rootDirtyIgnored.Count + ' caminho(s) nessa condição.')
+  $artifactList = ($memoryArtifacts | ForEach-Object { Code $_ }) -join ', '
+  $dirtyNote = 'A sujeira da raiz **ignora** os arquivos que o próprio sistema de memória gera ou edita: ' + $artifactList + '. Eles não são trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há ' + $rootDirtyIgnored.Count + ' caminho(s) nessa condição.'
+  $L.Add($dirtyNote)
+  $L.Add('')
 }
-$L.Add('')
+if ($worktreeExtra.Count -gt 0) {
+  $L.Add('## Worktrees registrados pelo repo raiz (fora de ' + (Code 'worktrees/') + ')')
+  $L.Add('')
+  $L.Add('Não aparecem no laço de ' + (Code 'worktrees/') + ' porque não vivem lá. Encontrados via ' + (Code 'git worktree list') + '.')
+  $L.Add('')
+  $L.Add('| Worktree | Branch | Pendências |')
+  $L.Add('|---|---|---|')
+  foreach ($e in $worktreeExtra) {
+    $eDirty = if ($e.dirtyN -gt 0) { $e.dirtyN.ToString() + ' arquivo(s)' } else { 'limpo' }
+    $L.Add('| ' + (Code $e.path) + ' | ' + (Code $e.branch) + ' | ' + $eDirty + ' |')
+  }
+  $L.Add('')
+}
 $L.Add('## Datas declaradas vs. hoje')
 $L.Add('')
 $L.Add('| Arquivo | Data declarada | Dias de atraso |')

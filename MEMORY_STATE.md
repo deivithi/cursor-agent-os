@@ -1,20 +1,25 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 09:17 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 09:30 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
 **Saúde da memória:** DESATUALIZADA
-- pendência: 1 caminho(s) não commitado(s) no repo raiz
-- pendência: tarefa agendada inativa: Febracis-Cursor-SyncDaily = Disabled, última execução 2026-06-16
-- pendência: tarefa agendada inativa: Febracis-CursorAgent-Daily = Disabled, última execução 2026-06-16
-- pendência: tarefa agendada inativa: Febracis-OpenDesign-Update = Disabled, última execução 2026-06-15
-- pendência: scheduler do Hermes parado desde 2026-07-08 16:38 — 3 job(s) enabled que não rodam
+- pendência: 5 caminho(s) não commitado(s) no repo raiz
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `f9d2d9bf17cf`
+**Fingerprint estrutural:** `90aacb6770e6`
 
-> `Saúde: ATUALIZADA` significa **zero pendência acionável**. As linhas marcadas `aceito` são
-> condições deliberadas ou inofensivas — não indicam memória desatualizada.
+> `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
+> condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
+> aparecem aqui para não ficarem invisíveis, mas não indicam memória desatualizada.
+
+## Condições de ambiente (não afetam a Saúde da memória)
+
+- tarefa agendada inativa: Febracis-Cursor-SyncDaily = Disabled, última execução 2026-06-16
+- tarefa agendada inativa: Febracis-CursorAgent-Daily = Disabled, última execução 2026-06-16
+- tarefa agendada inativa: Febracis-OpenDesign-Update = Disabled, última execução 2026-06-15
+- scheduler do Hermes parado desde 2026-07-08 16:38 — 3 job(s) enabled que não rodam
+- 2 worktree(s) do repo raiz fora de worktrees/ com trabalho pendente — fora do inventário até agora
 
 ## Inventário (contado no disco)
 
@@ -38,7 +43,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 
 | Tarefa | Estado | Última execução |
 |---|---|---|
-| `Febracis-Cursor-SyncDaily` | Disabled **inativa** | 2026-06-16 |
+| `Febracis-Cursor-SyncDaily` (sync de skills) | Disabled **inativa** | 2026-06-16 |
 | `Febracis-CursorAgent-Daily` | Disabled **inativa** | 2026-06-16 |
 | `Febracis-OpenDesign-Update` | Disabled **inativa** | 2026-06-15 |
 | `Febracis-Cursor-UpdateWatchdog` | Running | 2026-09-29 |
@@ -50,7 +55,15 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 |---|---|
 | Último heartbeat do ticker | 2026-07-08 16:38 (84 dias) |
 | Jobs habilitados | 3 |
+| Jobs pausados | 1 |
 | Veredito | **parado** — jobs enabled que não rodam |
+
+| Job | Estado | Última execução |
+|---|---|---|
+| `FIO-IA gerar fio (Hermes)` | enabled | 07/08/2026 14:10:39 |
+| `FIO-IA watchdog (Hermes)` | enabled | 07/08/2026 15:15:51 |
+| `Briefing Diário Febracis Salesforce` | enabled | 07/08/2026 12:04:01 |
+| `OpenWiki Personal Brain update` | pausado | nunca |
 
 ## Repositórios
 
@@ -62,31 +75,43 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `a3e435a` | 2026-09-30 | 1 caminho(s) | n/a |
+| `.` (raiz) | `302db2f` | 2026-09-30 | 5 caminho(s) | n/a |
 
 ## Worktrees (14)
 
-Repositórios independentes com `.git` próprio — **diretório** em todos os 14, não arquivo (medido em 30/09/2026). Não são worktrees do repo raiz — ADR-003.
+Repositórios independentes com `.git` próprio — **diretório** em todos os 14, não arquivo (medido nesta execução, não afirmado de memória). Não são worktrees do repo raiz — ADR-003.
 
-| Worktree | HEAD | Arquivos rastreados | Código substantivo |
-|---|---|---|---|
-| `charming-lichterman` | `88ee4f5` | 1 | não (shell) |
-| `cranky-mahavira` | `770e3d2` | 3 | não (shell) |
-| `determined-wu-3787c2` | `855f700` | 17 | sim |
-| `dre-eventos-fix` | `d95783b` | 157 | sim |
-| `festive-grothendieck` | `99c206c` | 21 | sim |
-| `gifted-boyd` | `acb4b41` | 1 | não (shell) |
-| `heuristic-ritchie` | `0be103e` | 5 | não (shell) |
-| `inspiring-dijkstra` | `a4ca563` | 1 | não (shell) |
-| `modest-dirac` | `6c5b2ab` | 3 | não (shell) |
-| `naughty-wilson` | `7ee02b6` | 5 | não (shell) |
-| `peaceful-jepsen` | `e1af3c6` | 3 | não (shell) |
-| `quirky-easley` | `4e2edb5` | 1 | não (shell) |
-| `quirky-liskov` | `ba8e1da` | 3 | não (shell) |
-| `upbeat-mirzakhani` | `8a3dd00` | 1 | não (shell) |
+| Worktree | HEAD | Arquivos rastreados | Marcador `.git` | Código substantivo |
+|---|---|---|---|---|
+| `charming-lichterman` | `88ee4f5` | 1 | dir | não (shell) |
+| `cranky-mahavira` | `770e3d2` | 3 | dir | não (shell) |
+| `determined-wu-3787c2` | `855f700` | 17 | dir | sim |
+| `dre-eventos-fix` | `d95783b` | 157 | dir | sim |
+| `festive-grothendieck` | `99c206c` | 21 | dir | sim |
+| `gifted-boyd` | `acb4b41` | 1 | dir | não (shell) |
+| `heuristic-ritchie` | `0be103e` | 5 | dir | não (shell) |
+| `inspiring-dijkstra` | `a4ca563` | 1 | dir | não (shell) |
+| `modest-dirac` | `6c5b2ab` | 3 | dir | não (shell) |
+| `naughty-wilson` | `7ee02b6` | 5 | dir | não (shell) |
+| `peaceful-jepsen` | `e1af3c6` | 3 | dir | não (shell) |
+| `quirky-easley` | `4e2edb5` | 1 | dir | não (shell) |
+| `quirky-liskov` | `ba8e1da` | 3 | dir | não (shell) |
+| `upbeat-mirzakhani` | `8a3dd00` | 1 | dir | não (shell) |
 
-O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário. As 11 pastas de 1 a 5 arquivos são shells; `determined-wu-3787c2` (17), `festive-grothendieck` (21) e `dre-eventos-fix` (157) têm conteúdo.
+O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário.
+Acima do corte (3): `determined-wu-3787c2`, `dre-eventos-fix`, `festive-grothendieck`.
+No corte ou abaixo (11): `charming-lichterman`, `cranky-mahavira`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani`.
 
+A sujeira da raiz **ignora** os arquivos que o próprio sistema de memória gera ou edita: `MEMORY_STATE\.md`, `scripts/memory-doctor\.ps1`. Eles não são trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há 2 caminho(s) nessa condição.
+
+## Worktrees registrados pelo repo raiz (fora de `worktrees/`)
+
+Não aparecem no laço de `worktrees/` porque não vivem lá. Encontrados via `git worktree list`.
+
+| Worktree | Branch | Pendências |
+|---|---|---|
+| `C:\Users\deivithi.lopes\.cline\worktrees\f3fe6\Cursor` | `refs/heads/cline/f3fe6` | limpo |
+| `C:\Users\deivithi.lopes\Documents\Cursor\.claude\worktrees\angry-bassi-58c13c` | `refs/heads/claude/angry-bassi-58c13c` | 6119 arquivo(s) |
 
 ## Datas declaradas vs. hoje
 

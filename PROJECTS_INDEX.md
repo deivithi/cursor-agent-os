@@ -30,7 +30,9 @@
 | personal-bio-post-cdf451 | `...\Cursor\.claude\worktrees\personal-bio-post-cdf451` | detached | limpo | `origin` + `cloud` (herdados da raiz) |
 | charming-lichterman | `...\Cursor\worktrees\charming-lichterman` | `main` | limpo | **sem remote** |
 
-As **13** pastas restantes de `worktrees\` são todas **sem remote**: `cranky-mahavira`, `determined-wu-3787c2`, `festive-grothendieck`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani` — mais `dre-eventos-fix`, que aparece na tabela acima por ter remote. Três têm conteúdo substantivo (`determined-wu-3787c2`, `festive-grothendieck`, `dre-eventos-fix`); as demais são shells de 1 a 5 arquivos rastreados. Contagem e detalhe ao vivo: [MEMORY_STATE.md](MEMORY_STATE.md).
+As **13** pastas de `worktrees\` sem remote são: `charming-lichterman`, `cranky-mahavira`, `determined-wu-3787c2`, `festive-grothendieck`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani`. A décima quarta, `dre-eventos-fix`, **tem** remote e está na tabela acima.
+
+Três têm conteúdo substantivo (`determined-wu-3787c2` com 17 arquivos rastreados, `festive-grothendieck` com 21, `dre-eventos-fix` com 157); as demais são shells de 1 a 5 arquivos. Contagem e detalhe ao vivo: [MEMORY_STATE.md](MEMORY_STATE.md).
 
 ## Remotes e alertas
 

@@ -1,4 +1,4 @@
-# agent.md — Regras Globais · Deivithi (Febracis) · v3.0.2
+# agent.md — Regras Globais · Deivithi (Febracis) · v3.0.3
 
 Instruções globais do assistente. Arquivos mais próximos do trabalho (AGENTS.md de projeto, skills) complementam ou sobrescrevem este. Revisado em 2026-09-30.
 
@@ -74,7 +74,7 @@ Se duas regras ainda colidirem, ou se faltar informação que muda o resultado: 
 
 **Memória sempre ligada (diretiva de conversa 18/09/2026 — vence §6 por §1.3 > §1.5):** capturar e recuperar **proativamente**, sem comando e sem perguntar "quer que eu salve?". Duas camadas sempre — `project` (repo atual) + `user` (`~/.claude/memory`). Atualizar entrada existente em vez de duplicar; manter sync com `CONTEXT.md` / `AGENT_MEMORY.md` / `DECISIONS.md` / `SESSION_LOG.md`. Detalhe em `rules/memory-protocol.md` §🔛 Sempre Ligada e `~/.claude/memory/feedback_memoria_sempre_ligada.md`.
 
-**Bootstrap automático (ADR-014, 30/09/2026):** no DeepSeek Harness, o único vetor de contexto automático é `AGENTS.md` — o global (`~/.dsh/AGENTS.md`) e o do projeto. Nenhum hook do workspace é montado ali. O estado vivo chega pelo bloco gerado em `~/.dsh/AGENTS.md`, produzido por `scripts/memory-doctor.ps1`. **Número volátil não se escreve à mão** em arquivo de memória: contagens, HEADs, estado de tarefa agendada e datas vivem em `MEMORY_STATE.md`. Ao fechar sessão de trabalho, rodar o doctor e exigir `Saúde da memória: ATUALIZADA`. Detalhe em `rules/session-bootstrap.md`.
+**Bootstrap automático (ADR-014, 30/09/2026):** no DeepSeek Harness, o único vetor de contexto automático é `AGENTS.md` — o global (`~/.dsh/AGENTS.md`) e o do projeto. Nenhum hook do workspace é montado ali. O estado vivo chega pelo bloco gerado em `~/.dsh/AGENTS.md`, produzido por `scripts/memory-doctor.ps1`. **Número volátil não se escreve à mão** em arquivo de memória: contagens, HEADs, estado de tarefa agendada e datas vivem em `MEMORY_STATE.md`. Ao fechar sessão de trabalho, rodar o doctor e buscar `Saúde da memória: ATUALIZADA` — que significa zero pendência **acionável de memória**. Condições de **ambiente** (tarefa agendada desligada, scheduler parado) são reportadas em seção própria e **não** impedem `ATUALIZADA`. Detalhe em `rules/session-bootstrap.md`.
 
 ## 7. Formato e linguagem
 
@@ -94,3 +94,4 @@ Se duas regras ainda colidirem, ou se faltar informação que muda o resultado: 
 | 3.0 | 2026-09-18 | Reescrita: precedência explícita, fronteiras LGPD, regras de decisão no lugar de absolutos, verificação com evidência, critério de parada, consolidação de redundâncias |
 | 3.0.1 | 2026-09-18 | Integração das diretivas de conversa: pipeline de build autônomo (§5) e memória sempre ligada (§6), com precedência declarada por §1.3 |
 | 3.0.2 | 2026-09-30 | §6 ganha o bootstrap automático (ADR-014): vetor único do DSH, estado gerado por `memory-doctor.ps1`, proibição do número à mão |
+| 3.0.3 | 2026-09-30 | §6 distingue saúde da memória de condição de ambiente — sem isso `ATUALIZADA` era inalcançável e a exigência virava letra morta |

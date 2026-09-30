@@ -37,15 +37,16 @@ Consequência prática: a continuidade depende de dois arquivos injetados (`~/.d
    ```powershell
    pwsh -File "$env:USERPROFILE\.claude\scripts\memory-doctor.ps1"
    ```
-4. O doctor deve terminar com **zero pendência acionável**. A leitura correta é:
-   - `Saúde: ATUALIZADA` → nada a fazer.
-   - `Saúde: DESATUALIZADA` → cada linha `- pendência:` é uma **condição real** a resolver. Linhas `- aceito:` são deliberadas e não bloqueiam nada.
-5. **Pendências aceitas** (conhecidas, não indicam memória desatualizada): `~/.openwiki/.env` ausente de propósito (bloqueio consciente do OAuth do X) e plugin bundle em `skills/` sem `SKILL.md`. Se uma condição deixa de ser aceitável, ela sai da lista de aceitas e volta a contar.
-6. Commitar e subir (autorização permanente). O artefato gerado (`MEMORY_STATE.md`) **não** conta como trabalho pendente — senão o snapshot seria estale-por-construção.
+4. O doctor deve terminar com **zero pendência acionável de memória**. A leitura correta tem três níveis:
+   - `Saúde: ATUALIZADA` → nenhuma pendência de memória. Nada a fazer.
+   - `Saúde: DESATUALIZADA` → cada linha `- pendência:` é uma **condição real de memória** a resolver.
+   - Linhas `- aceito:` são deliberadas; a seção **Condições de ambiente** é problema de operação — nenhuma das duas afeta a Saúde.
+5. **Pendências aceitas** (deliberadas, não indicam memória desatualizada): `~/.openwiki/.env` ausente de propósito (bloqueio consciente do OAuth do X) e plugin bundle em `skills/` sem `SKILL.md`. Se uma condição deixa de ser aceitável, ela sai da lista e volta a contar.
+6. Commitar e subir (autorização permanente). Os arquivos que o **próprio sistema de memória** gera ou edita (`MEMORY_STATE.md`, `scripts/memory-doctor.ps1`) **não** contam como trabalho pendente — senão o snapshot seria estale-por-construção. Isso está declarado na saída, não é critério oculto.
 
-### Quando a saúde fica DESATUALIZADA por operação, não por memória
+### Condições de ambiente
 
-Algumas pendências são condições do **ambiente**, não da memória: tarefa agendada desligada, scheduler do Hermes parado. O doctor as reporta porque são invisíveis de outro modo. Resolvê-las é decisão do operador — reativar (`Enable-ScheduledTask`) ou aceitar deliberadamente. Se forem aceitas de forma permanente, mover para a lista de aceitas no doctor, com o motivo.
+Tarefa agendada desligada e scheduler parado são condições do **ambiente**, não da memória. O doctor as reporta na seção "Condições de ambiente" e **não** as soma à Saúde — misturar os dois tornava `ATUALIZADA` inalcançável e transformava a exigência em letra morta. Resolvê-las é decisão do operador: reativar (`Enable-ScheduledTask`) ou conviver. Elas aparecem no bloco injetado justamente para não ficarem invisíveis.
 
 ## Regra do número à mão — proibida
 
@@ -61,12 +62,19 @@ Motivo: foi exatamente isso que apodreceu. `SKILLS_INDEX.md` declarava 110 skill
 |---|---|
 | `última sessão registrada há N dias` | Sessões de trabalho não foram registradas em `SESSION_LOG.md` |
 | `N commit(s) de memória/estrutura sem registro de sessão` | Houve commit que toca skills/rules/hooks/scripts/memória depois do último registro |
-| `N caminho(s) não commitado(s) no repo raiz` | Trabalho pendurado no working tree |
+| `N caminho(s) não commitado(s) no repo raiz` | Trabalho pendurado no working tree (os arquivos do próprio sistema de memória não contam) |
 | `N dependência(s) crítica(s) ausente(s)` | Arquivo citado pela memória não existe mais no disco |
 | `N memória(s) nomeada(s) citada(s) e inexistente(s)` | A memória referencia uma entrada de memória que não foi criada |
-| `sync do Cursor inativo` | `Febracis-Cursor-SyncDaily` não está `Ready`/`Running` — `~/.cursor/skills` congela |
 | `SESSION_LOG fora de ordem cronológica` | Bloco anexado no lugar errado |
-| `N skill(s) sem SKILL.md` | Diretório de skill incompleto |
+| `N skill(s) sem SKILL.md` | Diretório de skill incompleto (plugin bundle não conta) |
+
+**Seção "Condições de ambiente"** (não aparece como pendência, e não afeta a Saúde):
+
+| Condição | O que significa |
+|---|---|
+| `tarefa agendada inativa: …` | Tarefa do pipeline Febracis desligada — automação parada em silêncio |
+| `scheduler do Hermes parado desde …` | Jobs `enabled` que não rodam: o FIO-IA e o briefing não estão sendo gerados |
+| `N worktree(s) do repo raiz fora de worktrees/` | Trabalho pendente em `.claude/worktrees/` ou `.cline/worktrees/`, fora do inventário principal |
 
 ## Relação com outras rules
 
