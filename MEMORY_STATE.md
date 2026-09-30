@@ -1,13 +1,12 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 09:31 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 15:38 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
-**Saúde da memória:** DESATUALIZADA
-- pendência: 1 caminho(s) não commitado(s) no repo raiz
+**Saúde da memória:** ATUALIZADA
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `9a2ef3978d22`
+**Fingerprint estrutural:** `2409b30dd161`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
 > condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
@@ -46,7 +45,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `Febracis-Cursor-SyncDaily` (sync de skills) | Disabled **inativa** | 2026-06-16 |
 | `Febracis-CursorAgent-Daily` | Disabled **inativa** | 2026-06-16 |
 | `Febracis-OpenDesign-Update` | Disabled **inativa** | 2026-06-15 |
-| `Febracis-Cursor-UpdateWatchdog` | Running | 2026-09-29 |
+| `Febracis-Cursor-UpdateWatchdog` | Running | 2026-09-30 |
 | `Febracis-Codex-LogGuard-Audit` | Ready | 2026-09-30 |
 
 ## Scheduler do Hermes
@@ -75,7 +74,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `7cd6cfe` | 2026-09-30 | 1 caminho(s) | n/a |
+| `.` (raiz) | `67164b4` | 2026-09-30 | limpo | n/a |
 
 ## Worktrees (14)
 
@@ -115,14 +114,14 @@ Não aparecem no laço de `worktrees/` porque não vivem lá. Encontrados via `g
 
 | Arquivo | Data declarada | Dias de atraso |
 |---|---|---|
-| `AGENTS.md` | 2026-09-30 | 0 |
-| `CONTEXT.md` | 2026-09-30 | 0 |
-| `AGENT_MEMORY.md` | 2026-09-30 | 0 |
-| `DECISIONS.md` | 2026-09-30 | 0 |
-| `SESSION_LOG.md` | 2026-09-30 | 0 |
+| `AGENTS.md` | 2026-09-30 | 1 |
+| `CONTEXT.md` | 2026-09-30 | 1 |
+| `AGENT_MEMORY.md` | 2026-09-30 | 1 |
+| `DECISIONS.md` | 2026-09-30 | 1 |
+| `SESSION_LOG.md` | 2026-09-30 | 1 |
 | `PROJECTS_INDEX.md` | não declarada | n/a |
-| `SKILLS_INDEX.md` | 2026-09-30 | 0 |
-| última sessão em `SESSION_LOG.md` | 2026-09-30 | 0 |
+| `SKILLS_INDEX.md` | 2026-09-30 | 1 |
+| última sessão em `SESSION_LOG.md` | 2026-09-30 | 1 |
 
 ## SESSION_LOG — ordem cronológica
 
