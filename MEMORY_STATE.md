@@ -1,12 +1,13 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 09:30 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 09:31 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
-**Saúde da memória:** ATUALIZADA
+**Saúde da memória:** DESATUALIZADA
+- pendência: 1 caminho(s) não commitado(s) no repo raiz
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `16caac291349`
+**Fingerprint estrutural:** `9a2ef3978d22`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
 > condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
@@ -74,7 +75,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `467b2fe` | 2026-09-30 | limpo | n/a |
+| `.` (raiz) | `7cd6cfe` | 2026-09-30 | 1 caminho(s) | n/a |
 
 ## Worktrees (14)
 

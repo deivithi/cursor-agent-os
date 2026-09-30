@@ -73,6 +73,20 @@ Uma auditoria adversarial foi disparada contra a primeira entrega e **encontrou 
 
 Verificação final: 3 execuções com repositório imutável produzem conteúdo **idêntico** (idempotente); contagens conferidas uma a uma contra o disco; raiz reportada como `limpo` sem pendência fantasma.
 
+### Terceira rodada — a segunda auditoria achou 3 bloqueadores
+
+A re-auditoria confirmou os 11 defeitos como corrigidos **no mérito** e apontou o que ainda impedia a promessa central. As três correções que fecharam o ciclo:
+
+| Bloqueador | Diagnóstico da auditoria | Correção |
+|---|---|---|
+| `Saúde: ATUALIZADA` **inalcançável** | Tarefa agendada desligada e scheduler parado entravam como pendência acionável — nenhuma edição de memória limparia isso, então a exigência do §6 era insatisfazível | **Três níveis**: pendência acionável (afeta a Saúde) · aceita (deliberada) · **Condição de ambiente** (operação, reportada em seção própria, não afeta a Saúde). Verificado: `ATUALIZADA` alcançada |
+| Snapshot **estale-por-construção** sobrevivia para o fonte do gerador | O commit carregava um `MEMORY_STATE.md` afirmando pendência que o próprio commit não tinha | Lista de arquivos ignorados declarada (`MEMORY_STATE.md` **e** `scripts/memory-doctor.ps1`) e **impressa na saída** — não é critério oculto |
+| **6.119 caminhos pendentes invisíveis** | `.claude/worktrees/angry-bassi-58c13c` é o maior bolsão de trabalho não commitado do ecossistema e não aparecia em "Estado do ecossistema" | `git worktree list` alimenta seção própria, com os 2 worktrees registrados fora de `worktrees/` |
+
+Achados menores também corrigidos: lista por-job do Hermes saía vazia (regex não casava JSON aninhado — agora parseia de verdade, 4 jobs com estado e última execução); números à mão dentro do próprio gerador removidos (o texto de worktrees deriva tudo do disco); código morto removido; frase dos worktrees sem remote no índice dizia 13 nomes para 12 vagas; contagem do handle do X (9, não 8).
+
+**Distinção que passou a valer como decisão de arquitetura (AGENTS.md v3.0.3, §6):** saúde da memória ≠ condição de ambiente. Misturar as duas tornava a meta inatingível e a instrução, letra morta. O ambiente continua reportado — só não contamina o veredito da memória.
+
 ---
 
 ## 2026-09-28 — Edição das skills de harness (auditoria de gargalo)
