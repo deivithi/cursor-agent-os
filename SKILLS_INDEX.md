@@ -1,35 +1,53 @@
 # SKILLS_INDEX — Inventário de Skills
 
-> Atualizado: 01/09/2026  
-> Entry point de memória: [CONTEXT.md](CONTEXT.md)
+> Atualizado: 30/09/2026 — contagens recontadas no disco
+> Entry point de memória: [CONTEXT.md](CONTEXT.md) · Estado vivo: [MEMORY_STATE.md](MEMORY_STATE.md)
+
+> **Contagens voláteis:** os números abaixo foram verificados em 30/09/2026. Para o valor de hoje,
+> rode `pwsh -File "$env:USERPROFILE\.claude\scripts\memory-doctor.ps1"` — não edite à mão.
 
 ## Resumo por origem
 
 | Origem | Path | Quantidade | Prefixo / notas |
 |--------|------|------------|-----------------|
-| Custom Febracis | `skills/` | **110** (+ `_templates`) | Sem prefixo; foco PO, Salesforce, Gauntlet, n8n, spec, Supabase, Febracis |
-| Cybersecurity | `cybersecurity-skills/skills/` | **736** | `cyber-*` no nome da pasta |
+| Custom Febracis | `skills/` | **110** com `SKILL.md` (111 diretórios; 1 é `_templates`) | Sem prefixo; foco PO, Salesforce, Gauntlet, n8n, spec, Supabase, Febracis |
+| Cybersecurity | `cybersecurity-skills/skills/` | **736** com `SKILL.md` (739 diretórios) | `cyber-*` no nome da pasta |
 | Scientific | `scientific-skills/skills/` | **22** | `sci-*` no Cursor global |
 | WebWright | `webwright/skills/` | **1** | `webwright` |
-| DRE (duplicada) | `DRE_Eventos/skills/`, `worktrees/dre-eventos-fix/skills/` | **1** | `dre-eventos` |
-| Cursor oficial | `~/.cursor/skills-cursor/` | **18** | Mantidas pelo Cursor |
-| Sync ativo | `~/.cursor/skills/` | **29** | Subconjunto essencial via `scripts/migrate-from-documents.ps1` |
+| Commands | `commands/` | **47** arquivos `.md` | Slash commands; nenhum `SKILL.md` |
+| DRE (no projeto) | `DRE_Eventos/.cursor/skills/dre-eventos/` | **1** | Vive dentro do repo do projeto, não em `skills/`. As entradas `DRE_Eventos/skills/` e `worktrees/dre-eventos-fix/skills/` **não existem** — removidas deste índice em 30/09/2026 |
+| Cursor oficial | `~/.cursor/skills-cursor/` | **26** | Mantidas pelo Cursor |
+| Sync ativo | `~/.cursor/skills/` | **63** no disco / **30** essenciais no script | Ver seção de sync — número inflado e tarefa desligada |
 
-## 29 skills essenciais (sync diário → `~/.cursor/skills/`)
+**Skill incompleta:** `skills/pptx-generator` é o único diretório de skill sem `SKILL.md`.
 
-Definidas em `scripts/migrate-from-documents.ps1`:
+## Sync Cursor — 30 essenciais, tarefa DESLIGADA
 
-`automations`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `code-review`, `commission-audit`, `frontend-design`, `lead-audit`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `product-verification`, `security-audit`, `spec-driven-core`, `spec-planner`, `spec-review`, `spec-verify`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `web-research`, `webapp-testing`
+`scripts/migrate-from-documents.ps1` define **30** skills essenciais (não 29 — a lista anterior omitia `openwiki-personal-brain`):
 
-**Sync manual:**
+`automations`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `code-review`, `commission-audit`, `frontend-design`, `lead-audit`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `openwiki-personal-brain`, `product-verification`, `security-audit`, `spec-driven-core`, `spec-planner`, `spec-review`, `spec-verify`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `web-research`, `webapp-testing`
+
+**Estado verificado em 30/09/2026 — o sync NÃO roda:**
+
+| Item | Valor |
+|---|---|
+| Tarefa `Febracis-Cursor-SyncDaily` | **Disabled** |
+| Última execução | 16/06/2026 |
+| Diretórios em `~/.cursor/skills` | 63 (30 essenciais + 33 resíduos que o script removeria) |
+| Quarentena `~/.cursor/disabled-by-codex/skills-nonessential` | vazia (0 diretórios) — o trecho de limpeza nunca executou |
+
+Os 30 essenciais estão presentes porque já estavam lá, não por sincronização recente. As versões anteriores deste índice descreviam "sync diário": isso não corresponde ao disco.
+
+**Reativar e rodar manualmente:**
 
 ```powershell
+Enable-ScheduledTask -TaskName "Febracis-Cursor-SyncDaily"
 powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\Documents\Cursor\scripts\migrate-from-documents.ps1"
 ```
 
 ## Custom skills (`skills/`) — lista completa
 
-`_templates`, `a2a-protocol`, `ads-live`, `ag-ui-protocol`, `agent-builder`, `agent-harness`, `agent-reach`, `agent-skill-patterns`, `alpha-loop`, `anatomy-of-agent-harness`, `api-forge`, `api-to-mcp`, `app-store-connect`, `artifact-factory`, `auto-pr-review`, `automations`, `autonomous-agent-loop`, `batch-processing`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `chrome-cdp`, `cicd`, `circuit-breaker`, `clean-code-rules`, `clean-room-engineering`, `cloudflare-mesh`, `code-review`, `codebase-graph`, `commission-audit`, `compliance-agent`, `composio-tool-orchestrator`, `content-deduplication`, `context-engineering`, `corrective-rag`, `data-charts`, `decision-council`, `deep-research-workspace`, `delegate-task`, `doc-extract`, `docx`, `dre-zo-integrity-guard`, `error-alerting`, `frontend-design`, `gauntlet-self-healer`, `gbrain`, `geo-seo`, `gepa-reflective`, `github-mentions`, `golang`, `graphify`, `guardrails`, `image-gen-free`, `insforge`, `knowledge-graph`, `last30`, `lead-audit`, `markdown-slides`, `mcp-builder`, `mcp-rl`, `memento-skills`, `mermaid-diagrams`, `minimax-pdf`, `minimax-xlsx`, `music-gen-free`, `mythos`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `observability`, `openwiki-fio-synthesizer`, `openwiki-personal-brain`, `pptx-generator`, `product-verification`, `pulso-finance`, `runbook`, `salesforce-bdd-spec-architect`, `scaffolding`, `secure-agent-harness-patterns`, `security-audit`, `skill-architect`, `skill-discovery`, `spec-driven-core`, `spec-enrich`, `spec-epic`, `spec-evaluate`, `spec-phases`, `spec-planner`, `spec-review`, `spec-verify`, `spec-yolo`, `strix`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `trace-capability`, `tts-free`, `ui-forge`, `universal-docs`, `vibe-deploy-guard`, `video-compose`, `web-artifacts-builder`, `web-research`, `webapp-testing`
+`_templates`, `a2a-protocol`, `ads-live`, `ag-ui-protocol`, `agent-builder`, `agent-harness`, `agent-reach`, `agent-skill-patterns`, `ai-forensic-analyzer`, `alpha-loop`, `anatomy-of-agent-harness`, `api-forge`, `api-to-mcp`, `app-store-connect`, `artifact-factory`, `auto-pr-review`, `automations`, `autonomous-agent-loop`, `batch-processing`, `caverna`, `caverna-commit`, `caverna-compress`, `caverna-help`, `caverna-review`, `chrome-cdp`, `cicd`, `circuit-breaker`, `clean-code-rules`, `clean-room-engineering`, `cloudflare-mesh`, `code-review`, `codebase-graph`, `commission-audit`, `compliance-agent`, `composio-tool-orchestrator`, `content-deduplication`, `context-engineering`, `corrective-rag`, `data-charts`, `decision-council`, `deep-research-workspace`, `delegate-task`, `doc-extract`, `docx`, `dre-zo-integrity-guard`, `error-alerting`, `frontend-design`, `gauntlet-self-healer`, `gbrain`, `geo-seo`, `gepa-reflective`, `github-mentions`, `golang`, `graphify`, `guardrails`, `image-gen-free`, `insforge`, `knowledge-graph`, `last30`, `lead-audit`, `markdown-slides`, `mcp-builder`, `mcp-rl`, `memento-skills`, `mermaid-diagrams`, `minimax-pdf`, `minimax-xlsx`, `music-gen-free`, `mythos`, `n8n-code-javascript`, `n8n-code-python`, `n8n-expression-syntax`, `n8n-mcp-tools-expert`, `n8n-node-configuration`, `n8n-validation-expert`, `n8n-workflow-patterns`, `observability`, `openwiki-fio-synthesizer`, `openwiki-personal-brain`, `pptx-generator`, `product-verification`, `pulso-finance`, `runbook`, `salesforce-bdd-spec-architect`, `scaffolding`, `secure-agent-harness-patterns`, `security-audit`, `skill-architect`, `skill-discovery`, `spec-driven-core`, `spec-enrich`, `spec-epic`, `spec-evaluate`, `spec-phases`, `spec-planner`, `spec-review`, `spec-verify`, `spec-yolo`, `strix`, `supabase-docs`, `supabase-factory`, `supabase-postgres`, `test-driven-development`, `trace-capability`, `tts-free`, `ui-forge`, `universal-docs`, `vibe-deploy-guard`, `video-compose`, `web-artifacts-builder`, `web-research`, `webapp-testing`
 
 ### Agrupamento por domínio (custom)
 
@@ -108,3 +126,5 @@ Carregadas dinamicamente pelos agentes Hermes (perfil `default` ativo).
 
 > ⚠️ **FIO-IA** usa `creative/humanizer` (v2.8.0, instalada em 19/06/2026) —
 > ver ADR-005 em DECISIONS.md.
+
+> `ai-forensic-analyzer` estava no disco e no Git desde 22/06/2026 mas faltava nesta lista — incluída em 30/09/2026. Todas as skills declaradas aqui existem no disco.

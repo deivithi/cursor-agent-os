@@ -29,13 +29,14 @@
     {
       "name": "FIO-IA",
       "type": "Automação",
-      "description": "Gerador autônomo de fios (6 tweets) no X — conta @opanteranegra77",
+      "description": "Gerador autônomo de fios (6 tweets) no X — conta @opanteranegra77 (confirmado em 5 arquivos; AGENT_MEMORY.md ainda dizia @opanteraos, corrigido em 30/09)",
       "deploy": "Hermes cron (4×/dia BRT: 02:00, 08:00, 14:00, 20:00). Job gerar: bcbba63017bf. Job watchdog: c4b1e7326a7a.",
       "delivery": "Chat Hermes (deliver=origin) + backup em state/email-corpo.txt",
       "stack": "Node.js + skill humanizer (blader/humanizer 2.8.0)",
       "location": "external",
       "code_path": "C:\\Users\\deivithi.lopes\\OneDrive\\Documents\\VS CODE\\automacoes\\fio-ia",
-      "scripts_path": "%LOCALAPPDATA%\\hermes\\scripts\\ (check-fio-ia-hermes.py, fio-ia-hermes-prompt.md)"
+      "scripts_path": "%LOCALAPPDATA%\\hermes\\scripts\\ (check-fio-ia-hermes.py, fio-ia-hermes-prompt.md)",
+      "state_2026_09_30": "BLOQUEADO: ambos os jobs existem e estão enabled, mas o scheduler do Hermes está parado — ticker_heartbeat e ticker_last_success congelados em 2026-07-08T16:38:36, last_run_at=2026-07-08T14:10. A geração 4×/dia NÃO está ocorrendo. Último backup em state/email-corpo.txt: 2026-07-08. code_path existe mas não é repo git. Pendente: reativar o scheduler e validar uma execução."
     },
     {
       "name": "ai-landing",
@@ -56,10 +57,11 @@
       "type": "SaaS server",
       "description": "Spec-first factory v2.1.1 — deploy canônico em Zo Computer",
       "remotes": {
-        "canonical": "https://github.com/deivithilopes-ai/declaw.git (alias: cloud)",
-        "mirror": "https://github.com/deivithi/declaw.git (alias: origin)"
+        "canonical": "https://github.com/deivithi/declaw.git (alias: origin) — VERIFICADO 30/09/2026: o antigo cloud deivithilopes-ai/declaw retorna HTTP 404 e não é mais destino válido",
+        "mirror": "deivithilopes-ai/declaw — NÃO EXISTE (404). Remover como destino; pendente decidir novo par"
       },
-      "path": "declaw"
+      "path": "declaw",
+      "state_2026_09_30": "HEAD d741815 (2026-08-28), working tree limpo; ahead 1 do cloud/main congelado em 8fb344c (2026-05-24)"
     },
     {
       "name": "webwright",
@@ -68,11 +70,21 @@
       "path": "webwright"
     },
     {
+      "name": "civictrust",
+      "type": "Produto",
+      "description": "CivicTrust Public Action Gateway — gateway de integridade transacional para serviços públicos; dossier, PRD e spec técnica em out/civictrust/",
+      "deploy": "Vercel",
+      "path": "C:\\Users\\deivithi.lopes\\Documents\\civictrust",
+      "repo": "deivithi/civictrust",
+      "state_2026_09_30": "HEAD 49b840c (2026-09-24) 'feat(demo): demonstração pública na Vercel'; working tree limpo"
+    },
+    {
       "name": "Pulso Finance",
-      "type": "App financeiro (conceitual)",
-      "description": "Gestão financeira pessoal. Estado 22/06/2026: apenas skill local pulso-finance v5.6.0 existe; repo github:pulsofinance NÃO clonado em Documents/",
-      "location": "skill-only",
-      "skill_path": "skills/pulso-finance"
+      "type": "App financeiro",
+      "description": "Gestão financeira pessoal. Estado 30/09/2026: skill local pulso-finance v5.0.0 (não v5.6.0); working directory não-git em OneDrive\\Documents\\VS CODE\\pulsofinance com .env.local; repo github:pulsofinance existe mas não está clonado em Documents/",
+      "location": "skill-only + working dir fora do workspace",
+      "skill_path": "skills/pulso-finance",
+      "working_dir": "C:\\Users\\deivithi.lopes\\OneDrive\\Documents\\VS CODE\\pulsofinance"
     }
   ],
   "preferences": {
@@ -87,7 +99,16 @@
     "cybersecurity": "cybersecurity-skills/skills/",
     "scientific": "scientific-skills/skills/",
     "commands": "commands/",
-    "cursor_sync_essential_count": 29,
-    "cursor_sync_script": "scripts/migrate-from-documents.ps1"
+    "cursor_sync_essential_count": 30,
+    "cursor_sync_script": "scripts/migrate-from-documents.ps1",
+    "cursor_sync_task": "Febracis-Cursor-SyncDaily",
+    "cursor_sync_state_2026_09_30": "DISABLED; última execução 2026-06-16. ~/.cursor/skills tem 63 diretórios: 30 essenciais + 33 resíduos que o script removeria. O sync descrito como diário não roda."
+  },
+  "memory_system": {
+    "state_snapshot": "MEMORY_STATE.md",
+    "state_generator": "%USERPROFILE%\\.claude\\scripts\\memory-doctor.ps1",
+    "global_injection": "%USERPROFILE%\\.dsh\\AGENTS.md (injetado pelo DSH em toda sessão, sem comando)",
+    "bootstrap_rule": "rules/session-bootstrap.md",
+    "note": "O snapshot é gerado, não escrito à mão. Rodar o doctor após mudança estrutural."
   }
 }

@@ -1,6 +1,60 @@
 # DECISIONS.md — Registro de decisões de arquitetura (ADR)
 
-> Iniciado em: 08/06/2026
+> Iniciado em: 08/06/2026 · Última atualização: 30/09/2026
+
+## ADR-014: Estado de memória gerado, não escrito à mão
+
+**Data:** 30/09/2026
+**Decisão:** Fatos voláteis da memória — contagem de skills, número de worktrees, HEAD de
+repositório, contagem de testes, estado de tarefa agendada, datas de "última atualização" —
+**não são escritos à mão** em nenhum arquivo de memória. Eles vivem em `MEMORY_STATE.md`,
+produzido por `scripts/memory-doctor.ps1`, que recomputa tudo do disco e do Git. Arquivo de
+memória que precise citar um número cita o artefato gerado, nunca o valor.
+
+**Motivo:** auditoria de 30/09/2026 encontrou **20 contradições verificadas** entre a memória e
+o disco, todas da mesma natureza — número à mão envelhecendo em silêncio:
+
+| Fato | Memória dizia | Disco dizia |
+|---|---|---|
+| Skills custom | 104 (`AGENT_MEMORY`) e 110 (`SKILLS_INDEX`) | 110 |
+| Skills cyber | 736 | 736 com `SKILL.md`, 739 diretórios |
+| Sync Cursor | "29 essenciais, sync diário" | 63 no disco, script com 30, tarefa **Disabled desde 16/06** |
+| Root remotes | "sem remote" | `origin` + `cloud` (contrariando o próprio ADR-006) |
+| `declaw` canonical | `deivithilopes-ai/declaw` | **HTTP 404 — não existe** |
+| `webwright` | "behind 4" | 0/0, sincronizado |
+| `cybersecurity-skills` | "behind 137" | ahead 33 / behind 223 |
+| DRE_Eventos | HEAD `682cedf`, 595 testes | HEAD `6380b65`, 649 testes |
+| `dre-eventos-fix` | "≈147 commits atrás" | 161 |
+| `pulso-finance` | v5.6.0 | v5.0.0 em todas as 7 cópias |
+| FIO-IA | "4×/dia BRT" | jobs `enabled` mas scheduler parado desde 08/07 |
+| Handle do X | `@opanteraos` | `@opanteranegra77` (5 arquivos contra 1) |
+| Worktrees | 13 (`CONTEXT.md`) e 14 (`AGENT_MEMORY`) | 14 |
+| Versão das Regras | v3.0 | v3.0.1 |
+
+**Mecanismo escolhido:** o DeepSeek Harness injeta `$DSH_HOME/AGENTS.md` + a cadeia de
+`AGENTS.md`/`CLAUDE.md` do projeto em **toda** sessão, sem comando (pacote
+`@deepseek-ai/dsh-agent-instructions`, budget de 65.536 bytes). O doctor reescreve um **bloco
+delimitado** dentro de `~/.dsh/AGENTS.md` — assim o estado chega ao contexto sem depender de
+hook, comando ou disciplina do agente.
+
+**Alternativas consideradas:**
+- *Hook de SessionStart* — rejeitada: o DSH não monta `hooks-claude-code`; nenhum bundle padrão
+  nem perfil do usuário o inclui. Os hooks do workspace rodam só no Claude Code/Cursor.
+- *MCP de memória* — rejeitada: as configurações de memória do DSH são *default-off* e exigem
+  `--patch` explícito.
+- *Escrever o número à mão e revisar periodicamente* — rejeitada: foi exatamente o que falhou.
+
+**Componentes:**
+- `scripts/memory-doctor.ps1` — gerador (versionado)
+- `MEMORY_STATE.md` — snapshot gerado no workspace
+- `~/.dsh/AGENTS.md` — arquivo global injetado, com o bloco gerado entre marcadores
+- `~/.claude/scripts/memory-doctor.ps1` — launcher de caminho estável
+- `rules/session-bootstrap.md` — contrato de abertura e fechamento de sessão
+
+**Consequência:** o fechamento de sessão passa a terminar rodando o doctor e exigindo
+`Saúde da memória: ATUALIZADA`. O doctor é o gauntlet da camada de memória (ADR-008).
+
+---
 
 ## ADR-013: 1ª resposta imediata; memória sob demanda
 
