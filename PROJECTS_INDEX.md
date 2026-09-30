@@ -9,8 +9,8 @@
 ## Estado do inventário
 
 - Repositórios locais detectados: **22** (varredura `.git` sob `Documents`, profundidade 4)
-- Repositórios GitHub nas contas autenticadas: **47** (verificado 30/09/2026)
-- Contas consultadas: `deivithi`, `deivithilopes-ai`
+- Repositórios GitHub da conta **`deivithi`** (a ativa): **47** (verificado 30/09/2026)
+- Contas autenticadas: `deivithi` (ativa) e `deivithilopes-ai`. A segunda **não** é somada a esta contagem: `gh api user/repos` sempre responde pela conta ativa, então listá-la exigiria trocar de conta. O total das duas contas **não é 47** — é 47 + o que houver na mirror
 - Inventário JSON completo: `C:\Users\deivithi.lopes\Documents\Codex\2026-09-22\voc-j-tem-mapeado-todos-os\outputs\PROJECTS_INVENTORY.json`
 - **Correção de 30/09/2026:** a versão anterior desta tabela marcava `(sem origin)` nas 8 linhas que **têm** remote. Era erro sistemático de leitura, não ausência real. Os remotes abaixo foram lidos de `git remote -v`.
 
@@ -18,7 +18,7 @@
 
 | Projeto | Caminho | Branch | Estado | Remote principal |
 |---|---|---|---|---|
-| Cursor (raiz) | `C:\Users\deivithi.lopes\Documents\Cursor` | `main` | 9 caminhos pendentes | `origin` + `cloud` = deivithi/cursor-agent-os e deivithilopes-ai/cursor-agent-os |
+| Cursor (raiz) | `C:\Users\deivithi.lopes\Documents\Cursor` | `main` | contagem ao vivo no [MEMORY_STATE.md](MEMORY_STATE.md) | `origin` + `cloud` = deivithi/cursor-agent-os e deivithilopes-ai/cursor-agent-os |
 | corretor2.0 | `C:\Users\deivithi.lopes\Documents\Corretor2.0` | `main` | limpo | **sem remote** |
 | civictrust | `C:\Users\deivithi.lopes\Documents\civictrust` | `main` | limpo | `origin` = deivithi/civictrust |
 | cybersecurity-skills | `...\Cursor\cybersecurity-skills` | `main` | 23 pendentes | `origin` = mukul975/Anthropic-Cybersecurity-Skills |
@@ -30,7 +30,7 @@
 | personal-bio-post-cdf451 | `...\Cursor\.claude\worktrees\personal-bio-post-cdf451` | detached | limpo | `origin` + `cloud` (herdados da raiz) |
 | charming-lichterman | `...\Cursor\worktrees\charming-lichterman` | `main` | limpo | **sem remote** |
 
-As 10 pastas restantes de `worktrees\` (`cranky-mahavira`, `determined-wu-3787c2`, `festive-grothendieck`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-liskov`, `upbeat-mirzakhani`) são também **sem remote** — shells ou cópias de trabalho locais.
+As **13** pastas restantes de `worktrees\` são todas **sem remote**: `cranky-mahavira`, `determined-wu-3787c2`, `festive-grothendieck`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani` — mais `dre-eventos-fix`, que aparece na tabela acima por ter remote. Três têm conteúdo substantivo (`determined-wu-3787c2`, `festive-grothendieck`, `dre-eventos-fix`); as demais são shells de 1 a 5 arquivos rastreados. Contagem e detalhe ao vivo: [MEMORY_STATE.md](MEMORY_STATE.md).
 
 ## Remotes e alertas
 
@@ -43,7 +43,7 @@ As 10 pastas restantes de `worktrees\` (`cranky-mahavira`, `determined-wu-3787c2
 
 ## Repositórios Git independentes vs. worktrees
 
-As 14 pastas de `worktrees\` **não são** worktrees do repo raiz: cada uma tem `.git` próprio (arquivo, não diretório) e histórico independente (ADR-003).
+As 14 pastas de `worktrees\` **não são** worktrees do repo raiz: cada uma tem `.git` **próprio e é um diretório** (não um arquivo de ponteiro — medido em 30/09/2026) e histórico independente (ADR-003).
 
 `git worktree list` na raiz retorna apenas 4 entradas — a própria raiz, `.cline/worktrees/f3fe6/Cursor` (branch `cline/f3fe6`), `.claude/worktrees/angry-bassi-58c13c` e `.claude/worktrees/personal-bio-post-cdf451`.
 

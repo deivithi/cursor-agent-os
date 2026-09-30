@@ -10,7 +10,7 @@
 
 | Origem | Path | Quantidade | Prefixo / notas |
 |--------|------|------------|-----------------|
-| Custom Febracis | `skills/` | **110** com `SKILL.md` (111 diretórios; 1 é `_templates`) | Sem prefixo; foco PO, Salesforce, Gauntlet, n8n, spec, Supabase, Febracis |
+| Custom Febracis | `skills/` | **110** com `SKILL.md` (112 diretórios: 1 é `_templates`, 1 é plugin bundle) | Sem prefixo; foco PO, Salesforce, Gauntlet, n8n, spec, Supabase, Febracis |
 | Cybersecurity | `cybersecurity-skills/skills/` | **736** com `SKILL.md` (739 diretórios) | `cyber-*` no nome da pasta |
 | Scientific | `scientific-skills/skills/` | **22** | `sci-*` no Cursor global |
 | WebWright | `webwright/skills/` | **1** | `webwright` |
@@ -19,7 +19,7 @@
 | Cursor oficial | `~/.cursor/skills-cursor/` | **26** | Mantidas pelo Cursor |
 | Sync ativo | `~/.cursor/skills/` | **63** no disco / **30** essenciais no script | Ver seção de sync — número inflado e tarefa desligada |
 
-**Skill incompleta:** `skills/pptx-generator` é o único diretório de skill sem `SKILL.md`.
+**Plugin bundle, não skill:** `skills/pptx-generator` contém `.claude-plugin/`, `plugin.json`, `marketplace.json`, `agents/` e **5 skills aninhadas** em `skills/`. Não precisa de `SKILL.md` próprio. A classificação anterior ("skill incompleta") estava errada.
 
 ## Sync Cursor — 30 essenciais, tarefa DESLIGADA
 
@@ -80,7 +80,7 @@ Repositório separado: `cybersecurity-skills/`. Pastas usam prefixo `cyber-` no 
 
 Skills custom adicionadas localmente (não no upstream): `designing-secure-api-architecture`, `hardening-salesforce-platform-security`, `implementing-lgpd-data-protection-compliance`, `implementing-sbom-management-cyclonedx`, `implementing-secure-coding-practices-owasp`
 
-**Manutenção:** `git pull` recomendado (behind 137 no remoto).
+**Manutenção:** o fork está **ahead 33 / behind 223** em relação a `origin/main` (medido em 30/09/2026 — a nota anterior dizia "behind 137", que vinha de um fetch antigo). Um `git pull` traria 223 commits do upstream e colidiria com as 33 alterações locais: decidir a estratégia antes de puxar.
 
 ## Paths no `config.json`
 

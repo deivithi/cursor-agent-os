@@ -12,6 +12,8 @@
 
 Mecanismo: pacote `@deepseek-ai/dsh-agent-instructions`, montado pelo bundle `dsh-base`, budget de 65.536 bytes. O arquivo é relido quando muda — não é preciso reiniciar a sessão.
 
+> ⚠️ **Risco do budget compartilhado.** Os 65.536 bytes são um teto **único** para a baseline inteira: `~/.dsh/AGENTS.md` **mais** a cadeia de `AGENTS.md`/`CLAUDE.md` do projeto. O algoritmo descarta arquivos mais amplos antes de truncar o mais específico — ou seja, um `AGENTS.md` de projeto muito grande pode **omitir ou truncar justamente o bloco de estado** de que esta rule depende. Hoje o consumo é de ~13 KB de 64 KB, então há folga larga; se algum projeto passar a ter um `AGENTS.md` gigante, o bloco pode sumir sem aviso. O doctor não detecta isso — é um ponto cego conhecido, não um risco mitigado.
+
 ## O que NÃO existe (não conte com isso)
 
 - **Nenhum subsistema de memória nativo no DSH.** Os MCPs de memória são default-off e exigem `--patch` explícito.
@@ -35,8 +37,15 @@ Consequência prática: a continuidade depende de dois arquivos injetados (`~/.d
    ```powershell
    pwsh -File "$env:USERPROFILE\.claude\scripts\memory-doctor.ps1"
    ```
-4. O doctor deve terminar com `Saúde da memória: ATUALIZADA`. Se ainda houver pendência, ou ela é real e precisa ser resolvida, ou o doctor precisa aprender a medi-la.
-5. Commitar e subir (autorização permanente).
+4. O doctor deve terminar com **zero pendência acionável**. A leitura correta é:
+   - `Saúde: ATUALIZADA` → nada a fazer.
+   - `Saúde: DESATUALIZADA` → cada linha `- pendência:` é uma **condição real** a resolver. Linhas `- aceito:` são deliberadas e não bloqueiam nada.
+5. **Pendências aceitas** (conhecidas, não indicam memória desatualizada): `~/.openwiki/.env` ausente de propósito (bloqueio consciente do OAuth do X) e plugin bundle em `skills/` sem `SKILL.md`. Se uma condição deixa de ser aceitável, ela sai da lista de aceitas e volta a contar.
+6. Commitar e subir (autorização permanente). O artefato gerado (`MEMORY_STATE.md`) **não** conta como trabalho pendente — senão o snapshot seria estale-por-construção.
+
+### Quando a saúde fica DESATUALIZADA por operação, não por memória
+
+Algumas pendências são condições do **ambiente**, não da memória: tarefa agendada desligada, scheduler do Hermes parado. O doctor as reporta porque são invisíveis de outro modo. Resolvê-las é decisão do operador — reativar (`Enable-ScheduledTask`) ou aceitar deliberadamente. Se forem aceitas de forma permanente, mover para a lista de aceitas no doctor, com o motivo.
 
 ## Regra do número à mão — proibida
 

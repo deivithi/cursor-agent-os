@@ -29,7 +29,7 @@
     {
       "name": "FIO-IA",
       "type": "Automação",
-      "description": "Gerador autônomo de fios (6 tweets) no X — conta @opanteranegra77 (confirmado em 5 arquivos; AGENT_MEMORY.md ainda dizia @opanteraos, corrigido em 30/09)",
+      "description": "Gerador autônomo de fios (6 tweets) no X — conta @opanteranegra77 (aparece em 8 arquivos; o antigo @opanteraos foi corrigido em 30/09/2026 e só sobrevive dentro da nota de correção)",
       "deploy": "Hermes cron (4×/dia BRT: 02:00, 08:00, 14:00, 20:00). Job gerar: bcbba63017bf. Job watchdog: c4b1e7326a7a.",
       "delivery": "Chat Hermes (deliver=origin) + backup em state/email-corpo.txt",
       "stack": "Node.js + skill humanizer (blader/humanizer 2.8.0)",

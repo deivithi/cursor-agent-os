@@ -88,7 +88,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 ### Repositórios aninhados
 | Path | Remote / notas (verificado 30/09/2026) |
 |------|-----------------------------|
-|| `DRE_Eventos/` | `origin/main` (`deivithi/febracis-dre-eventos`, privado). HEAD `6380b65` (22/09); working tree com 4 modificados + 10 não rastreados |
+|| `DRE_Eventos/` | `origin/main` (`deivithi/febracis-dre-eventos`, privado). HEAD `6380b65` (22/09); working tree com 12 caminhos pendentes (4 modificados + 8 não rastreados). Contagem ao vivo: [MEMORY_STATE.md](MEMORY_STATE.md) |
 || `declaw/` | `origin` = `deivithi/declaw` (**destino válido**); `cloud` = `deivithilopes-ai/declaw` — **NÃO EXISTE (HTTP 404)**. HEAD `d741815` (28/08), limpo, ahead 1 do cloud congelado em `8fb344c` (24/05). Deploy canônico: **Zo Computer** |
 | `webwright/` | `origin/main` (`microsoft/webwright`). HEAD `bc26750` (03/08), **sincronizado** — a nota "behind 4" estava desatualizada |
 | `cybersecurity-skills/` | `origin/main` (`mukul975/Anthropic-Cybersecurity-Skills`). **ahead 33 / behind 223** — a nota "behind 137" vinha de fetch antigo |
@@ -118,12 +118,12 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - **Verificação:** 595 testes, Ruff, build frontend e UI Playwright 45/45 passaram; smoke de produção 43/43 passou; deploy final `5f113aa` respondeu health HTTP 200 com `db=ok`. `py -3` global não tem `psycopg2`.
 
 ## Skills (resumo) — verificado 30/09/2026
-- Custom: **110** com `SKILL.md` em `skills/` (111 diretórios, dos quais 1 é `_templates`)
+- Custom: **110** com `SKILL.md` em `skills/` (112 diretórios: `_templates` não é skill, e `pptx-generator` é plugin bundle — ver abaixo)
 - Cyber: **736** com `SKILL.md` (739 diretórios) em `cybersecurity-skills/skills/`
 - Scientific: **22** em `scientific-skills/skills/`
 - Commands: **47** arquivos `.md` em `commands/`
 - Sync Cursor: **63** diretórios em `~/.cursor/skills` — mas o script define **30** essenciais, e a tarefa `Febracis-Cursor-SyncDaily` está **DISABLED** (última execução 16/06/2026). Os 33 restantes são resíduo congelado; o "sync diário" não roda
-- **Skill incompleta:** `skills/pptx-generator` é o único diretório sem `SKILL.md`
+- **Plugin bundle, não skill:** `skills/pptx-generator` tem `.claude-plugin/`, `plugin.json`, `marketplace.json`, `agents/` e **5 skills aninhadas** em `skills/`. Não precisa de `SKILL.md` próprio — a auditoria de 30/09/2026 corrigiu a classificação anterior ("skill quebrada")
 - Detalhe e listas: [SKILLS_INDEX.md](SKILLS_INDEX.md). Contagens vivas: [MEMORY_STATE.md](MEMORY_STATE.md)
 
 ## GitHub CLI
@@ -150,7 +150,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - **Identificador:** no histórico do navegador, `redirect_uri=http://localhost:8080/callback` = xurl/MCP `xapi`. Outro redirect = outra origem.
 - **Removido de:** `~/.cursor/mcp.json` e `~/OneDrive/Documents/VS CODE/.cursor/mcp.json` (Cursor funde global + projeto). Blocos guardados em `*.xapi-removed-entry.json`; backups `*.bak-xapi-remove-*`. Processo `xurl.exe` encerrado e porta 8080 liberada.
 - **Guard:** o mesmo hook `hooks/openwiki-auth-guard.js` bloqueia edição de qualquer `mcp.json` que reintroduza `@xdevplatform/xurl` sem credencial em `~/.xurl`; override = `XURL_MCP_OK`.
-- **X segue operacional sem ele:** Zo nativo — `use_app_x` (postar/DM) e `x_search` (ler). Conta: **`@opanteranegra77`** (confirmado em 5 arquivos: `config.json`, `SESSION_LOG.md`, `skills/composio-tool-orchestrator`, `skills/openwiki-fio-synthesizer`, `references/humanizer-fio-rules.md`). A menção anterior a `@opanteraos` era erro de 1 arquivo contra 5 e foi corrigida em 30/09/2026; **não confirmável localmente** (sem MCP do X e sem créditos de API)
+- **X segue operacional sem ele:** Zo nativo — `use_app_x` (postar/DM) e `x_search` (ler). Conta: **`@opanteranegra77`** (8 arquivos em 30/09/2026: `AGENT_MEMORY.md`, `config.json`, `DECISIONS.md`, `SESSION_LOG.md`, `commands/browser.md`, `skills/composio-tool-orchestrator/SKILL.md`, `skills/openwiki-fio-synthesizer/SKILL.md` e `skills/openwiki-fio-synthesizer/references/humanizer-fio-rules.md`). A menção anterior a `@opanteraos` foi corrigida; ela ainda aparece em 4 arquivos, **apenas dentro da própria nota de correção** — não é afirmada como handle vigente em lugar nenhum. **Não confirmável localmente** (sem MCP do X e sem créditos de API)
 - **Para reativar o MCP do X:** criar app OAuth em developer.x.com e gravar `client_id`/`client_secret` em `~/.xurl` **como arquivo**.
 - **Verificar se voltou:** `grep -c xdevplatform ~/.cursor/mcp.json` e `netstat -ano | grep :8080`.
 

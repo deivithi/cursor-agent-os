@@ -70,7 +70,7 @@ Memória completa só nos gatilhos acima.
 
 ```
 C:\Users\deivithi.lopes\Documents\Cursor\
-├── AGENTS.md          ← regras globais v3.0.1 (auto-carregado por agentes)
+├── AGENTS.md          ← regras globais v3.0.2 (auto-carregado por agentes)
 ├── MEMORY_STATE.md    ← estado vivo GERADO (não editar à mão)
 ├── CONTEXT.md         ← entry point do sistema de memória
 ├── AGENT_MEMORY.md    ← fatos permanentes
