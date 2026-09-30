@@ -4,14 +4,13 @@
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
 **Saúde da memória:** DESATUALIZADA
-- pendência: 7 caminho(s) não commitado(s) no repo raiz
 - pendência: tarefa agendada inativa: Febracis-Cursor-SyncDaily = Disabled, última execução 2026-06-16
 - pendência: tarefa agendada inativa: Febracis-CursorAgent-Daily = Disabled, última execução 2026-06-16
 - pendência: tarefa agendada inativa: Febracis-OpenDesign-Update = Disabled, última execução 2026-06-15
 - pendência: scheduler do Hermes parado desde 2026-07-08 16:38 — 3 job(s) enabled que não rodam
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `8d3facb97e25`
+**Fingerprint estrutural:** `d4d7c8607e6d`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável**. As linhas marcadas `aceito` são
 > condições deliberadas ou inofensivas — não indicam memória desatualizada.
@@ -62,7 +61,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `5a4ebf0` | 2026-09-30 | 7 caminho(s) | n/a |
+| `.` (raiz) | `cd4d5a9` | 2026-09-30 | limpo | n/a |
 
 ## Worktrees (14)
 
