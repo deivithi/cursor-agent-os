@@ -50,6 +50,29 @@ sintomas — o estado volátil passou a ser gerado.
 - 📌 Reativar `Febracis-Cursor-SyncDaily` e o scheduler do Hermes, se for a intenção.
 - 📌 Reconstruir o par de remotes do `declaw` (o `cloud` morreu) e ressincronizar o mirror da raiz.
 
+### Segunda rodada — auditoria adversarial e correções
+
+Uma auditoria adversarial foi disparada contra a primeira entrega e **encontrou defeitos reais**. Registro aqui porque o processo importa mais que o resultado:
+
+| Achado | Gravidade | Correção |
+|---|---|---|
+| Toda contagem de pendência por repo saía **1** (`Invoke-Git … -split` lido como parâmetro; erro engolido por `SilentlyContinue`). DRE_Eventos dizia 1 onde há 12 | **Grave** — era o número que toda sessão futura leria primeiro | Helper `Get-GitStatusLines`, com a armadilha documentada no código |
+| Scheduler do Hermes não era medido por ninguém | Alto — o bloqueio do FIO-IA ficava invisível | Lê `%LOCALAPPDATA%\hermes\cron\ticker_heartbeat` (é arquivo, não campo do JSON) |
+| `Saúde: ATUALIZADA` era inalcançável por construção, tornando letra morta a exigência da própria rule | Alto | Classe de **pendência aceita** (deliberada, não conta para a saúde) |
+| O artefato gerado contava como sujeira da raiz — snapshot estale-por-construção | Alto | `MEMORY_STATE.md` excluído da contagem, com isso declarado no snapshot |
+| Fingerprint ignorava HEAD e sujeira da raiz | Médio | Ambos entram no cálculo (verificado: o fingerprint muda quando o HEAD muda) |
+| `criticalRefs` não cobria `session-bootstrap.md`, `SECURITY.md`, `HARNESS.md`, `.cursorrules`, `out/civictrust`, o launcher nem o `settings.json` | Médio | Lista ampliada de 26 para 40 caminhos |
+| Só 1 das 3 tarefas agendadas mortas era vista | Médio | As 5 do pipeline Febracis são checadas |
+| `pptx-generator` classificado como skill quebrada | Baixo | É plugin bundle com 5 skills aninhadas — `Test-PluginBundle` separa os casos |
+| "behind 137" sobreviveu na `SKILLS_INDEX` que dizia tê-lo corrigido | Médio | Corrigido para ahead 33 / behind 223 |
+| `.git` descrito como arquivo em 3 lugares | Baixo | É diretório em todos os 14 — medido |
+| `quirky-easley` ausente do índice; "10 pastas" listando 11 | Baixo | Corrigido |
+| Evidência do handle do X citava caminho inexistente | Baixo | Caminho real: `skills/openwiki-fio-synthesizer/references/humanizer-fio-rules.md`; 8 arquivos, não 5 |
+
+**Lição registrada:** o erro de `-split` dentro de chamada de função/método apareceu **duas vezes** neste mesmo arquivo. É a mesma classe do `-f` lido como parâmetro. A defesa é a armadilha estar escrita no código, no ponto de uso — e nunca confiar em `SilentlyContinue` para esconder erro de sintaxe de operador.
+
+Verificação final: 3 execuções com repositório imutável produzem conteúdo **idêntico** (idempotente); contagens conferidas uma a uma contra o disco; raiz reportada como `limpo` sem pendência fantasma.
+
 ---
 
 ## 2026-09-28 — Edição das skills de harness (auditoria de gargalo)
