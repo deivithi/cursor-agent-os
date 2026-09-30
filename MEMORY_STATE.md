@@ -1,6 +1,6 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 08:39 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-09-30 08:41 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
 **Saúde da memória:** DESATUALIZADA
@@ -44,7 +44,7 @@ Diretórios em `skills/` sem `SKILL.md`: `pptx-generator`
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 1 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `087ac3d` | 2026-09-30 | 1 caminho(s) | n/a |
+| `.` (raiz) | `9c9127e` | 2026-09-30 | 1 caminho(s) | n/a |
 
 ## Worktrees (14)
 
