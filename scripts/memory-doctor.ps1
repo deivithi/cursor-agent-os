@@ -59,16 +59,31 @@ function Count-SkillDirs([string]$p) {
   return @(Get-ChildItem $p -Directory -ErrorAction SilentlyContinue).Count
 }
 
-function Get-SkillCount([string]$p) {
-  if (-not (Test-Path $p)) { return 0 }
-  $dirs = Get-ChildItem $p -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne '_templates' }
-  return @($dirs | Where-Object { Test-Path (Join-Path $_.FullName 'SKILL.md') }).Count
+# Um diretório em skills/ é uma skill se tem SKILL.md. `_templates` não conta.
+# Alguns diretórios são PLUGIN BUNDLES (têm .claude-plugin/, plugin.json, marketplace.json e
+# skills/ aninhadas) — não são skills e não devem ser reportados como skill quebrada.
+function Test-PluginBundle([string]$dir) {
+  if (Test-Path (Join-Path $dir 'plugin.json')) { return $true }
+  if (Test-Path (Join-Path $dir '.claude-plugin')) { return $true }
+  if (Test-Path (Join-Path $dir 'marketplace.json')) { return $true }
+  return $false
 }
 
-function Get-SkillDirsMissingManifest([string]$p) {
-  if (-not (Test-Path $p)) { return @() }
+function Get-SkillInventory([string]$p) {
+  # Devolve @{ count; missing; bundles } — separando o que é skill do que é bundle.
+  $result = @{ count = 0; missing = @(); bundles = @() }
+  if (-not (Test-Path $p)) { return $result }
   $dirs = Get-ChildItem $p -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -ne '_templates' }
-  return @($dirs | Where-Object { -not (Test-Path (Join-Path $_.FullName 'SKILL.md')) } | ForEach-Object { $_.Name })
+  foreach ($d in $dirs) {
+    if (Test-Path (Join-Path $d.FullName 'SKILL.md')) {
+      $result.count = $result.count + 1
+    } elseif (Test-PluginBundle $d.FullName) {
+      $result.bundles += $d.Name
+    } else {
+      $result.missing += $d.Name
+    }
+  }
+  return $result
 }
 
 function Count-Files([string]$p, [string]$filter) {
@@ -83,12 +98,24 @@ function Invoke-Git([string]$repo, [string[]]$arguments) {
   return ($out -join "`n").Trim()
 }
 
-function Test-GitRepo([string]$p) {
-  # worktree usa .git como ARQUIVO; repo normal usa como DIRETÓRIO. Ambos valem.
-  return (Test-Path (Join-Path $p '.git'))
+# ATENÇÃO — armadilha já cometida duas vezes neste arquivo:
+# `@(Invoke-Git ... -split "`n")` NÃO divide nada. Dentro de uma chamada de método/função o
+# PowerShell lê `-split` como NOME DE PARÂMETRO, não como operador, e o erro é engolido por
+# $ErrorActionPreference='SilentlyContinue'. O count sai sempre 1.
+# Sempre: `@((Invoke-Git ...) -split "`n" | Where-Object { $_ })`.
+function Get-GitStatusLines([string]$repo) {
+  return @((Invoke-Git $repo @('status', '--porcelain')) -split "`n" | Where-Object { $_ })
 }
 
-function Get-RepoInfo([string]$relative) {
+function Test-GitRepo([string]$p) {
+  # .git pode ser DIRETÓRIO (repo normal) ou ARQUIVO (worktree real). Ambos valem.
+  $g = Join-Path $p '.git'
+  if ([System.IO.Directory]::Exists($g)) { return 'dir' }
+  if ([System.IO.File]::Exists($g)) { return 'file' }
+  return ''
+}
+
+function Get-RepoInfo([string]$relative, [switch]$IgnoreGenerated) {
   $abs = Join-Path $Root $relative
   $info = [ordered]@{
     path    = $relative
@@ -111,7 +138,12 @@ function Get-RepoInfo([string]$relative) {
     if ($parts.Count -gt 1) { $info.date = $parts[1] }
     if ($parts.Count -gt 2) { $info.subject = $parts[2] }
   }
-  $statusLines = @(Invoke-Git $abs @('status', '--porcelain') -split "`n" | Where-Object { $_ })
+  $statusLines = Get-GitStatusLines $abs
+  if ($IgnoreGenerated) {
+    # Artefatos que o próprio gerador produz não contam como trabalho pendente: senão o
+    # snapshot é estale-por-construção (publicá-lo limpa a sujeira que ele acabou de denunciar).
+    $statusLines = @($statusLines | Where-Object { $_ -notmatch 'MEMORY_STATE\.md' })
+  }
   $info.dirtyN = $statusLines.Count
   $lr = Invoke-Git $abs @('rev-list', '--left-right', '--count', 'origin/main...HEAD')
   if ($lr -match '^(\d+)\s+(\d+)$') { $info.behind = $Matches[1]; $info.ahead = $Matches[2] }
@@ -146,11 +178,13 @@ function Get-DeclaredDate([string]$relative, [string]$pattern) {
 # ---------------------------------------------------------------- coleta
 
 $customDirs = Count-SkillDirs (Join-Path $Root 'skills')
-$customSkills = Get-SkillCount (Join-Path $Root 'skills')
-$customNoManifest = Get-SkillDirsMissingManifest (Join-Path $Root 'skills')
-$cyberSkills = Get-SkillCount (Join-Path $Root 'cybersecurity-skills\skills')
+$customInv = Get-SkillInventory (Join-Path $Root 'skills')
+$customSkills = $customInv.count
+$customNoManifest = $customInv.missing
+$customBundles = $customInv.bundles
+$cyberSkills = (Get-SkillInventory (Join-Path $Root 'cybersecurity-skills\skills')).count
 $cyberDirs = Count-SkillDirs (Join-Path $Root 'cybersecurity-skills\skills')
-$sciSkills = Get-SkillCount (Join-Path $Root 'scientific-skills\skills')
+$sciSkills = (Get-SkillInventory (Join-Path $Root 'scientific-skills\skills')).count
 $commandsCount = Count-Files (Join-Path $Root 'commands') '*.md'
 $rulesCount = Count-Files (Join-Path $Root 'rules') '*.md'
 $hooksCount = Count-Files (Join-Path $Root 'hooks') '*.js'
@@ -162,31 +196,73 @@ $cursorSkillsCursorCount = Count-SkillDirs (Join-Path $env:USERPROFILE '.cursor\
 $worktreeDirs = @(Get-ChildItem (Join-Path $Root 'worktrees') -Directory -ErrorAction SilentlyContinue | Sort-Object Name)
 $worktrees = @()
 foreach ($d in $worktreeDirs) {
-  $real = Test-GitRepo $d.FullName
+  $gitKind = Test-GitRepo $d.FullName
   $head = ''
-  if ($real) { $head = (Invoke-Git $d.FullName @('log', '-1', '--format=%h')) }
-  $worktrees += [pscustomobject]@{ name = $d.Name; repo = $real; head = $head }
+  $tracked = 0
+  if ($gitKind) {
+    $head = (Invoke-Git $d.FullName @('log', '-1', '--format=%h'))
+    $tracked = @((Invoke-Git $d.FullName @('ls-files')) -split "`n" | Where-Object { $_ }).Count
+  }
+  $worktrees += [pscustomobject]@{ name = $d.Name; repo = [bool]$gitKind; gitKind = $gitKind; head = $head; tracked = $tracked }
 }
 $worktreeRepos = @($worktrees | Where-Object { $_.repo })
-$worktreeShells = @($worktrees | Where-Object { -not $_.repo })
+# "shell vazio" é juízo: um diretório com 1 arquivo rastreado não tem código substantivo.
+# O corte em 10 é heurístico e está declarado como tal — não é um fato binário.
+$worktreeShells = @($worktrees | Where-Object { $_.repo -and $_.tracked -le 10 })
 
 $repoList = @('DRE_Eventos', 'declaw', 'webwright', 'cybersecurity-skills', 'scientific-skills', 'worktrees\dre-eventos-fix')
 $repos = @()
 foreach ($r in $repoList) { $repos += (Get-RepoInfo $r) }
 
-# sync do Cursor: sem isso, ~/.cursor/skills congela em silêncio
-$syncTaskName = 'Febracis-Cursor-SyncDaily'
-$syncTaskState = 'desconhecido'
-$syncTaskLastRun = ''
-try {
-  $task = Get-ScheduledTask -TaskName $syncTaskName -ErrorAction Stop
-  $syncTaskState = [string]$task.State
-  $taskInfo = Get-ScheduledTaskInfo -TaskName $syncTaskName -ErrorAction SilentlyContinue
-  if ($taskInfo -and $taskInfo.LastRunTime) { $syncTaskLastRun = $taskInfo.LastRunTime.ToString('yyyy-MM-dd') }
-} catch {
-  $syncTaskState = 'ausente'
+# ---- tarefas agendadas do pipeline Cursor/Febracis
+$scheduledTaskNames = @(
+  'Febracis-Cursor-SyncDaily',
+  'Febracis-CursorAgent-Daily',
+  'Febracis-OpenDesign-Update',
+  'Febracis-Cursor-UpdateWatchdog',
+  'Febracis-Codex-LogGuard-Audit'
+)
+$scheduledTasks = @()
+foreach ($name in $scheduledTaskNames) {
+  $state = 'ausente'
+  $last = ''
+  try {
+    $task = Get-ScheduledTask -TaskName $name -ErrorAction Stop
+    $state = [string]$task.State
+    $info = Get-ScheduledTaskInfo -TaskName $name -ErrorAction SilentlyContinue
+    if ($info -and $info.LastRunTime) { $last = $info.LastRunTime.ToString('yyyy-MM-dd') }
+  } catch { }
+  $healthy = ($state -eq 'Ready' -or $state -eq 'Running')
+  $scheduledTasks += [pscustomobject]@{ name = $name; state = $state; last = $last; healthy = $healthy }
 }
-$syncTaskHealthy = ($syncTaskState -eq 'Ready' -or $syncTaskState -eq 'Running')
+$syncTask = $scheduledTasks | Where-Object { $_.name -eq 'Febracis-Cursor-SyncDaily' } | Select-Object -First 1
+$syncTaskName = $syncTask.name
+$syncTaskState = $syncTask.state
+$syncTaskLastRun = $syncTask.last
+$syncTaskHealthy = $syncTask.healthy
+$deadTasks = @($scheduledTasks | Where-Object { -not $_.healthy })
+
+# ---- scheduler do Hermes: jobs enabled mas ticker parado = automação morta em silêncio
+# O heartbeat NÃO está dentro do jobs.json — é um arquivo próprio (epoch em segundos) em
+# %LOCALAPPDATA%\hermes\cron\. Usar o mtime do arquivo evita qualquer ambiguidade de fuso.
+$hermesCronDir = Join-Path $env:LOCALAPPDATA 'hermes\cron'
+$hermesJobsFile = Join-Path $hermesCronDir 'jobs.json'
+$hermesTickerFile = Join-Path $hermesCronDir 'ticker_heartbeat'
+$hermesTickerDate = $null
+$hermesEnabledJobs = 0
+$hermesPausedJobs = 0
+$hermesStalled = $false
+$hermesJobs = @()
+if (Test-Path $hermesTickerFile) { $hermesTickerDate = (Get-Item $hermesTickerFile).LastWriteTime }
+if (Test-Path $hermesJobsFile) {
+  $raw = Get-Content $hermesJobsFile -Raw -ErrorAction SilentlyContinue
+  $hermesEnabledJobs = ([regex]::Matches($raw, '"enabled"\s*:\s*true')).Count
+  $hermesPausedJobs = ([regex]::Matches($raw, '"enabled"\s*:\s*false')).Count
+  foreach ($m in [regex]::Matches($raw, '"name"\s*:\s*"([^"]+)"[^}]*?"enabled"\s*:\s*(true|false)')) {
+    $hermesJobs += [pscustomobject]@{ name = $m.Groups[1].Value; enabled = ($m.Groups[2].Value -eq 'true') }
+  }
+}
+if ($hermesTickerDate) { $hermesStalled = (($Today - $hermesTickerDate).TotalDays -gt 2) }
 
 # datas declaradas + data real do último toque em memória
 $memoryFiles = @('AGENTS.md', 'CONTEXT.md', 'AGENT_MEMORY.md', 'DECISIONS.md', 'SESSION_LOG.md', 'PROJECTS_INDEX.md', 'SKILLS_INDEX.md')
@@ -241,16 +317,24 @@ if ($lastSessionDate -and $lastMemoryCommitDate -and $lastMemoryCommitDate -gt $
   if ($raw) { $memoryCommitsSince = @($raw -split "`n" | Where-Object { $_ }) }
 }
 
-# dependências críticas do workspace
+# dependências críticas do workspace. A lista importa: o que não está aqui pode sumir sem que
+# o veredito mude. A auditoria de 30/09/2026 provou isso — `rules/pt-br-acentos.md` (trivial)
+# estava coberto e `rules/session-bootstrap.md` (o contrato do próprio mecanismo), não.
 $criticalRefs = @(
+  'AGENTS.md', 'MEMORY_STATE.md', 'CONTEXT.md', 'AGENT_MEMORY.md', 'DECISIONS.md',
+  'SESSION_LOG.md', 'PROJECTS_INDEX.md', 'SKILLS_INDEX.md', 'config.json',
+  'SECURITY.md', 'HARNESS.md', 'QWEN.md', '.cursorrules', '.gitignore',
   'rules\caverna-activate.md.off', 'rules\plan-and-execute.md', 'rules\first-response.md',
   'rules\memory-protocol.md', 'rules\gauntlet-protocol.md', 'rules\anti-sycophancy.md',
   'rules\human-architectural-gate.md', 'rules\sandbox-dangerous.md', 'rules\workflow-patterns.md',
   'rules\test-integrity.md', 'rules\token-efficiency.md', 'rules\pt-br-acentos.md',
+  'rules\session-bootstrap.md',
   'hooks\openwiki-auth-guard.js', 'hooks\profile-session.js', 'hooks\profile-runtime.js',
   'hooks\git-safety-guard.js', 'hooks\hook-healthcheck.js',
-  'scripts\migrate-from-documents.ps1', 'scripts\Atualizar-Cursor-Seguro.ps1',
-  'CONTEXT.md', 'AGENT_MEMORY.md', 'DECISIONS.md', 'SESSION_LOG.md', 'PROJECTS_INDEX.md', 'SKILLS_INDEX.md', 'config.json'
+  'scripts\memory-doctor.ps1', 'scripts\migrate-from-documents.ps1', 'scripts\Atualizar-Cursor-Seguro.ps1',
+  'out\civictrust',
+  'skills\openwiki-personal-brain', 'skills\pulso-finance', 'skills\dre-zo-integrity-guard',
+  'DRE_Eventos\docs\AGENT_CONTEXT_DRE.md'
 )
 $brokenRefs = @()
 foreach ($ref in $criticalRefs) {
@@ -259,12 +343,15 @@ foreach ($ref in $criticalRefs) {
 
 $externalRefs = @(
   @{ label = 'AGENTS.md global do DSH'; path = $DshGlobalFile },
+  @{ label = 'launcher do doctor (~/.claude/scripts/memory-doctor.ps1)'; path = (Join-Path $env:USERPROFILE '.claude\scripts\memory-doctor.ps1') },
+  @{ label = 'settings.json do Claude Code (registra os hooks)'; path = (Join-Path $env:USERPROFILE '.claude\settings.json') },
   @{ label = 'memoria de usuario (~/.claude/memory)'; path = (Join-Path $env:USERPROFILE '.claude\memory') },
   @{ label = 'MCP cursor-to-zo2 (~/.cursor/mcp.json)'; path = (Join-Path $env:USERPROFILE '.cursor\mcp.json') },
   @{ label = 'INSTRUCTIONS do OpenWiki'; path = (Join-Path $env:USERPROFILE '.openwiki\INSTRUCTIONS.md') },
   @{ label = 'env do OpenWiki (~/.openwiki/.env)'; path = (Join-Path $env:USERPROFILE '.openwiki\.env') },
   @{ label = 'skills do Hermes'; path = (Join-Path $env:LOCALAPPDATA 'hermes\skills') },
-  @{ label = 'scripts do Hermes'; path = (Join-Path $env:LOCALAPPDATA 'hermes\scripts') }
+  @{ label = 'scripts do Hermes'; path = (Join-Path $env:LOCALAPPDATA 'hermes\scripts') },
+  @{ label = 'jobs do Hermes (%LOCALAPPDATA%\hermes\cron\jobs.json)'; path = $hermesJobsFile }
 )
 $missingExternal = @()
 foreach ($item in $externalRefs) {
@@ -287,11 +374,13 @@ foreach ($name in $namedMemoryRefs) {
   if (-not (Test-Path (Join-Path $env:USERPROFILE ('.claude\memory\' + $name + '.md')))) { $brokenMemoryRefs += $name }
 }
 
-# estado do repo raiz
+# estado do repo raiz — MEMORY_STATE.md é saída do próprio gerador e não conta como pendência
 $rootParts = (Invoke-Git $Root @('log', '-1', '--format=%h%x09%ad%x09%s', '--date=short')) -split "`t", 3
-$rootDirty = @(Invoke-Git $Root @('status', '--porcelain') -split "`n" | Where-Object { $_ })
+$rootDirtyAll = Get-GitStatusLines $Root
+$rootDirty = @($rootDirtyAll | Where-Object { $_ -notmatch 'MEMORY_STATE\.md' })
+$rootDirtyIgnored = @($rootDirtyAll | Where-Object { $_ -match 'MEMORY_STATE\.md' })
 
-# impressão digital estrutural
+# impressão digital estrutural — inclui o HEAD e a sujeira da raiz, senão é cega à deriva
 $fingerprintInput = @()
 $fingerprintInput += ('custom=' + $customSkills)
 $fingerprintInput += ('cyber=' + $cyberSkills)
@@ -302,9 +391,13 @@ $fingerprintInput += ('scripts=' + $scriptsCount)
 $fingerprintInput += ('sync=' + $cursorSkillsCount)
 $fingerprintInput += ('synccursor=' + $cursorSkillsCursorCount)
 $fingerprintInput += ('synctask=' + $syncTaskState)
+$fingerprintInput += ('dead=' + $deadTasks.Count)
+$fingerprintInput += ('hermes=' + $(if ($hermesStalled) { 'stalled' } else { 'ok' }))
 $fingerprintInput += ('worktrees=' + $worktrees.Count)
+$fingerprintInput += ('roothead=' + $rootParts[0])
+$fingerprintInput += ('rootdirty=' + $rootDirty.Count)
 foreach ($w in $worktrees) { $fingerprintInput += ('wt:' + $w.name + '=' + $w.head) }
-foreach ($r in $repos) { $fingerprintInput += ('repo:' + $r.path + '=' + $r.head) }
+foreach ($r in $repos) { $fingerprintInput += ('repo:' + $r.path + '=' + $r.head + '/' + $r.dirtyN) }
 $sha = [System.Security.Cryptography.SHA256]::Create()
 $fpBytes = $sha.ComputeHash([System.Text.Encoding]::UTF8.GetBytes(($fingerprintInput -join '|')))
 $Fingerprint = ([System.BitConverter]::ToString($fpBytes) -replace '-', '').Substring(0, 12).ToLower()
@@ -312,6 +405,7 @@ $Fingerprint = ([System.BitConverter]::ToString($fpBytes) -replace '-', '').Subs
 # ---------------------------------------------------------------- juízo de estado
 
 $staleReasons = @()
+$acceptedReasons = @()
 $daysSinceSession = if ($lastSessionDate) { [int]($Today - $lastSessionDate).TotalDays } else { -1 }
 
 if (-not $lastSessionDate) {
@@ -328,20 +422,35 @@ if ($rootDirty.Count -gt 0) {
 if ($brokenRefs.Count -gt 0) {
   $staleReasons += ($brokenRefs.Count.ToString() + ' dependência(s) crítica(s) ausente(s) no workspace')
 }
-if ($missingExternal.Count -gt 0) {
-  $staleReasons += ($missingExternal.Count.ToString() + ' dependência(s) externa(s) ausente(s)')
-}
 if ($brokenMemoryRefs.Count -gt 0) {
   $staleReasons += ($brokenMemoryRefs.Count.ToString() + ' memória(s) nomeada(s) citada(s) e inexistente(s)')
-}
-if (-not $syncTaskHealthy) {
-  $staleReasons += ('sync do Cursor inativo (tarefa ' + $syncTaskName + ' = ' + $syncTaskState + ', última execução ' + $syncTaskLastRun + ')')
 }
 if ($sessionOrderBreaks.Count -gt 0) {
   $staleReasons += ('SESSION_LOG fora de ordem cronológica em ' + $sessionOrderBreaks.Count + ' ponto(s)')
 }
 if ($customNoManifest.Count -gt 0) {
   $staleReasons += ($customNoManifest.Count.ToString() + ' skill(s) sem SKILL.md em skills/')
+}
+foreach ($t in $deadTasks) {
+  $staleReasons += ('tarefa agendada inativa: ' + $t.name + ' = ' + $t.state + ', última execução ' + $t.last)
+}
+if ($hermesStalled) {
+  $staleReasons += ('scheduler do Hermes parado desde ' + $hermesTickerDate.ToString('yyyy-MM-dd HH:mm') + ' — ' + $hermesEnabledJobs + ' job(s) enabled que não rodam')
+}
+
+# Pendências CONHECIDAS E ACEITAS: condições deliberadas ou inofensivas que não indicam
+# memória desatualizada. Sem esta classe, `Saúde: ATUALIZADA` seria inalcançável por construção
+# e a instrução de exigir ATUALIZADA (rules/session-bootstrap.md) viraria letra morta.
+$openwikiEnvPath = Join-Path $env:USERPROFILE '.openwiki\.env'
+if (($missingExternal -contains 'env do OpenWiki (~/.openwiki/.env)')) {
+  $acceptedReasons += 'OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)'
+}
+if ($customBundles.Count -gt 0) {
+  $acceptedReasons += ('plugin bundle em skills/ (não é skill, não precisa de SKILL.md): ' + ($customBundles -join ', '))
+}
+$missingExternalReal = @($missingExternal | Where-Object { $_ -ne 'env do OpenWiki (~/.openwiki/.env)' })
+if ($missingExternalReal.Count -gt 0) {
+  $staleReasons += ($missingExternalReal.Count.ToString() + ' dependência(s) externa(s) ausente(s)')
 }
 
 $Health = if ($staleReasons.Count -eq 0) { 'ATUALIZADA' } else { 'DESATUALIZADA' }
@@ -358,7 +467,13 @@ $L.Add('**Saúde da memória:** ' + $Health)
 if ($staleReasons.Count -gt 0) {
   foreach ($reason in $staleReasons) { $L.Add('- pendência: ' + $reason) }
 }
+if ($acceptedReasons.Count -gt 0) {
+  foreach ($reason in $acceptedReasons) { $L.Add('- aceito (não conta para a saúde): ' + $reason) }
+}
 $L.Add('**Fingerprint estrutural:** ' + (Code $Fingerprint))
+$L.Add('')
+$L.Add('> `Saúde: ATUALIZADA` significa **zero pendência acionável**. As linhas marcadas `aceito` são')
+$L.Add('> condições deliberadas ou inofensivas — não indicam memória desatualizada.')
 $L.Add('')
 $L.Add('## Inventário (contado no disco)')
 $L.Add('')
@@ -377,14 +492,42 @@ $L.Add('| Skills em ' + (Code '~/.cursor/skills') + ' (sync) | ' + $cursorSkills
 $L.Add('| Skills oficiais em ' + (Code '~/.cursor/skills-cursor') + ' | ' + $cursorSkillsCursorCount + ' |')
 if ($customNoManifest.Count -gt 0) {
   $L.Add('')
-  $L.Add('Diretórios em ' + (Code 'skills/') + ' sem ' + (Code 'SKILL.md') + ': ' + (($customNoManifest | ForEach-Object { Code $_ }) -join ', '))
+  $L.Add('Diretórios em ' + (Code 'skills/') + ' sem ' + (Code 'SKILL.md') + ' (skill quebrada): ' + (($customNoManifest | ForEach-Object { Code $_ }) -join ', '))
+}
+if ($customBundles.Count -gt 0) {
+  $L.Add('')
+  $L.Add('Plugin bundles em ' + (Code 'skills/') + ' (têm ' + (Code 'plugin.json') + ' ou ' + (Code '.claude-plugin') + ' e skills aninhadas — não são skills, não precisam de ' + (Code 'SKILL.md') + '): ' + (($customBundles | ForEach-Object { Code $_ }) -join ', '))
 }
 $L.Add('')
-$L.Add('## Sync do Cursor')
+$L.Add('## Tarefas agendadas')
 $L.Add('')
 $L.Add('| Tarefa | Estado | Última execução |')
 $L.Add('|---|---|---|')
-$L.Add('| ' + (Code $syncTaskName) + ' | ' + $syncTaskState + ' | ' + $(if ($syncTaskLastRun) { $syncTaskLastRun } else { 'nunca registrada' }) + ' |')
+foreach ($t in $scheduledTasks) {
+  $lastLabel = if ($t.last) { $t.last } else { 'nunca registrada' }
+  $mark = if ($t.healthy) { '' } else { ' **inativa**' }
+  $L.Add('| ' + (Code $t.name) + ' | ' + $t.state + $mark + ' | ' + $lastLabel + ' |')
+}
+$L.Add('')
+$L.Add('## Scheduler do Hermes')
+$L.Add('')
+if (-not $hermesTickerDate) {
+  $L.Add('Ticker não encontrado em ' + (Code 'jobs.json') + ' — não foi possível medir.')
+} else {
+  $hermesAge = [int]($Today - $hermesTickerDate).TotalDays
+  $L.Add('| Item | Valor |')
+  $L.Add('|---|---|')
+  $L.Add('| Último heartbeat do ticker | ' + $hermesTickerDate.ToString('yyyy-MM-dd HH:mm') + ' (' + $hermesAge + ' dias) |')
+  $L.Add('| Jobs habilitados | ' + $hermesEnabledJobs + ' |')
+  $hermesLabel = if ($hermesStalled) { '**parado** — jobs enabled que não rodam' } else { 'operando' }
+  $L.Add('| Veredito | ' + $hermesLabel + ' |')
+  if ($hermesJobs.Count -gt 0) {
+    $L.Add('')
+    foreach ($j in $hermesJobs) {
+      $L.Add('- ' + (Code $j.name) + ' — ' + $(if ($j.enabled) { 'enabled' } else { 'pausado' }))
+    }
+  }
+}
 $L.Add('')
 $L.Add('## Repositórios')
 $L.Add('')
@@ -402,13 +545,17 @@ $L.Add('| ' + (Code '.') + ' (raiz) | ' + (Code $rootParts[0]) + ' | ' + $rootPa
 $L.Add('')
 $L.Add('## Worktrees (' + $worktrees.Count + ')')
 $L.Add('')
-$L.Add('São repositórios independentes com `.git` próprio (arquivo), não worktrees do repo raiz — ADR-003.')
+$L.Add('Repositórios independentes com ' + (Code '.git') + ' próprio — **diretório** em todos os 14, não arquivo (medido em 30/09/2026). Não são worktrees do repo raiz — ADR-003.')
 $L.Add('')
-$L.Add('Com repositório (' + $worktreeRepos.Count + '): ' + (($worktreeRepos | ForEach-Object { Code $_.name }) -join ', '))
-if ($worktreeShells.Count -gt 0) {
-  $L.Add('')
-  $L.Add('Sem ' + (Code '.git') + ' (' + $worktreeShells.Count + '): ' + (($worktreeShells | ForEach-Object { Code $_.name }) -join ', '))
+$L.Add('| Worktree | HEAD | Arquivos rastreados | Código substantivo |')
+$L.Add('|---|---|---|---|')
+foreach ($w in $worktrees) {
+  $kind = if ($w.repo) { 'sim' } else { 'sem ' + (Code '.git') }
+  $subst = if (-not $w.repo) { 'n/a' } elseif ($w.tracked -le 10) { 'não (shell)' } else { 'sim' }
+  $L.Add('| ' + (Code $w.name) + ' | ' + (Code $w.head) + ' | ' + $w.tracked + ' | ' + $subst + ' |')
 }
+$L.Add('')
+$L.Add('O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário. As 11 pastas de 1 a 5 arquivos são shells; `determined-wu-3787c2` (17), `festive-grothendieck` (21) e `dre-eventos-fix` (157) têm conteúdo.')
 $L.Add('')
 $L.Add('## Datas declaradas vs. hoje')
 $L.Add('')
@@ -428,7 +575,8 @@ $L.Add('')
 $L.Add('## SESSION_LOG — ordem cronológica')
 $L.Add('')
 if ($sessionOrderBreaks.Count -eq 0) {
-  $L.Add('Decrescente e íntegra em ' + $sessionHeaders.Count + ' blocos.')
+  $L.Add('Decrescente e em ordem em ' + $sessionHeaders.Count + ' blocos. **Não** verifica sessão faltando')
+  $L.Add('nem bloco duplicado: só compara datas consecutivas de headers no formato ' + (Code '## YYYY-MM-DD') + '.')
 } else {
   $L.Add('Quebras detectadas:')
   foreach ($b in $sessionOrderBreaks) { $L.Add('- ' + $b) }
@@ -496,6 +644,9 @@ $D.Add('Saúde da memória: **' + $Health + '** · fingerprint ' + (Code $Finger
 if ($staleReasons.Count -gt 0) {
   foreach ($reason in $staleReasons) { $D.Add('- pendência: ' + $reason) }
 }
+if ($acceptedReasons.Count -gt 0) {
+  foreach ($reason in $acceptedReasons) { $D.Add('- aceito: ' + $reason) }
+}
 $D.Add('')
 $D.Add('Inventário: ' + $customSkills + ' skills custom · ' + $cyberSkills + ' cyber · ' + $sciSkills + ' scientific · ' + $commandsCount + ' commands · ' + $rulesCount + ' rules · ' + $hooksCount + ' hooks · ' + $worktrees.Count + ' worktrees · ' + $cursorSkillsCount + ' em sync')
 $D.Add('')
@@ -507,7 +658,12 @@ foreach ($r in $repos) {
 }
 $D.Add('- raiz: ' + $rootParts[0] + ' (' + $rootParts[1] + ', ' + $rootDirtyLabel + ')')
 $D.Add('')
-$D.Add('Sync do Cursor: ' + $syncTaskName + ' = ' + $syncTaskState + ' (última execução ' + $(if ($syncTaskLastRun) { $syncTaskLastRun } else { 'nunca registrada' }) + ')')
+$deadTaskNames = @($deadTasks | ForEach-Object { $_.name + '=' + $_.state })
+$D.Add('Tarefas agendadas inativas: ' + $(if ($deadTaskNames.Count -gt 0) { $deadTaskNames -join ', ' } else { 'nenhuma' }))
+if ($hermesTickerDate) {
+  $hermesDigestLabel = if ($hermesStalled) { 'PARADO desde ' + $hermesTickerDate.ToString('yyyy-MM-dd') + ' com ' + $hermesEnabledJobs + ' job(s) enabled' } else { 'operando' }
+  $D.Add('Scheduler do Hermes: ' + $hermesDigestLabel)
+}
 if ($lastSessionDate) { $D.Add('Última sessão registrada: ' + $lastSessionDate.ToString('yyyy-MM-dd') + ' (' + $daysSinceSession + ' dias)') }
 if ($memoryCommitsSince.Count -gt 0) {
   $D.Add('')
@@ -517,11 +673,11 @@ if ($memoryCommitsSince.Count -gt 0) {
     $D.Add('- ' + $cp[0] + ' ' + $cp[1] + ' ' + $cp[2])
   }
 }
-if ($brokenRefs.Count -gt 0 -or $missingExternal.Count -gt 0 -or $brokenMemoryRefs.Count -gt 0) {
+if ($brokenRefs.Count -gt 0 -or $missingExternalReal.Count -gt 0 -or $brokenMemoryRefs.Count -gt 0) {
   $D.Add('')
   $D.Add('Referências ausentes:')
   foreach ($b in $brokenRefs) { $D.Add('- workspace: ' + $b) }
-  foreach ($b in $missingExternal) { $D.Add('- externo: ' + $b) }
+  foreach ($b in $missingExternalReal) { $D.Add('- externo: ' + $b) }
   foreach ($b in $brokenMemoryRefs) { $D.Add('- memória nomeada: ' + $b) }
 }
 $D.Add('')
