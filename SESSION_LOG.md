@@ -1,6 +1,134 @@
 # SESSION_LOG.md — Histórico de sessões do agente
 
-> Atualizado em: 21/09/2026 — mapeamento persistente do DRE Eventos
+> Atualizado em: 30/09/2026 — memória reconciliada com o disco. Ordem cronológica decrescente.
+>
+> **Lacuna fechada em 30/09/2026:** nenhuma sessão estava registrada entre 22/09 e 30/09, apesar de
+> trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
+> commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
+
+## 2026-09-30 — Reconciliação da memória + bootstrap automático no DSH
+
+### Resumo
+Auditoria da camada de memória contra o disco e o Git achou **20 contradições verificadas**, todas
+da mesma natureza: número escrito à mão envelhecendo em silêncio. A causa raiz foi tratada, não os
+sintomas — o estado volátil passou a ser gerado.
+
+### O que foi feito
+- ✅ `scripts/memory-doctor.ps1`: recomputa contagens de skills, worktrees, HEADs por repo, estado
+  da tarefa de sync, datas declaradas, ordem do `SESSION_LOG` e referências quebradas. Gera
+  `MEMORY_STATE.md` e o bloco injetado em `~/.dsh/AGENTS.md`.
+- ✅ Descoberto e provado o único vetor automático do DSH: `@deepseek-ai/dsh-agent-instructions`
+  injeta `$DSH_HOME/AGENTS.md` + a cadeia de `AGENTS.md`/`CLAUDE.md` do projeto (budget 65.536
+  bytes), sem comando. O DSH **não monta hooks** — nenhum bundle padrão traz `hooks-claude-code`.
+- ✅ Criado `~/.dsh/AGENTS.md` com identidade, infraestrutura canônica, regras de trabalho e o
+  bloco de estado gerado. Verificado ao vivo: o DSH recarregou o arquivo na mesma sessão.
+- ✅ Criada `rules/session-bootstrap.md` — contrato de abertura e fechamento; regra do número à mão
+  proibida.
+- ✅ ADR-014 registrado em `DECISIONS.md` com a tabela completa das 20 contradições.
+- ✅ `$D`/`$d` em PowerShell são a mesma variável (case-insensitive): colisão entre a lista do
+  digest e a variável de loop sobrescreveu a saída do gerador. Corrigido e revalidado.
+
+### Correções materiais aplicadas
+- Remotes da raiz: tinham `origin` + `cloud`, contrariando a nota "sem remote" e o próprio ADR-006.
+- `deivithilopes-ai/declaw` **não existe** (HTTP 404) e era declarado `canonical`.
+- `webwright` sincronizado (0/0), não "behind 4"; `cybersecurity-skills` ahead 33 / behind 223.
+- DRE_Eventos em `6380b65` com 649 testes (não `682cedf` com 595); `dre-eventos-fix` 161 commits atrás.
+- Sync do Cursor `Disabled` desde 16/06/2026 — o "sync diário" não roda.
+- Scheduler do Hermes parado desde 08/07/2026 — FIO-IA não gera há quase 3 meses.
+- Skill `pulso-finance` v5.0.0 (não v5.6.0); handle do X `@opanteranegra77` (não `@opanteraos`).
+- `PROJECTS_INDEX.md` tinha as 22 linhas marcadas "(sem origin)" — erro sistemático de leitura.
+- Projeto **civictrust** descoberto e catalogado (repo real, ausente de toda a memória).
+
+### Entregas commitadas
+5 commits: `a17453d` (gerador + bootstrap), `9b2a1da` (reconciliação), `312706c` (regra de acentos
++ guard do OpenWiki, pendurados desde 18–21/09), `9b9729f` (skill anatomy, pendente desde 28/09) e
+`46ebd08` (entregáveis do civictrust).
+
+### Pendências
+- 📌 `~/.openwiki/.env` não existe: o gate do OAuth do X continua fechado. Não rodar `openwiki auth x`.
+- 📌 `skills/pptx-generator` é o único diretório de skill sem `SKILL.md`.
+- 📌 Reativar `Febracis-Cursor-SyncDaily` e o scheduler do Hermes, se for a intenção.
+- 📌 Reconstruir o par de remotes do `declaw` (o `cloud` morreu) e ressincronizar o mirror da raiz.
+
+---
+
+## 2026-09-28 — Edição das skills de harness (auditoria de gargalo)
+
+- ✅ `skills/anatomy-of-agent-harness/SKILL.md` e a cópia em `.claude/skills/…` ganharam a seção
+  "Auditoria de gargalo (default)", nota sobre trabalho de conhecimento e `perf-hill-climb`.
+- ⚠️ A edição ficou 2 dias pendurada no working tree sem registro de sessão. Commitada em 30/09
+  como `9b9729f`.
+- ⚠️ A seção cita "Gargalo humano" em `rules/plan-and-execute.md`, **que não existe**. Referência
+  quebrada — pendente corrigir na skill ou criar a seção.
+
+---
+
+## 2026-09-24 — CivicTrust: dossiê, PRD e spec técnica
+
+- ✅ Repositório real `deivithi/civictrust` (Go), HEAD `49b840c`, criado em 24/09 com
+  "feat(demo): demonstração pública na Vercel".
+- ✅ Três entregáveis produzidos em `out/civictrust/`: dossiê estratégico, PRD do Public Action
+  Gateway v0.1 e spec técnica v0.1.
+- ⚠️ Trabalho substantivo que **não** entrou em nenhum arquivo de memória na época. Catalogado em
+  30/09 (commit `46ebd08` + registro no `PROJECTS_INDEX` e `config.json`).
+
+---
+
+## 2026-09-22 — DRE Eventos: refresh de 5h e watcher de flags do Fabric
+
+- ✅ `37bee26` — "feat(ops): refresh DRE a cada 5h sem niveis".
+- ✅ `6380b65` — "fix(ops): ignore completed Fabric pull flags in watcher".
+- ⚠️ Os dois commits não foram registrados na memória; a memória seguiu apontando `682cedf` como
+  HEAD por 8 dias.
+- 📌 Working tree do projeto ficou com 4 modificados + 10 não rastreados, que a memória descrevia
+  como "apenas `docs/analysis/`".
+
+---
+
+## 2026-09-21 — Auditoria profunda e hardening da aplicação
+
+- ✅ Corrigidos riscos de sessão, pool Postgres, contexto adulterável do chat, locks, CI, dependências frontend, cache-bust e acessibilidade.
+- ✅ `npm audit` terminou com 0 vulnerabilidades após atualização do lockfile.
+- ✅ Validação acumulada: 649 testes, Ruff, build frontend, CSP PASS, UI Fotos 45/45 e smoke produção 43/43.
+- ✅ Deploy final validado com HTTP 200 e `db=ok`.
+- 📌 Pendências mantidas com evidência: restore/criptografia de backup, login E2E real, acessibilidade completa do chat React e coordenação distribuída.
+
+---
+
+## 2026-09-21 — Mapeamento persistente do DRE Eventos
+
+### Resultado
+- ✅ Confirmada a cópia canônica em `DRE_Eventos/`, com remote `deivithi/febracis-dre-eventos`, branch `main` e commit `682cedf`.
+- ✅ Identificada a cópia adicional `worktrees/dre-eventos-fix`; a cópia temporária em `%LOCALAPPDATA%/Temp` não foi tratada como fonte.
+- ✅ Consolidada a distinção entre a aplicação principal, o portal relacionado `febracis-dre` e o repositório operacional `dre-eventos-ops`.
+- ✅ Atualizados `AGENT_MEMORY.md`, `PROJECTS_INDEX.md`, `CONTEXT.md`, `DRE_Eventos/AGENTS.md` e `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md`.
+- ✅ Suíte completa passou no `.venv`: 595 testes; o Python global não possui `psycopg2`.
+- ⚠️ Verificação posterior encontrou 1 falha em `tests/test_fotos.py` (`maxlength="240"` ausente em `templates/partials/dre_table.html`); o build frontend passou via `npm.cmd run build`.
+- ✅ Produção respondeu `/api/health` com banco, Hermes e LLM operacionais; acesso administrativo à VM Zo e validação individual de Fabric/TOTVS/Sheets permanecem não confirmados.
+
+### Regra de continuidade
+- Para qualquer sessão sobre DRE Eventos, começar por `DRE_Eventos/AGENTS.md`, `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md` e `DRE_Eventos/README.md`; não ingerir snapshots, logs, `.env`, credenciais ou dados brutos na memória.
+
+---
+
+## 2026-09-21 — Infraestrutura canônica do ecossistema
+
+- ✅ Registrado como contexto permanente: ZoComputer é a VM principal.
+- ✅ Registrado como contexto permanente: PostgreSQL na ZoComputer é o banco principal com componentes em produção.
+- ✅ Registrado: ZoComputer, Vercel e Cloudflare são os destinos recorrentes de runtime/deploy.
+- ✅ Registrada a recuperação automática desse contexto em toda sessão, sem comandos ou configuração extra do operador.
+
+---
+
+## 2026-09-21 — Auditoria e entrega: Foto no Relatório do Evento
+
+- ✅ Auditado o trabalho do agente Grok: feature `ac01a4d` e smoke inicial publicado em `ac5d8d6`.
+- ✅ Confirmado comportamento correto: botão admin-only no Relatório, modal compartilhado, `POST /api/fotos` inalterado, `/fotos` somente reprodução e payload v2 imutável.
+- ✅ Validação local: 595 testes, Ruff, build frontend e Playwright UI 45/45 PASS.
+- ✅ Validação de produção: smoke 43/43 PASS, `foto_payload_version=2`, PDF válido, autorização 403, totais vivos com delta zero e foto legada intacta.
+- ✅ Documentação sincronizada e deploy final em `5f113aa`; health Zo HTTP 200 com `db=ok` após restart.
+
+---
 
 ## 2026-09-08 — ADR-013: 1ª resposta imediata
 
@@ -12,6 +140,8 @@ Operador: "isso não pode acontecer mais." Gravado como regra always-on.
 - ✅ `rules/first-response.md` + `.cursor/rules` + `~/.cursor/rules` + `~/.grok/rules`
 - ✅ AGENTS.md, CONTEXT.md, `.cursorrules` — ritual virou sob demanda
 - ✅ plan-and-execute aponta ADR-013
+
+---
 
 ## 2026-09-08 — Manutenção da máquina: diagnóstico + execução segura
 
@@ -39,6 +169,8 @@ mapeada mas bloqueada por falta de elevação (0x80240044).
 ### Estado final
 - RAM livre ~11,4 GB, CPU 4%, C: 178 GB livres, Bitdefender ativo,
   `RebootRequired=false`. Nada quebrado; nenhuma alteração fora do pedido.
+
+---
 
 ## 2026-09-08 — Falhas de hooks no Grok (timeout em massa)
 
@@ -377,45 +509,6 @@ Reescrever histórico + republicar com filtro (workflow documentado em SECURITY.
 
 ---
 
-## 2026-09-21 — Mapeamento persistente do DRE Eventos
-
-### Resultado
-- ✅ Confirmada a cópia canônica em `DRE_Eventos/`, com remote `deivithi/febracis-dre-eventos`, branch `main` e commit `682cedf`.
-- ✅ Identificada a cópia adicional `worktrees/dre-eventos-fix`; a cópia temporária em `%LOCALAPPDATA%/Temp` não foi tratada como fonte.
-- ✅ Consolidada a distinção entre a aplicação principal, o portal relacionado `febracis-dre` e o repositório operacional `dre-eventos-ops`.
-- ✅ Atualizados `AGENT_MEMORY.md`, `PROJECTS_INDEX.md`, `CONTEXT.md`, `DRE_Eventos/AGENTS.md` e `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md`.
-- ✅ Suíte completa passou no `.venv`: 595 testes; o Python global não possui `psycopg2`.
-- ⚠️ Verificação posterior encontrou 1 falha em `tests/test_fotos.py` (`maxlength="240"` ausente em `templates/partials/dre_table.html`); o build frontend passou via `npm.cmd run build`.
-- ✅ Produção respondeu `/api/health` com banco, Hermes e LLM operacionais; acesso administrativo à VM Zo e validação individual de Fabric/TOTVS/Sheets permanecem não confirmados.
-
-### Regra de continuidade
-- Para qualquer sessão sobre DRE Eventos, começar por `DRE_Eventos/AGENTS.md`, `DRE_Eventos/docs/AGENT_CONTEXT_DRE.md` e `DRE_Eventos/README.md`; não ingerir snapshots, logs, `.env`, credenciais ou dados brutos na memória.
-
-## 2026-09-21 — Infraestrutura canônica do ecossistema
-
-- ✅ Registrado como contexto permanente: ZoComputer é a VM principal.
-- ✅ Registrado como contexto permanente: PostgreSQL na ZoComputer é o banco principal com componentes em produção.
-- ✅ Registrado: ZoComputer, Vercel e Cloudflare são os destinos recorrentes de runtime/deploy.
-- ✅ Registrada a recuperação automática desse contexto em toda sessão, sem comandos ou configuração extra do operador.
-
-## 2026-09-21 — Auditoria e entrega: Foto no Relatório do Evento
-
-- ✅ Auditado o trabalho do agente Grok: feature `ac01a4d` e smoke inicial publicado em `ac5d8d6`.
-- ✅ Confirmado comportamento correto: botão admin-only no Relatório, modal compartilhado, `POST /api/fotos` inalterado, `/fotos` somente reprodução e payload v2 imutável.
-- ✅ Validação local: 595 testes, Ruff, build frontend e Playwright UI 45/45 PASS.
-- ✅ Validação de produção: smoke 43/43 PASS, `foto_payload_version=2`, PDF válido, autorização 403, totais vivos com delta zero e foto legada intacta.
-- ✅ Documentação sincronizada e deploy final em `5f113aa`; health Zo HTTP 200 com `db=ok` após restart.
-
-## 2026-09-21 — Auditoria profunda e hardening da aplicação
-
-- ✅ Corrigidos riscos de sessão, pool Postgres, contexto adulterável do chat, locks, CI, dependências frontend, cache-bust e acessibilidade.
-- ✅ `npm audit` terminou com 0 vulnerabilidades após atualização do lockfile.
-- ✅ Validação acumulada: 649 testes, Ruff, build frontend, CSP PASS, UI Fotos 45/45 e smoke produção 43/43.
-- ✅ Deploy final validado com HTTP 200 e `db=ok`.
-- 📌 Pendências mantidas com evidência: restore/criptografia de backup, login E2E real, acessibilidade completa do chat React e coordenação distribuída.
-
----
-
 ## 2026-06-08 17:00 BRT — Conexão com Composio.dev CLI (WSL)
 
 ### Objetivo
@@ -427,5 +520,3 @@ Reescrever histórico + republicar com filtro (workflow documentado em SECURITY.
 - ✅ Instalada a CLI v3 oficial do Composio no WSL (`~/.composio/composio`)
 - ✅ Autenticado com sucesso via OAuth na conta `deivithi74@gmail.com`
 - ✅ Validado o acesso à API do Composio listando metadados das ferramentas do GitHub
-
----
