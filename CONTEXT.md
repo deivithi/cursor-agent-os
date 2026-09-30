@@ -1,5 +1,6 @@
 # CONTEXT.md — Ponto de Entrada do Agente
 
+> Atualizado em: 30/09/2026
 > Entry point da memória. **Não** bloquear o 1º turno. AGENTS.md já está no prompt.
 > Ritual abaixo = sob demanda (ADR-013). Ver `rules/first-response.md`.
 >

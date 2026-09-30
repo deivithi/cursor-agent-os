@@ -119,17 +119,28 @@ function Get-RepoInfo([string]$relative) {
 }
 
 function Get-DeclaredDate([string]$relative, [string]$pattern) {
+  # Devolve a data MAIS RECENTE entre todas as datas de todas as linhas que casam o padrão.
+  # Dois detalhes importam aqui, e ambos já causaram leitura errada:
+  #  1. varrer TODAS as linhas — DECISIONS.md tem "Iniciado em: 08/06/2026" no topo e a data
+  #     real depois; pegar só a primeira reportava 114 dias de atraso num arquivo atual.
+  #  2. extrair TODAS as datas de cada linha — a linha do DECISIONS.md tem duas datas
+  #     ("Iniciado em 08/06/2026 · Última atualização: 30/09/2026") e o -match devolve só a
+  #     primeira, que é a antiguidade, não a atualidade.
   $abs = Join-Path $Root $relative
   if (-not (Test-Path $abs)) { return $null }
-  $m = Select-String -Path $abs -Pattern $pattern -ErrorAction SilentlyContinue | Select-Object -First 1
-  if (-not $m) { return $null }
-  if ($m.Line -match '(\d{4})-(\d{2})-(\d{2})') {
-    return [datetime]::new([int]$Matches[1], [int]$Matches[2], [int]$Matches[3])
+  $rows = Select-String -Path $abs -Pattern $pattern -ErrorAction SilentlyContinue
+  $best = $null
+  foreach ($row in $rows) {
+    foreach ($hit in [regex]::Matches($row.Line, '(\d{4})-(\d{2})-(\d{2})')) {
+      $candidate = [datetime]::new([int]$hit.Groups[1].Value, [int]$hit.Groups[2].Value, [int]$hit.Groups[3].Value)
+      if (-not $best -or $candidate -gt $best) { $best = $candidate }
+    }
+    foreach ($hit in [regex]::Matches($row.Line, '(\d{2})/(\d{2})/(\d{4})')) {
+      $candidate = [datetime]::new([int]$hit.Groups[3].Value, [int]$hit.Groups[2].Value, [int]$hit.Groups[1].Value)
+      if (-not $best -or $candidate -gt $best) { $best = $candidate }
+    }
   }
-  if ($m.Line -match '(\d{2})/(\d{2})/(\d{4})') {
-    return [datetime]::new([int]$Matches[3], [int]$Matches[2], [int]$Matches[1])
-  }
-  return $null
+  return $best
 }
 
 # ---------------------------------------------------------------- coleta
@@ -183,7 +194,7 @@ $declaredPatterns = @{
   'AGENTS.md'         = 'Revisado em'
   'CONTEXT.md'        = 'Atualizado em'
   'AGENT_MEMORY.md'   = 'ltima atualiza'
-  'DECISIONS.md'      = 'ltima atualiza|Atualizado em'
+  'DECISIONS.md'      = 'ltima atualiza|Atualizado em|Iniciado em'
   'SESSION_LOG.md'    = 'Atualizado em'
   'PROJECTS_INDEX.md' = 'Gerado em|Atualizado em'
   'SKILLS_INDEX.md'   = 'Atualizado'
@@ -390,6 +401,8 @@ $rootDirtyLabel = if ($rootDirty.Count -gt 0) { $rootDirty.Count.ToString() + ' 
 $L.Add('| ' + (Code '.') + ' (raiz) | ' + (Code $rootParts[0]) + ' | ' + $rootParts[1] + ' | ' + $rootDirtyLabel + ' | n/a |')
 $L.Add('')
 $L.Add('## Worktrees (' + $worktrees.Count + ')')
+$L.Add('')
+$L.Add('São repositórios independentes com `.git` próprio (arquivo), não worktrees do repo raiz — ADR-003.')
 $L.Add('')
 $L.Add('Com repositório (' + $worktreeRepos.Count + '): ' + (($worktreeRepos | ForEach-Object { Code $_.name }) -join ', '))
 if ($worktreeShells.Count -gt 0) {

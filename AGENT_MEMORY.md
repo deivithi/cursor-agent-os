@@ -167,7 +167,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - **O que NÃO funciona nesta harness:** não há subsistema de memória nativo (os MCPs de memória são default-off e exigem `--patch`); não há statusline; e **nenhum hook do workspace é montado** pelo DSH (`hooks-claude-code` existe no fonte mas não está em `dsh-base`, `dsh-web-app` nem nos perfis). Só `AGENTS.md`/`CLAUDE.md` entram sozinhos
 - **Gerador:** `~/.claude/scripts/memory-doctor.ps1` — recomputa tudo do disco e reescreve `MEMORY_STATE.md` + o bloco em `~/.dsh/AGENTS.md`
 
-## Última atualização
+## Última atualização — 30/09/2026
 - **30/09/2026** — Reconciliação completa da memória com o disco e o Git: 20 contradições corrigidas, incluindo DRE (HEAD `6380b65`, 649 testes), `declaw cloud` inexistente (404), remotes da raiz que contrariavam o ADR-006, sync do Cursor desligado desde 16/06, scheduler do Hermes parado desde 08/07, handle do X e contagens de skills. Criados `MEMORY_STATE.md` (gerado) e `~/.claude/scripts/memory-doctor.ps1`; criado `~/.dsh/AGENTS.md`, que o DSH injeta em toda sessão. Registrado o projeto `civictrust` e as sessões de 22–30/09 que estavam em lacuna.
 - **21/09/2026** — Mapa persistente do DRE Eventos confirmado na máquina e no GitHub; memória project/user sincronizada; suíte `.venv` verde com 595 testes (contagem daquele HEAD).
 - **08/09/2026** — ADR-009/010/011: auto-approve; resolver sem transferir; pediu → faz; toda ação casa com skill.
