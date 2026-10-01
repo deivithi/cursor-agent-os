@@ -86,3 +86,6 @@ declaw/
 
 # Projeto com repositório próprio (github.com/deivithi/febracis-indicacoes)
 /REferido - Febracis/
+
+# Lixeira do instalador de skills (gerada automaticamente)
+.claude/skills/.trash/
