@@ -6,6 +6,14 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-01 — Plataforma de Indicações Febracis: pendências fechadas + Vercel no ar
+
+- ✅ Web no Vercel (prd = main, hml = branch hml); APIs no Zo atrás de gateway Caddy com identidade **OIDC do Vercel** (sem segredo compartilhado). Smoke ponta a ponta `scripts/smoke-vercel.sh`.
+- ✅ Backup externo cifrado (age) no Google Drive, diário 04:30; teste de restauração diário 04:10.
+- ✅ Hook pre-push (gitleaks + verify), dev-setup por chave restrita, segredos do transcription-router/febracorretor movidos ao cofre (senhas do febracorretor rotacionadas).
+- ✅ Revisões independentes: nenhum achado acima de Baixo pendente.
+- ⏳ PO: 2 cópias offline da chave age; rotacionar chaves Deepgram/AssemblyAI/Gladia; plano Vercel para uso comercial.
+
 ## 2026-10-01 — Plataforma de Indicações Febracis: T02 (ambientes)
 
 - ✅ ADR-009: dev/hml/prd/eph no Postgres do Zo; `infra/zo/provision.sh` idempotente; `selftest.sh` recria do zero, roda o provision 2×, faz smoke (banco + app) e remove sem sobras (43s).
