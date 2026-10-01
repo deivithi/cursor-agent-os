@@ -6,6 +6,26 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-01 — Plataforma de Indicações Febracis: análise, T01 e deploy no Zo
+
+### Resumo
+Projeto novo em `REferido - Febracis/` (repositório próprio, `github.com/deivithi/febracis-indicacoes`, privado).
+Análise de PRD/SDD/backlog aprovada pelo PO; T01 entregue com CI verde e deploy provisório no Zo.
+
+### O que foi feito
+- ✅ ADR-001 aceita (Opção A); ADR-005 (pg-boss + outbox), 006 (pessoa por marca), 007 (Zo provisório), 008 (stack; TS 6.0.3 porque typescript-eslint exige <6.1).
+- ✅ Backlog: ciclo T18↔T30 quebrado, caminho crítico revisto, 10 novos "Pontos a verificar".
+- ✅ Zo: banco `febracis_indicacoes`, schema `indicacoes`, roles owner/app sem BYPASSRLS; serviço único `indicacoes` → https://indicacoes-deivithi.zocomputer.io (API só em localhost).
+- ✅ Duas revisões independentes; todos os achados acima de Baixo corrigidos.
+
+### Decisões do operador
+- Fechamento automático em todo projeto/sessão: review completo → corrigir → docs/skills → commit, push, deploy (memória `fechamento-automatico`).
+
+### Pendências
+- Branch protection indisponível (GitHub Free + repo privado): GitHub Pro, org Febracis ou aceitar sem proteção.
+- Zo no limite de 10 serviços HTTP.
+- Segredos em texto aberto em env de outros serviços Zo (transcription-router, febracorretor) — mover para `/home/.z/secrets/` e rotacionar.
+
 ## 2026-09-30 — Reconciliação da memória + bootstrap automático no DSH
 
 ### Resumo

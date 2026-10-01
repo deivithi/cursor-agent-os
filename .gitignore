@@ -83,3 +83,6 @@ declaw/
 
 # Cache abortado de sync de skills de terceiros (manifest vazio, 22/09/2026)
 .claude/skills/synced/
+
+# Projeto com repositório próprio (github.com/deivithi/febracis-indicacoes)
+/REferido - Febracis/
