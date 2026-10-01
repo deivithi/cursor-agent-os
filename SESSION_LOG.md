@@ -6,6 +6,14 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-01 — Plataforma de Indicações Febracis: T02 (ambientes)
+
+- ✅ ADR-009: dev/hml/prd/eph no Postgres do Zo; `infra/zo/provision.sh` idempotente; `selftest.sh` recria do zero, roda o provision 2×, faz smoke (banco + app) e remove sem sobras (43s).
+- ✅ Dev local por túnel SSH com chave restrita a `permitopen 127.0.0.1:5432`.
+- ✅ Selftest pegou bug real (Turbo filtrava `API_INTERNAL_URL` → web de prd/eph chamaria a API de hml). Corrigido e coberto por teste.
+- ✅ Revisão independente: 1 Alto + 5 Médios corrigidos e reconferidos (APPROVE).
+- ⏳ prd sem serviço público (limite de 10 serviços no Zo); backup fora do servidor e teste de restore antes de dado real.
+
 ## 2026-10-01 — Plataforma de Indicações Febracis: análise, T01 e deploy no Zo
 
 ### Resumo
