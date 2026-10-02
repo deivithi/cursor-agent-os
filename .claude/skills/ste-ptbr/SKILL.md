@@ -50,7 +50,7 @@ executa sem erro.
 
 ## Quando NÃO usar (→ handoff)
 
-- Conversa rápida com o operador → padrão da sessão (`caverna` se ativa). **STE e caverna não se misturam:** caverna corta artigos, STE proíbe cortar artigos.
+- Mensagem para o operador → não precisa desta skill. A regra sempre ativa `rules/ste-comunicacao.md` já aplica o STE-PT nível 80 em toda mensagem, sem comando. **STE e caverna não se misturam:** a caverna corta artigos e o STE proíbe cortar artigos.
 - Texto de marketing, copy de evento, post → `brand-voice` / agency `marketing/`. STE mata o tom persuasivo.
 - Código, commit, PR → `clean-code-rules`, `caverna-commit`.
 

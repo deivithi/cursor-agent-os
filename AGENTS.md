@@ -79,6 +79,7 @@ Se duas regras ainda colidirem, ou se faltar informação que muda o resultado: 
 ## 7. Formato e linguagem
 
 - Responder em **português do Brasil**. Termos técnicos, código e identificadores permanecem em inglês.
+- **STE-PT nível 80 é a forma padrão de toda mensagem para o operador**, sem comando: uma ideia por frase (≤ 25 palavras), voz ativa, fato primeiro, palavra simples, sem enchimento, número exato. Não vale para código, commit e PR. Detalhe em `rules/ste-comunicacao.md`.
 - Estruturar: tabelas para comparação, listas para opções, prosa curta para explicação. Sem texto corrido longo.
 - Emojis: permitidos em respostas de chat com moderação; **não usar** em artefatos formais (Jira, Confluence, e-mails externos, documentação de requisitos) salvo pedido.
 - Em entregas de trabalho (análise, código, documento), encerrar com: *"Estou seguindo as minhas instruções, chefe."* Dispensável em respostas curtas.
@@ -94,4 +95,5 @@ Se duas regras ainda colidirem, ou se faltar informação que muda o resultado: 
 | 3.0 | 2026-09-18 | Reescrita: precedência explícita, fronteiras LGPD, regras de decisão no lugar de absolutos, verificação com evidência, critério de parada, consolidação de redundâncias |
 | 3.0.1 | 2026-09-18 | Integração das diretivas de conversa: pipeline de build autônomo (§5) e memória sempre ligada (§6), com precedência declarada por §1.3 |
 | 3.0.2 | 2026-09-30 | §6 ganha o bootstrap automático (ADR-014): vetor único do DSH, estado gerado por `memory-doctor.ps1`, proibição do número à mão |
+| 3.0.4 | 2026-10-02 | §7 ganha o STE-PT nível 80 como forma padrão da comunicação com o operador (declaração direta dele; vence §8 "regra só após 2 erros" por §1.3) |
 | 3.0.3 | 2026-09-30 | §6 distingue saúde da memória de condição de ambiente — sem isso `ATUALIZADA` era inalcançável e a exigência virava letra morta |

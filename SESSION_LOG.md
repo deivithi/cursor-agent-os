@@ -13,6 +13,7 @@
 - ✅ Linter `scripts/ste_lint.py` (stdlib) + testes; prancha HTML com verificador (`assets/`, gerada por `build_prancha.py`). Núcleo JS com paridade conferida contra o Python.
 - ✅ Revisão adversarial independente: 8 Major + 17 Minor, todos corrigidos com teste de regressão; re-checagem feita.
 - ✅ Prancha publicada como artifact privado: <https://claude.ai/artifact/H6mV1mdtPP47jYfLMv2P58>
+- ✅ Correção do operador: o STE é a forma padrão da comunicação com ele, não uma ferramenta sob comando. Nova regra sempre ativa `rules/ste-comunicacao.md` (nível 80, só em mensagens, não em código), com cópias `.mdc` no Cursor, linha no `AGENTS.md` §7 (v3.0.4) e no `~/.dsh/AGENTS.md`. Memória nas duas camadas.
 - ⏳ Próximo: usar `/ste` nos runbooks de `lead-audit`/`commission-audit` e nos passos Gherkin do `salesforce-bdd-spec-architect`.
 
 ## 2026-10-01 — Plataforma de Indicações Febracis: pendências fechadas + Vercel no ar
