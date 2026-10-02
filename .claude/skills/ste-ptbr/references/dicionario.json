@@ -1,0 +1,416 @@
+{
+  "versao": "1.0.0",
+  "fonte": "Adaptação PT-BR inspirada no ASD-STE100 (asd-ste100.org). Não é tradução oficial.",
+  "categorias": {
+    "ambiguidade": "Palavra com mais de um sentido no contexto Febracis/Salesforce. Erro nos níveis 100 e 80.",
+    "slop": "Enchimento típico de texto gerado por IA. Erro nos níveis 100 e 80.",
+    "registro": "Formalismo burocrático com alternativa curta. Erro no nível 100, aviso no nível 80.",
+    "verbo": "Forma verbal não aprovada em procedimento. Erro no nível 100, aviso no nível 80."
+  },
+  "nao_aprovadas": [
+    {
+      "termo": "efetuar",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\befetu\\w*",
+      "alternativa": "FAZER",
+      "nao_aprovado": "Efetue o backup da org.",
+      "aprovado": "FAÇA o backup da org."
+    },
+    {
+      "termo": "realizar",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\brealiz\\w*",
+      "alternativa": "FAZER (ou o verbo da ação: TESTAR, AUDITAR)",
+      "nao_aprovado": "Realize a auditoria de comissões.",
+      "aprovado": "AUDITE as comissões."
+    },
+    {
+      "termo": "utilizar",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\butiliz(?!ador)\\w*",
+      "alternativa": "USAR",
+      "nao_aprovado": "Utilize o filtro de duplicados.",
+      "aprovado": "USE o filtro de duplicados."
+    },
+    {
+      "termo": "possuir",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\bpossu(?!idor)\\w*",
+      "alternativa": "TER",
+      "nao_aprovado": "O lead possui dois e-mails.",
+      "aprovado": "O lead TEM dois e-mails."
+    },
+    {
+      "termo": "proceder com",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\bproced(?:er|a|am|e|em|eu|eram|endo)\\s+(?:com|a|à|ao)\\b",
+      "alternativa": "use o verbo da ação direto",
+      "nao_aprovado": "Proceda com a conversão do lead.",
+      "aprovado": "CONVERTA o lead."
+    },
+    {
+      "termo": "a fim de",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\ba fim de\\b",
+      "alternativa": "PARA",
+      "nao_aprovado": "Filtre a fim de encontrar duplicados.",
+      "aprovado": "Filtre PARA encontrar duplicados."
+    },
+    {
+      "termo": "visando",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\bvisando\\b",
+      "alternativa": "PARA",
+      "nao_aprovado": "Ajuste a regra visando reduzir falsos positivos.",
+      "aprovado": "Ajuste a regra PARA reduzir falsos positivos."
+    },
+    {
+      "termo": "com o objetivo de",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\bcom o (?:objetivo|intuito|propósito) de\\b",
+      "alternativa": "PARA",
+      "nao_aprovado": "Exporte com o objetivo de auditar.",
+      "aprovado": "Exporte PARA auditar."
+    },
+    {
+      "termo": "de forma a / de modo a",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\bde (?:forma|modo|maneira) a\\b",
+      "alternativa": "PARA",
+      "nao_aprovado": "Agrupe de forma a evitar retrabalho.",
+      "aprovado": "Agrupe PARA evitar retrabalho."
+    },
+    {
+      "termo": "mediante",
+      "classe": "prep",
+      "categoria": "registro",
+      "padrao": "\\bmediante\\b",
+      "alternativa": "COM",
+      "nao_aprovado": "Libere o acesso mediante aprovação do PO.",
+      "aprovado": "Libere o acesso COM aprovação do PO."
+    },
+    {
+      "termo": "através de",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\batravés d[eoa]s?\\b",
+      "alternativa": "POR / COM",
+      "nao_aprovado": "Importe através do Data Loader.",
+      "aprovado": "Importe COM o Data Loader."
+    },
+    {
+      "termo": "previamente",
+      "classe": "adv",
+      "categoria": "registro",
+      "padrao": "\\bpreviamente\\b",
+      "alternativa": "ANTES",
+      "nao_aprovado": "Valide previamente o arquivo.",
+      "aprovado": "Valide o arquivo ANTES."
+    },
+    {
+      "termo": "posteriormente",
+      "classe": "adv",
+      "categoria": "registro",
+      "padrao": "\\bposteriormente\\b",
+      "alternativa": "DEPOIS",
+      "nao_aprovado": "Posteriormente, envie o relatório.",
+      "aprovado": "DEPOIS, envie o relatório."
+    },
+    {
+      "termo": "aproximadamente",
+      "classe": "adv",
+      "categoria": "registro",
+      "padrao": "\\baproximadamente\\b",
+      "alternativa": "CERCA DE (ou o número exato)",
+      "nao_aprovado": "Espere aproximadamente 10 minutos.",
+      "aprovado": "Espere CERCA DE 10 minutos."
+    },
+    {
+      "termo": "em virtude de / devido ao fato de",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\b(?:em virtude d[eoa]s?|devido ao fato de|tendo em vista que|haja vista)\\b",
+      "alternativa": "PORQUE / POR CAUSA DE",
+      "nao_aprovado": "O job falhou em virtude do limite de API.",
+      "aprovado": "O job falhou POR CAUSA DO limite de API."
+    },
+    {
+      "termo": "no que tange a",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\bno que (?:tange|diz respeito|se refere) (?:a|à|ao|aos|às)\\b",
+      "alternativa": "SOBRE",
+      "nao_aprovado": "No que tange às comissões, não há erro.",
+      "aprovado": "SOBRE as comissões: não há erro."
+    },
+    {
+      "termo": "a nível de",
+      "classe": "loc",
+      "categoria": "registro",
+      "padrao": "\\ba nível de\\b",
+      "alternativa": "NO / NA / DE",
+      "nao_aprovado": "Erro a nível de perfil.",
+      "aprovado": "Erro NO perfil.",
+      "nota": "\"Em nível de\" fica: é termo do Salesforce (segurança em nível de campo, em nível de registro)."
+    },
+    {
+      "termo": "disponibilizar",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\bdisponibiliz\\w*",
+      "alternativa": "LIBERAR",
+      "nao_aprovado": "Disponibilize o relatório ao time.",
+      "aprovado": "LIBERE o relatório para o time."
+    },
+    {
+      "termo": "favor",
+      "classe": "s",
+      "categoria": "registro",
+      "padrao": "^\\s*(?:por )?favor\\b",
+      "alternativa": "use o imperativo direto",
+      "nao_aprovado": "Favor verificar o anexo.",
+      "aprovado": "VERIFIQUE o anexo."
+    },
+    {
+      "termo": "encontra-se",
+      "classe": "v",
+      "categoria": "registro",
+      "padrao": "\\bencontra(?:m)?-se\\b",
+      "alternativa": "ESTÁ / ESTÃO",
+      "nao_aprovado": "O lead encontra-se bloqueado.",
+      "aprovado": "O lead ESTÁ bloqueado."
+    },
+    {
+      "termo": "garantir / assegurar",
+      "classe": "v",
+      "categoria": "ambiguidade",
+      "padrao": "\\b(?:garant|assegur)(?!ias?\\b)\\w*",
+      "alternativa": "CONFIRMAR",
+      "nao_aprovado": "Garanta que o lead não é duplicado.",
+      "aprovado": "CONFIRME que o lead não é duplicado.",
+      "nota": "\"Garantir\" promete um resultado. Em procedimento, o leitor só consegue confirmar."
+    },
+    {
+      "termo": "certificar-se",
+      "classe": "v",
+      "categoria": "ambiguidade",
+      "padrao": "\\bcertifiqu?e-se\\b|\\bcertificar-se\\b",
+      "alternativa": "CONFIRMAR",
+      "nao_aprovado": "Certifique-se de que o job terminou.",
+      "aprovado": "CONFIRME que o job terminou."
+    },
+    {
+      "termo": "deletar / apagar",
+      "classe": "v",
+      "categoria": "ambiguidade",
+      "padrao": "\\b(?:delet|apag)(?:ar|a|am|e|em|ue|uem|ou|aram|ado|ada|ados|adas|ando)\\b",
+      "alternativa": "EXCLUIR",
+      "nao_aprovado": "Delete o lead duplicado.",
+      "aprovado": "EXCLUA o lead duplicado.",
+      "nota": "O Salesforce em PT-BR usa \"Excluir\". Use a palavra da interface."
+    },
+    {
+      "termo": "subir (deploy)",
+      "classe": "v",
+      "categoria": "ambiguidade",
+      "padrao": "\\b(?:sub(?:ir|a|am|o|imos|iu|iram|irá|irão|indo)|sobem?)\\s+(?:(?:o|a)\\s+(?:deploy|release|código|pacote|branch|versão|change set)\\s+)?(?:para|pra)\\s+(?:a\\s+)?(?:prd|prod|produção|homologação|hml|sandbox)\\b|\\bsub(?:ir|a|am|o|imos|iu|iram|irá|irão|indo)\\s+(?:o|a)\\s+(?:deploy|release|pacote|change set)\\b",
+      "alternativa": "FAZER DEPLOY EM",
+      "nao_aprovado": "Suba para produção às 18h.",
+      "aprovado": "FAÇA O DEPLOY EM produção às 18h.",
+      "nota": "\"Subir\" também significa upload e aumento."
+    },
+    {
+      "termo": "o mesmo / a mesma (pronome)",
+      "classe": "pron",
+      "categoria": "ambiguidade",
+      "padrao": "\\b(?:o|a|os|as|do|da|dos|das|no|na|nos|nas|ao|à|aos|às|pelo|pela|pelos|pelas)\\s+mesm[oa]s?(?=\\s*(?:[.,;:!?)]|$)|\\s+(?:deve|devem|foi|foram|está|estão|será|serão|tem|têm|possui|possuem|é|são|ao|à|aos|às|para|por|com|ou)\\b|\\s+e\\s)",
+      "alternativa": "repita o nome (o lead, a regra)",
+      "nao_aprovado": "Abra o lead e envie o mesmo ao gestor.",
+      "aprovado": "Abra o lead. ENVIE O LEAD ao gestor."
+    },
+    {
+      "termo": "e/ou",
+      "classe": "conj",
+      "categoria": "ambiguidade",
+      "padrao": "\\be/ou\\b",
+      "alternativa": "E ou OU (escolha um)",
+      "nao_aprovado": "Envie para o PO e/ou o gestor.",
+      "aprovado": "Envie para o PO E para o gestor."
+    },
+    {
+      "termo": "etc.",
+      "classe": "abrev",
+      "categoria": "ambiguidade",
+      "padrao": "\\betc\\.?",
+      "alternativa": "liste todos os itens",
+      "nao_aprovado": "Valide e-mail, telefone, etc.",
+      "aprovado": "Valide o e-mail, o telefone e o CPF."
+    },
+    {
+      "termo": "vale ressaltar / é importante destacar",
+      "classe": "loc",
+      "categoria": "slop",
+      "padrao": "\\b(?:vale (?:ressaltar|destacar|lembrar|mencionar|notar)|é (?:importante|fundamental|crucial) (?:ressaltar|destacar|notar|lembrar|mencionar)|cabe (?:ressaltar|destacar|mencionar))\\b",
+      "alternativa": "remova; escreva o fato",
+      "nao_aprovado": "Vale ressaltar que o job roda às 6h.",
+      "aprovado": "O job roda às 6h."
+    },
+    {
+      "termo": "no cenário atual",
+      "classe": "loc",
+      "categoria": "slop",
+      "padrao": "\\b(?:no cenário atual|nos dias de hoje|no mundo atual|em um mundo cada vez mais)\\b",
+      "alternativa": "remova",
+      "nao_aprovado": "No cenário atual, os leads chegam por vários canais.",
+      "aprovado": "Os leads chegam por 4 canais."
+    },
+    {
+      "termo": "robusto",
+      "classe": "adj",
+      "categoria": "slop",
+      "padrao": "\\brobust[oa]s?\\b",
+      "alternativa": "diga a propriedade (com retry, com teste, com rollback)",
+      "nao_aprovado": "Uma solução robusta de deduplicação.",
+      "aprovado": "Uma deduplicação COM teste de regressão."
+    },
+    {
+      "termo": "crucial / fundamental",
+      "classe": "adj",
+      "categoria": "slop",
+      "padrao": "\\b(?:crucia(?:l|is)|fundamenta(?:l|is)|essencia(?:l|is)|primordia(?:l|is))\\b",
+      "alternativa": "NECESSÁRIO (ou remova)",
+      "nao_aprovado": "É crucial validar o CPF.",
+      "aprovado": "VALIDE o CPF."
+    },
+    {
+      "termo": "abrangente",
+      "classe": "adj",
+      "categoria": "slop",
+      "padrao": "\\babrangentes?\\b",
+      "alternativa": "COMPLETO (e diga o escopo)",
+      "nao_aprovado": "Uma auditoria abrangente.",
+      "aprovado": "Uma auditoria das 12 regras de comissão."
+    },
+    {
+      "termo": "alavancar / potencializar",
+      "classe": "v",
+      "categoria": "slop",
+      "padrao": "\\bpotencializ\\w*|\\balavanc(?:ar|am|e|em|ou|ado|ada|ados|adas|ando|ará|arão|amos)\\b|\\balavanqu(?:e|em)\\b",
+      "alternativa": "AUMENTAR (com número)",
+      "nao_aprovado": "Isso vai alavancar a conversão.",
+      "aprovado": "Isso vai AUMENTAR a conversão em cerca de 5 p.p. [conf: baixa]."
+    },
+    {
+      "termo": "basicamente / simplesmente",
+      "classe": "adv",
+      "categoria": "slop",
+      "padrao": "\\b(?:basicamente|simplesmente|literalmente|essencialmente|efetivamente)\\b",
+      "alternativa": "remova",
+      "nao_aprovado": "Basicamente, o job reprocessa os leads.",
+      "aprovado": "O job reprocessa os leads."
+    },
+    {
+      "termo": "mergulhar",
+      "classe": "v",
+      "categoria": "slop",
+      "padrao": "\\bmergulh(?:ar|e|ou|ando|o)\\b|\\bmergulho profundo\\b",
+      "alternativa": "ANALISAR",
+      "nao_aprovado": "Vamos mergulhar nos dados do CIS.",
+      "aprovado": "ANALISE os dados do Método CIS."
+    },
+    {
+      "termo": "deverá / deve-se (em procedimento)",
+      "classe": "v",
+      "categoria": "verbo",
+      "padrao": "\\b(?:deverá|deverão|deve-se|devem-se|é necessário que|é preciso que)\\b",
+      "alternativa": "imperativo (FAÇA X)",
+      "nao_aprovado": "O analista deverá exportar o relatório.",
+      "aprovado": "EXPORTE o relatório."
+    }
+  ],
+  "aprovadas": [
+    {
+      "termo": "VALIDAR",
+      "classe": "v",
+      "sentido": "Executar uma regra automática que bloqueia dado inválido (Validation Rule, script).",
+      "nao_use_para": "conferência manual → VERIFICAR"
+    },
+    {
+      "termo": "VERIFICAR",
+      "classe": "v",
+      "sentido": "Conferir um valor com os olhos ou com uma consulta.",
+      "nao_use_para": "aceite formal → HOMOLOGAR"
+    },
+    {
+      "termo": "HOMOLOGAR",
+      "classe": "v",
+      "sentido": "Dar o aceite do PO em ambiente de homologação.",
+      "nao_use_para": "teste automatizado → TESTAR"
+    },
+    {
+      "termo": "EXCLUIR",
+      "classe": "v",
+      "sentido": "Remover um registro (palavra da interface Salesforce PT-BR).",
+      "nao_use_para": "—"
+    },
+    {
+      "termo": "CONVERTER",
+      "classe": "v",
+      "sentido": "Converter um Lead em Conta, Contato e Oportunidade no Salesforce.",
+      "nao_use_para": "mudança de formato → TRANSFORMAR"
+    },
+    {
+      "termo": "SANITIZAR",
+      "classe": "v",
+      "sentido": "Limpar e padronizar campos de lead (formato, espaço, maiúscula).",
+      "nao_use_para": "proteção de dado pessoal → ANONIMIZAR"
+    },
+    {
+      "termo": "PRÓXIMO",
+      "classe": "adj",
+      "sentido": "Seguinte na ordem.",
+      "nao_use_para": "distância → PERTO DE"
+    },
+    {
+      "termo": "CONFIRMAR",
+      "classe": "v",
+      "sentido": "Ver que uma condição é verdadeira.",
+      "nao_use_para": "—"
+    }
+  ],
+  "nomes_tecnicos": [
+    {
+      "termo": "Lead",
+      "sentido": "Registro do objeto Lead no Salesforce. Não use para Contato ou Oportunidade."
+    },
+    {
+      "termo": "Método CIS",
+      "sentido": "Evento de alto impacto com alto volume de leads. Não abrevie para \"CIS\" no primeiro uso."
+    },
+    {
+      "termo": "comissão",
+      "sentido": "Valor pago por performance, auditado com precisão de centavo."
+    },
+    {
+      "termo": "DRE",
+      "sentido": "Demonstração do Resultado do Exercício de eventos (projeto DRE_Eventos)."
+    },
+    {
+      "termo": "deploy",
+      "sentido": "Publicação de código ou metadado em um ambiente (sandbox, homologação, produção)."
+    },
+    {
+      "termo": "org",
+      "sentido": "Uma instância do Salesforce (produção ou sandbox)."
+    }
+  ]
+}

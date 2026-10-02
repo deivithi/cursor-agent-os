@@ -1,0 +1,647 @@
+<title>Português Técnico Simplificado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: prancha de desenho técnico — moldura com coordenadas (1–8 × A–D), painéis rotulados A–G e carimbo no canto inferior direito. */
+:root {
+  --paper: #f6f7f8;
+  --sheet: #ffffff;
+  --ink: #14171b;
+  --rule: #23272c;
+  --hair: #cfd4da;
+  --muted: #5a626c;
+  --fill: #eaeef3;
+  --blue: #1d5bc9;
+  --blue-soft: #dfe8f9;
+  --red: #c2352a;
+  --red-soft: #fbe3e0;
+  --green: #1c7a4b;
+  --mark: #fff0b8;
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-cond: "IBM Plex Sans Condensed", "IBM Plex Sans", "Arial Narrow", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --s-1: 0.6875rem; --s0: 0.8125rem; --s1: 0.9375rem; --s2: 1.125rem; --s3: 1.5rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0c1116; --sheet: #111820; --ink: #e4e8ec; --rule: #8693a1; --hair: #2a3440;
+    --muted: #96a1ad; --fill: #1a232d; --blue: #86aaff; --blue-soft: #1c2a44; --red: #ff8a7d;
+    --red-soft: #3a1f1d; --green: #63d39c; --mark: #4a3f12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0c1116; --sheet: #111820; --ink: #e4e8ec; --rule: #8693a1; --hair: #2a3440;
+  --muted: #96a1ad; --fill: #1a232d; --blue: #86aaff; --blue-soft: #1c2a44; --red: #ff8a7d;
+  --red-soft: #3a1f1d; --green: #63d39c; --mark: #4a3f12; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 var(--s0)/1.45 var(--font-sans); padding-inline: 16px; padding-block: 20px 32px; }
+.mono { font-family: var(--font-mono); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* Moldura com coordenadas */
+.sheet { max-width: 1480px; margin-inline: auto; background: var(--sheet); border: 1px solid var(--rule); display: grid; grid-template-columns: 22px minmax(0, 1fr) 22px; grid-template-rows: 22px auto 22px; }
+.ruler { display: grid; font: 400 var(--s-1)/1 var(--font-mono); color: var(--muted); }
+.ruler.h { grid-template-columns: repeat(8, 1fr); grid-column: 2; }
+.ruler.h span { display: grid; place-items: center; border-left: 1px solid var(--hair); }
+.ruler.h span:first-child { border-left: 0; }
+.ruler.v { grid-template-rows: repeat(4, 1fr); grid-row: 2; }
+.ruler.v span { display: grid; place-items: center; border-top: 1px solid var(--hair); }
+.ruler.v span:first-child { border-top: 0; }
+.ruler.top { border-bottom: 1px solid var(--rule); }
+.ruler.bottom { border-top: 1px solid var(--rule); grid-row: 3; }
+.ruler.left { border-right: 1px solid var(--rule); grid-column: 1; }
+.ruler.right { border-left: 1px solid var(--rule); grid-column: 3; }
+.field { grid-column: 2; grid-row: 2; padding: 18px; display: grid; gap: 18px; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; }
+
+/* Painéis */
+.panel { border: 1px solid var(--rule); min-width: 0; display: flex; flex-direction: column; background: var(--sheet); }
+.panel > header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--rule); min-height: 34px; padding-right: 10px; }
+.tag { width: 34px; align-self: stretch; display: grid; place-items: center; background: var(--ink); color: var(--sheet); font: 600 var(--s1)/1 var(--font-cond); }
+.panel h2 { font: 600 var(--s1)/1.2 var(--font-cond); letter-spacing: 0.01em; flex: 1; }
+.cap { font: 400 var(--s-1)/1.2 var(--font-mono); color: var(--muted); text-align: right; }
+.body { padding: 14px 16px 16px; display: grid; gap: 12px; min-width: 0; }
+.note { font-size: var(--s-1); color: var(--muted); font-style: italic; }
+.foot { border-top: 1px solid var(--hair); padding-top: 10px; font-size: var(--s-1); color: var(--muted); display: grid; gap: 2px; }
+
+.pA { grid-column: span 4; } .pB { grid-column: span 5; } .pC { grid-column: span 3; }
+.pD { grid-column: span 6; } .pE { grid-column: span 3; } .colF { grid-column: span 3; display: grid; gap: 18px; min-width: 0; }
+.pG { grid-column: span 12; }
+@media (max-width: 1180px) {
+  .pA, .pB, .pD, .pG { grid-column: span 12; } .pC, .pE, .colF { grid-column: span 6; }
+}
+@media (max-width: 720px) {
+  .field { padding: 10px; gap: 12px; }
+  .pC, .pE, .colF { grid-column: span 12; }
+  .sheet { grid-template-columns: 0 minmax(0, 1fr) 0; }
+  .ruler.v { visibility: hidden; }
+}
+
+/* A — árvore */
+.root-box { justify-self: center; text-align: center; border: 1px solid var(--blue); background: var(--blue-soft); padding: 8px 28px; }
+.root-box b { display: block; font: 600 var(--s2)/1.2 var(--font-cond); }
+.root-box span { font-size: var(--s-1); color: var(--muted); }
+.parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; position: relative; padding-top: 14px; border-top: 1px solid var(--rule); }
+.part > h3 { font: 600 var(--s0)/1.2 var(--font-cond); border: 1px solid var(--rule); padding: 6px 8px; text-align: center; }
+.part ul { list-style: none; margin: 8px 0 0 10px; padding: 0 0 0 12px; border-left: 1px solid var(--rule); display: grid; gap: 4px; }
+.part li { position: relative; font-size: var(--s0); }
+.part li::before { content: ""; position: absolute; left: -12px; top: 0.72em; width: 8px; border-top: 1px solid var(--rule); }
+.part li .n { font: 400 var(--s-1)/1 var(--font-mono); color: var(--muted); margin-right: 6px; }
+.part li small { display: block; color: var(--muted); font-size: var(--s-1); }
+.callout { border: 1px solid var(--hair); background: var(--fill); padding: 8px 10px; font-size: var(--s-1); color: var(--muted); }
+.callout b { color: var(--ink); font-size: var(--s0); display: block; }
+
+/* B — anatomia */
+.orig { font-size: var(--s0); }
+.orig .x { color: var(--red); font-weight: 500; }
+.ex { display: grid; gap: 6px; }
+.ex h3 { font: 600 var(--s0)/1.2 var(--font-sans); }
+.count { font: 400 var(--s-1)/1 var(--font-mono); color: var(--muted); }
+.sent { font: 500 var(--s1)/1.9 var(--font-mono); overflow-x: auto; }
+.seg { border-bottom: 2px solid var(--blue); padding-bottom: 1px; }
+.seg.r { border-bottom-color: var(--red); }
+.seg sup { font: 600 0.62rem/1 var(--font-sans); color: var(--sheet); background: var(--blue); border-radius: 50%; display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; margin-left: 2px; vertical-align: 0.9em; }
+.seg.r sup { background: var(--red); }
+.legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 3px 14px; font-size: var(--s-1); color: var(--blue); }
+.legend li { display: flex; gap: 6px; }
+.legend li b { font-family: var(--font-mono); font-weight: 500; }
+.legend li.r { color: var(--red); }
+
+/* Tabelas */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--s0); }
+th { font: 400 var(--s-1)/1.2 var(--font-mono); color: var(--muted); text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--fill) 55%, transparent); }
+td.ex-c { font-family: var(--font-mono); font-size: var(--s-1); }
+.ok, .no { font-size: var(--s-1); white-space: nowrap; font-weight: 500; }
+.ok { color: var(--green); } .no { color: var(--red); }
+.w { font-family: var(--font-mono); white-space: nowrap; }
+.w i { color: var(--muted); font-style: normal; }
+.alt { color: var(--blue); font-weight: 500; }
+td.bad { color: var(--red); font-size: var(--s-1); }
+td.good { font-size: var(--s-1); }
+.cat { font: 500 0.66rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 5px; border: 1px solid currentColor; color: var(--muted); white-space: nowrap; }
+
+/* Controles */
+.ctrl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg-ctrl { display: inline-flex; border: 1px solid var(--rule); }
+.seg-ctrl button { border: 0; background: transparent; padding: 4px 10px; font: 500 var(--s-1)/1.3 var(--font-mono); cursor: pointer; }
+.seg-ctrl button + button { border-left: 1px solid var(--rule); }
+.seg-ctrl button[aria-pressed="true"] { background: var(--ink); color: var(--sheet); }
+.search { border: 1px solid var(--hair); background: var(--sheet); padding: 4px 8px; font-size: var(--s0); min-width: 0; flex: 1 1 160px; }
+.btn { border: 1px solid var(--rule); background: var(--sheet); padding: 5px 10px; font-size: var(--s-1); cursor: pointer; }
+.btn:hover, .seg-ctrl button:hover:not([aria-pressed="true"]) { background: var(--fill); }
+
+/* E — limites */
+.bar { display: grid; gap: 4px; }
+.bar-h { display: flex; justify-content: space-between; gap: 8px; font-size: var(--s0); }
+.bar-h b { font: 500 var(--s-1)/1.4 var(--font-mono); color: var(--blue); white-space: nowrap; }
+.track { position: relative; height: 12px; border: 1px solid var(--rule); background: var(--sheet); }
+.track .fill { position: absolute; inset: 0 auto 0 0; background: var(--blue-soft); border-right: 2px solid var(--blue); transition: width 0.35s ease; }
+.ticks { display: flex; justify-content: space-between; font: 400 0.6rem/1 var(--font-mono); color: var(--muted); }
+.rules-list { margin: 0; padding-left: 16px; font-size: var(--s-1); display: grid; gap: 3px; }
+@media (prefers-reduced-motion: reduce) { .track .fill { transition: none; } }
+
+/* F — histórico */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: relative; }
+.timeline::before { content: ""; position: absolute; left: 10%; right: 10%; top: 26px; border-top: 1px solid var(--rule); }
+.timeline li { display: grid; justify-items: center; text-align: center; gap: 6px; font-size: 0.66rem; color: var(--muted); padding-inline: 2px; }
+.timeline li b { font: 500 var(--s0)/1 var(--font-mono); color: var(--ink); }
+.timeline li i { width: 11px; height: 11px; border: 2px solid var(--rule); border-radius: 50%; background: var(--sheet); position: relative; }
+.timeline li.us i { border-color: var(--blue); background: var(--blue); }
+.timeline li.us b { color: var(--blue); }
+
+/* Carimbo */
+.stamp { border: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; }
+.stamp > div { padding: 6px 10px; border-top: 1px solid var(--rule); min-width: 0; }
+.stamp > div:nth-child(odd):not(.wide) { border-right: 1px solid var(--rule); }
+.stamp .wide { grid-column: span 2; }
+.stamp > div:first-child { border-top: 0; }
+.stamp small { display: block; font: 400 0.62rem/1.3 var(--font-mono); color: var(--muted); }
+.stamp span { font-size: var(--s0); font-weight: 500; overflow-wrap: anywhere; }
+.stamp .title span { font: 600 var(--s2)/1.25 var(--font-cond); }
+
+/* G — verificador */
+.g-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; }
+@media (max-width: 900px) { .g-grid { grid-template-columns: minmax(0, 1fr); } }
+.g-in { display: grid; gap: 8px; align-content: start; }
+.g-in label { font: 500 var(--s-1)/1.2 var(--font-mono); color: var(--muted); }
+textarea { width: 100%; min-height: 260px; resize: vertical; border: 1px solid var(--rule); background: var(--sheet); padding: 10px; font: 400 var(--s0)/1.55 var(--font-mono); }
+.cmd { display: flex; gap: 8px; align-items: center; border: 1px dashed var(--hair); padding: 6px 8px; font: 400 var(--s-1)/1.4 var(--font-mono); min-width: 0; }
+.cmd code { flex: 1; overflow-x: auto; white-space: nowrap; }
+.g-out { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.score { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: center; border: 1px solid var(--rule); padding: 10px 12px; border-left-width: 6px; }
+.score.pass { border-left-color: var(--green); } .score.fail { border-left-color: var(--red); }
+.score .pct { font: 600 var(--s3)/1 var(--font-mono); font-variant-numeric: tabular-nums; grid-row: span 2; }
+.score .verdict { font: 600 var(--s0)/1.2 var(--font-cond); text-transform: uppercase; letter-spacing: 0.06em; }
+.score.pass .verdict { color: var(--green); } .score.fail .verdict { color: var(--red); }
+.score .sum { font-size: var(--s-1); color: var(--muted); font-variant-numeric: tabular-nums; }
+.frases { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.frase { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 4px 8px; padding: 6px 8px; border: 1px solid var(--hair); align-items: baseline; }
+.frase .st { font-weight: 600; } .frase.e .st { color: var(--red); } .frase.k .st { color: var(--green); }
+.frase .tx { font-size: var(--s0); overflow-wrap: anywhere; }
+.frase .meta { font: 400 var(--s-1)/1.2 var(--font-mono); color: var(--muted); white-space: nowrap; text-align: right; }
+.frase .meta.over { color: var(--red); font-weight: 500; }
+.frase mark { background: var(--mark); color: inherit; padding: 0 1px; }
+.frase ul { grid-column: 2 / -1; list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: var(--s-1); }
+.frase ul .erro { color: var(--red); } .frase ul .aviso { color: var(--muted); }
+.frase ul code { font-family: var(--font-mono); }
+.empty { font-size: var(--s0); color: var(--muted); padding: 12px; border: 1px dashed var(--hair); }
+</style>
+
+<main class="sheet" aria-label="Prancha de referência do STE-PT">
+  <div class="ruler h top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+  <div class="ruler v left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+
+  <div class="field">
+
+    <!-- A -->
+    <section class="panel pA" aria-labelledby="hA">
+      <header><span class="tag">A</span><h2 id="hA">Estrutura do documento</h2><span class="cap">especificação STE-PT</span></header>
+      <div class="body">
+        <div class="root-box"><b>STE-PT</b><span>Português Técnico Simplificado</span></div>
+        <div class="parts">
+          <div class="part">
+            <h3>Parte 1: Regras de escrita</h3>
+            <ul>
+              <li><span class="n">Seção 1</span>Palavras</li>
+              <li><span class="n">Seção 2</span>Grupos nominais</li>
+              <li><span class="n">Seção 3</span>Verbos</li>
+              <li><span class="n">Seção 4</span>Frases</li>
+              <li><span class="n">Seção 5</span>Procedimentos</li>
+              <li><span class="n">Seção 6</span>Texto descritivo</li>
+              <li><span class="n">Seção 7</span>Avisos de segurança</li>
+              <li><span class="n">Seção 8</span>Pontuação e contagem</li>
+              <li><span class="n">Seção 9</span>Práticas de escrita</li>
+            </ul>
+          </div>
+          <div class="part">
+            <h3>Parte 2: Dicionário</h3>
+            <ul>
+              <li>Palavras aprovadas<small>em MAIÚSCULAS, um sentido</small></li>
+              <li>Palavras não aprovadas<small>em minúsculas, com a alternativa aprovada</small></li>
+              <li>Nomes técnicos<small>Lead, Método CIS, deploy, org</small></li>
+              <li>Categorias<small>registro, ambiguidade, slop, verbo</small></li>
+            </ul>
+            <div class="callout" style="margin-top:10px"><b id="dicCount">Dicionário PT-BR</b>Cada palavra tem uma classe gramatical e um sentido.</div>
+          </div>
+        </div>
+        <p class="note">Cada regra tem um código no linter (E01 a A09). O código E04, por exemplo, é a Seção 1, Palavras.</p>
+      </div>
+    </section>
+
+    <!-- B -->
+    <section class="panel pB" aria-labelledby="hB">
+      <header><span class="tag">B</span><h2 id="hB">Anatomia das frases STE-PT</h2><span class="cap">exemplos anotados</span></header>
+      <div class="body">
+        <div class="ex">
+          <span class="count">Texto original, não STE: palavras não aprovadas em vermelho</span>
+          <p class="orig">É de suma importância que o analista <span class="x">realize previamente</span> a sanitização dos leads, <span class="x">assegurando</span> que <span class="x">os mesmos</span> não <span class="x">possuam</span> duplicidade, e <span class="x">posteriormente efetue</span> a importação <span class="x">através do</span> Data Loader.</p>
+        </div>
+        <div class="ex">
+          <h3>1 Passo de procedimento (a mesma instrução, reescrita)</h3>
+          <span class="count">9 palavras · limite 20</span>
+          <p class="sent"><span class="seg">Sanitize<sup>1</sup></span> os <span class="seg">leads do Método CIS<sup>2</sup></span> <span class="seg">antes<sup>3</sup></span> da <span class="seg">importação<sup>4</sup></span>.</p>
+          <ul class="legend">
+            <li><b>1</b>Verbo aprovado, imperativo</li>
+            <li><b>2</b>Nome técnico, máx. 3 palavras</li>
+            <li><b>3</b>Não “previamente”</li>
+            <li><b>4</b>Uma instrução por passo</li>
+          </ul>
+        </div>
+        <div class="ex">
+          <h3>2 Aviso de segurança</h3>
+          <p class="sent"><span class="seg r">BLOQUEIO:<sup>1</sup></span> <span class="seg">Não faça o deploy sem o aceite do PO.<sup>2</sup></span> <span class="seg">O deploy muda o fluxo de leads.<sup>3</sup></span></p>
+          <ul class="legend">
+            <li class="r"><b>1</b>BLOQUEIO = perda irreversível de dados</li>
+            <li><b>2</b>Primeiro: o comando</li>
+            <li><b>3</b>Depois: o risco</li>
+            <li class="r"><b>·</b>ATENÇÃO = dado errado ou retrabalho</li>
+          </ul>
+        </div>
+        <div class="ex">
+          <h3>3 Frase descritiva</h3>
+          <span class="count">11 palavras · limite 25</span>
+          <p class="sent">O job <span class="seg">distribui<sup>1</sup></span> os leads do Método CIS a cada <span class="seg">15 minutos<sup>2</sup></span>.</p>
+          <ul class="legend">
+            <li><b>1</b>Presente simples, voz ativa</li>
+            <li><b>2</b>Número exato, não “periodicamente”</li>
+          </ul>
+        </div>
+        <p class="foot">Máximo de 6 frases por parágrafo, com um tópico por parágrafo.</p>
+      </div>
+    </section>
+
+    <!-- C -->
+    <section class="panel pC" aria-labelledby="hC">
+      <header><span class="tag">C</span><h2 id="hC">Formas verbais</h2><span class="cap">Seção 3</span></header>
+      <div class="body">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Forma</th><th>Exemplo</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Imperativo</td><td class="ex-c">Exclua o lead.</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Presente</td><td class="ex-c">O job executa.</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Pretérito perfeito</td><td class="ex-c">O job executou.</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Futuro (ir + infinitivo)</td><td class="ex-c">O job vai executar.</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Infinitivo</td><td class="ex-c">Use o filtro para achar o lead.</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Particípio (adjetivo)</td><td class="ex-c">o lead convertido</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Subjuntivo, só em condição</td><td class="ex-c">Se o lead for duplicado, …</td><td class="ok">✓ Aprovado</td></tr>
+              <tr><td>Gerundismo</td><td class="ex-c">Vou estar enviando.</td><td class="no">✕ Não aprovado</td></tr>
+              <tr><td>Futuro do pretérito</td><td class="ex-c">O job deveria executar.</td><td class="no">✕ Não aprovado</td></tr>
+              <tr><td>“Deverá” em procedimento</td><td class="ex-c">O analista deverá exportar.</td><td class="no">✕ Não aprovado</td></tr>
+              <tr><td>Passiva em procedimento</td><td class="ex-c">O campo deve ser preenchido.</td><td class="no">✕ Não aprovado</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="foot">Use o gerúndio só dentro de um nome técnico, por exemplo o status “Em andamento”. Use a voz passiva em texto descritivo só quando o agente não importa.</p>
+      </div>
+    </section>
+
+    <!-- D -->
+    <section class="panel pD" aria-labelledby="hD">
+      <header><span class="tag">D</span><h2 id="hD">Entradas do dicionário</h2><span class="cap">formato Parte 2</span></header>
+      <div class="body">
+        <div class="ctrl">
+          <div class="seg-ctrl" role="group" aria-label="Filtrar por categoria" id="catFilter">
+            <button type="button" data-cat="todas" aria-pressed="true">todas</button>
+            <button type="button" data-cat="aprovada" aria-pressed="false">aprovadas</button>
+            <button type="button" data-cat="registro" aria-pressed="false">registro</button>
+            <button type="button" data-cat="ambiguidade" aria-pressed="false">ambiguidade</button>
+            <button type="button" data-cat="slop" aria-pressed="false">slop</button>
+          </div>
+          <input class="search" id="dicSearch" type="search" placeholder="Buscar palavra" aria-label="Buscar palavra no dicionário">
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Palavra (classe)</th><th>Status</th><th>Sentido ou alternativa</th><th>Exemplo aprovado</th><th>Não aprovado</th></tr></thead>
+            <tbody id="dicBody"></tbody>
+          </table>
+        </div>
+        <p class="foot"><span>Convenção: palavra aprovada em MAIÚSCULAS, palavra não aprovada em minúsculas.</span><span>A palavra aprovada tem só o sentido listado. “Converter” é só Lead → Conta, Contato e Oportunidade; mudança de formato é “transformar”.</span></p>
+      </div>
+    </section>
+
+    <!-- E -->
+    <section class="panel pE" aria-labelledby="hE">
+      <header><span class="tag">E</span><h2 id="hE">Limites das regras</h2><span class="cap">valores máximos</span></header>
+      <div class="body">
+        <div class="ctrl">
+          <div class="seg-ctrl" role="group" aria-label="Nível de rigor">
+            <button type="button" data-nivel="100" aria-pressed="true">nível 100</button>
+            <button type="button" data-nivel="80" aria-pressed="false">nível 80</button>
+          </div>
+        </div>
+        <div id="bars" style="display:grid;gap:12px"></div>
+        <ul class="rules-list">
+          <li>Use a mesma palavra para a mesma coisa.</li>
+          <li>Não corte artigo nem preposição.</li>
+          <li>Use a voz ativa em procedimentos.</li>
+          <li>Use lista vertical para texto complexo.</li>
+          <li>Escreva um tópico por parágrafo.</li>
+        </ul>
+        <p class="note">Nível 80 = “80% do caminho até o ASD-STE100”, a sugestão do Karpathy para quando o estrito fica rígido demais.</p>
+      </div>
+    </section>
+
+    <!-- F + carimbo -->
+    <div class="colF">
+      <section class="panel" aria-labelledby="hF">
+        <header><span class="tag">F</span><h2 id="hF">Histórico</h2></header>
+        <div class="body">
+          <ol class="timeline">
+            <li><b>1979</b><i></i>A AECMA começa o inglês controlado para companhias aéreas</li>
+            <li><b>1986</b><i></i>Primeiro guia AECMA Simplified English</li>
+            <li><b>2005</b><i></i>Vira ASD-STE100 depois que a AECMA entra na ASD</li>
+            <li><b>Hoje</b><i></i>Download grátis, revisão do STEMG</li>
+            <li class="us"><b>2026</b><i></i>STE-PT no ecossistema Febracis</li>
+          </ol>
+          <p class="note">STEMG: Simplified Technical English Maintenance Group.</p>
+        </div>
+      </section>
+      <div class="stamp" aria-label="Carimbo da prancha">
+        <div class="wide title"><small>Título</small><span>STE-PT: prancha de referência</span></div>
+        <div><small>Especificação</small><span>ASD-STE100, adaptação PT-BR</span></div>
+        <div><small>Responsável</small><span>Deivithi · PO</span></div>
+        <div><small>Domínio original</small><span>Manutenção aeronáutica</span></div>
+        <div><small>Uso aqui</small><span>Salesforce, leads, comissões</span></div>
+        <div><small>Fonte</small><span class="mono">skills/ste-ptbr</span></div>
+        <div><small>Folha · revisão</small><span>1 de 1 · v1.0.0</span></div>
+      </div>
+    </div>
+
+    <!-- G -->
+    <section class="panel pG" aria-labelledby="hG">
+      <header><span class="tag">G</span><h2 id="hG">Verificador de texto</h2><span class="cap">mesmas regras do ste_lint.py</span></header>
+      <div class="body">
+        <div class="g-grid">
+          <div class="g-in">
+            <label for="texto">Cole o texto (Markdown). Item numerado = passo de procedimento.</label>
+            <textarea id="texto" spellcheck="false"></textarea>
+            <div class="ctrl">
+              <div class="seg-ctrl" role="group" aria-label="Nível de rigor do verificador">
+                <button type="button" data-nivel="100" aria-pressed="true">nível 100</button>
+                <button type="button" data-nivel="80" aria-pressed="false">nível 80</button>
+              </div>
+              <button type="button" class="btn" id="exRuim">Exemplo original</button>
+              <button type="button" class="btn" id="exBom">Exemplo STE-PT</button>
+              <button type="button" class="btn" id="limpar">Limpar</button>
+            </div>
+            <div class="cmd"><code id="cmdText">PYTHONIOENCODING=utf-8 py skills/ste-ptbr/scripts/ste_lint.py arquivo.md --nivel 100</code><button type="button" class="btn" id="copiar">Copiar</button></div>
+            <p class="note">A página verifica no seu navegador. O texto não sai daqui. O linter completo roda no gauntlet.</p>
+          </div>
+          <div class="g-out" aria-live="polite">
+            <div class="score" id="score"></div>
+            <ul class="frases" id="frases"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="ruler v right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+  <div class="ruler h bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+</main>
+
+<script type="application/json" id="dicionario">__DICIONARIO__</script>
+
+<script id="ste-core">
+/* Núcleo do verificador. Espelha scripts/ste_lint.py — a referência é o Python. */
+function criarSte(dic) {
+  const W = "[\\p{L}\\p{N}_]";
+  const B = `(?:(?<=${W})(?!${W})|(?<!${W})(?=${W}))`;
+  const ub = (s) => s.replace(/\\b/g, B).replace(/\\w/g, W);
+  const LIMITES = { 100: { procedimento: 20, descritivo: 25, frases_paragrafo: 6 }, 80: { procedimento: 25, descritivo: 30, frases_paragrafo: 8 } };
+  const FLEX80 = new Set(["registro", "verbo"]);
+  const LETRA = "0-9A-Za-zÀ-ÖØ-öø-ÿ_";
+  const PALAVRA = new RegExp(`[${LETRA}]+(?:[-'’./,][${LETRA}]+)*`, "g");
+  const FIM = /(?:(?<=[.!?…])|(?<=[.!?…]["”’)]))\s+(?=["“(\[⛔⚠A-ZÀ-ÖØ-Þ0-9])/u;
+  const ABREV = ["p. ex.", "p.p.", "aprox.", "profa.", "prof.", "ltda.", "obs.", "fig.", "sra.", "ex.", "pp.", "sr.", "dr.", "vs.", "nº.", "p."];
+  const ITEM_NUM = /^\s*\d+[.)]\s+/;
+  const ITEM_CHECK = /^\s*[-*+]\s+\[[ xX]\]\s+/;
+  const ITEM_MARC = /^\s*[-*+]\s+/;
+  const AVISO = /^\s*(?:⛔\s*)?(?:BLOQUEIO|(?:⚠️?\s*)?ATENÇÃO|CUIDADO)\s*:/iu;
+  const CONTINUACAO = /^(?: {2,}|\t)\S/;
+  const CERCA = /^(`{3,}|~{3,})/;
+  const QUEBRA = /\r\n|[\n\r\v\f\x1c-\x1e\x85\u2028\u2029]/;
+  const alternarCerca = (cerca, m) => (cerca === null ? m : m[0] === cerca[0] && m.length >= cerca.length ? null : cerca);
+  const CHAVE_YAML = /^[A-Za-z_][\w-]*\s*:/;
+  const PART = "(?:[a-zà-ÿ]+(?:ad|[ií]d|ít|ost|eit)[oa]s?|(?:abert|escrit|vist|pag|ganh|gast|dit|cobert|descobert|suspens|impress)[oa]s?|entregues?)";
+  const ADJ = new Set("válido válida inválido inválida rápido rápida adequado adequada errado errada apropriado apropriada obrigado obrigada delicado complicado privado privada dedicado sólido líquido tímido úmido nítido lúcido pálido ávido híbrido híbrida rígido rígida bonito bonita infinito favorito favorita explícito explícita implícito implícita gratuito gratuita esquisito composto proposto oposto disposto suposto".split(" "));
+  const SUBST = new Set("resultado dado estado lado sentido conteúdo pedido significado cuidado mercado período partido".split(" "));
+  const NUNCA = new Set("resultado conteúdo período mercado significado lado estado".split(" "));
+  const PASSIVA = new RegExp(ub(`\\b(?:foi|foram|será|serão|seja|sejam|fosse|fossem|ser|sido|está sendo|estão sendo)\\s+(${PART})\\b|\\b(?:é|são|era|eram)\\s+(${PART})\\s+(?:por|pel[oa]s?)\\b`), "giu");
+  const GERUND = new RegExp(ub("\\b(?:(?:vou|vai|vamos|vão|vá|irei|irá|iremos|irão)\\s+estar|estarei|estaremos|estará|estarão)(?:\\s+(?:te|lhe|lhes|me|nos|se|vos))?\\s+[a-zà-ÿ]+ndo\\b"), "iu");
+  const FUTPRET = new RegExp(ub("\\b(?:seria|seriam|poderia|poderiam|deveria|deveriam|teria|teriam|faria|fariam|iria|iriam|haveria|gostaria|gostariam|precisaria|precisariam|conseguiria|conseguiriam)\\b"), "iu");
+  const DE = "(?:de|do|da|dos|das)";
+  const CADEIA = new RegExp(ub(`\\b[a-zà-ÿ]+\\s+${DE}\\s+[a-zà-ÿ]+\\s+${DE}\\s+[a-zà-ÿ]+\\s+${DE}\\s+[a-zà-ÿ]+\\b`), "iu");
+  const MULTI = new RegExp(ub(";|\\b(?:e depois|e em seguida|e então|, depois|, em seguida|e logo após)\\b(?!\\s+d[eoa]s?\\b)"), "iu");
+  const entradas = dic.nao_aprovadas.map((e) => ({ ...e, re: new RegExp(ub(e.padrao), "gimu") }));
+  const isUpper = (s) => s === s.toUpperCase() && s !== s.toLowerCase();
+  const contar = (t) => (t.match(PALAVRA) || []).length;
+  const semBom = (t) => t.replace(/^﻿+/, "");
+
+  function limpar(t) {
+    return t.replace(/\[conf:\s*[^\]]+\]/gi, "").replace(/`[^`\n]+`/g, "CODIGO").replace(/\[[^\]]+\]\([^)]+\)/g, "LINK")
+      .replace(/https?:\/\/[^\s<>)]*[^\s<>).,;:!?\]]/g, "URL").replace(/(\*\*|\*)(?=\S)(.+?)(?<=\S)\1/g, "$2").trim();
+  }
+  function frasesDe(t) {
+    let p = t;
+    ABREV.forEach((a, i) => { p = p.replace(new RegExp(`(?<![${LETRA}])` + a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), `\u0000${i}\u0000`); });
+    return p.split(FIM).map((s) => { ABREV.forEach((a, i) => { s = s.split(`\u0000${i}\u0000`).join(a); }); return s.trim(); }).filter((s) => contar(s));
+  }
+  function fimFrontmatter(linhas) {
+    if (!linhas.length || linhas[0].trim() !== "---") return 0;
+    for (let i = 1; i < linhas.length; i++) {
+      if (linhas[i].trim() === "---") return linhas.slice(1, i).some((x) => CHAVE_YAML.test(x)) ? i + 1 : 0;
+    }
+    return 0;
+  }
+  function blocos(texto) {
+    const out = []; let par = []; let ini = 0; let cerca = null; let item = false;
+    const fechar = () => { if (par.length) { out.push([ini, "descritivo", par.join(" ")]); par = []; } };
+    const linhas = semBom(texto).split(QUEBRA);
+    const pular = fimFrontmatter(linhas);
+    linhas.forEach((linha, i) => {
+      const n = i + 1; if (n <= pular) return;
+      const b = linha.trim();
+      const marca = b.match(CERCA);
+      if (marca) { fechar(); item = false; cerca = alternarCerca(cerca, marca[1]); return; }
+      if (cerca !== null) return;
+      if (!b || /^(#|\||>|<!--)/.test(b) || /^[-*_=]{3,}$/.test(b)) { fechar(); item = false; return; }
+      if (ITEM_NUM.test(linha) || AVISO.test(linha) || ITEM_CHECK.test(linha)) { fechar(); out.push([n, "procedimento", linha.replace(ITEM_NUM, "").replace(ITEM_CHECK, "").trim()]); item = true; return; }
+      if (ITEM_MARC.test(linha)) { fechar(); const sub = item && CONTINUACAO.test(linha) && out[out.length - 1][1] === "procedimento"; out.push([n, sub ? "procedimento" : "descritivo", linha.replace(ITEM_MARC, "").trim()]); item = true; return; }
+      if (item && CONTINUACAO.test(linha)) { out[out.length - 1][2] += " " + b; return; }
+      item = false;
+      if (!par.length) ini = n; par.push(b);
+    });
+    fechar();
+    return out;
+  }
+  function cercaAberta(texto) {
+    let cerca = null; let aberta = 0;
+    semBom(texto).split(QUEBRA).forEach((l, i) => { const m = l.trim().match(CERCA); if (!m) return; if (cerca === null) aberta = i + 1; cerca = alternarCerca(cerca, m[1]); });
+    return cerca !== null ? aberta : 0;
+  }
+  function passivaValida(m) {
+    if (m[1]) { const p = m[1].toLowerCase(); return !ADJ.has(p) && !NUNCA.has(p); }
+    const p = m[2].toLowerCase(); return !ADJ.has(p) && !SUBST.has(p);
+  }
+  function verificarFrase(f, nivel, lim) {
+    const a = []; const t = f.texto; const proc = f.tipo === "procedimento"; const marcas = [];
+    const add = (codigo, severidade, mensagem, marca) => { a.push({ codigo, severidade, mensagem }); if (marca) marcas.push(marca); };
+    const L = lim[f.tipo];
+    if (f.palavras > L) add(proc ? "E01" : "E02", "erro", `${proc ? "procedimento" : "frase descritiva"} com ${f.palavras} palavras (máx. ${L})`);
+    for (const e of entradas) {
+      if (e.categoria === "verbo" && !proc) continue;
+      e.re.lastIndex = 0;
+      const m = [...t.matchAll(e.re)].find((x) => !isUpper(x[0]));
+      if (!m) continue;
+      add("E04", nivel === 80 && FLEX80.has(e.categoria) ? "aviso" : "erro", `“${m[0]}” não aprovado (${e.categoria}) → ${e.alternativa}`, m[0]);
+    }
+    PASSIVA.lastIndex = 0;
+    let m = [...t.matchAll(PASSIVA)].find(passivaValida);
+    if (m) add("A05", proc && nivel === 100 ? "erro" : "aviso", `voz passiva: “${m[0]}” → use voz ativa`, m[0]);
+    m = t.match(GERUND); if (m) add("E06", nivel === 100 ? "erro" : "aviso", `gerundismo: “${m[0]}” → use presente ou futuro`, m[0]);
+    m = t.match(CADEIA); if (m) add("A07", "aviso", `grupo nominal longo: “${m[0]}” (máx. 3 palavras de conteúdo)`);
+    if (proc) { m = t.match(MULTI); if (m) add("E08", "erro", `mais de uma instrução na frase (“${m[0].trim()}”) → separe em passos`, m[0].trim()); }
+    m = t.match(FUTPRET); if (m) add("A09", "aviso", `futuro do pretérito “${m[0]}” → use presente ou imperativo`, m[0]);
+    return { achados: a, marcas };
+  }
+  function verificar(texto, nivel = 100) {
+    const lim = LIMITES[nivel];
+    const rel = { nivel, frases: [], achadosParagrafo: [], erros: 0, avisos: 0, ok: 0 };
+    const aberta = cercaAberta(texto);
+    if (aberta) { rel.achadosParagrafo.push({ codigo: "A10", severidade: "aviso", linha: aberta, mensagem: "cerca de código sem fechamento: o resto do texto foi ignorado" }); rel.avisos++; }
+    for (const [linha, tipo, bruto] of blocos(texto)) {
+      const fs = frasesDe(limpar(bruto)).map((s) => ({ texto: s, linha, tipo, palavras: contar(s) }));
+      const longo = tipo === "descritivo" && fs.length > lim.frases_paragrafo;
+      if (longo) { rel.achadosParagrafo.push({ codigo: "E03", severidade: "erro", linha, mensagem: `parágrafo com ${fs.length} frases (máx. ${lim.frases_paragrafo})` }); rel.erros++; }
+      for (const f of fs) {
+        const r = verificarFrase(f, nivel, lim);
+        Object.assign(f, r, { limite: lim[tipo] });
+        const e = r.achados.filter((x) => x.severidade === "erro").length;
+        rel.erros += e; rel.avisos += r.achados.length - e; if (!e && !longo) rel.ok++;
+        rel.frases.push(f);
+      }
+    }
+    rel.conformidade = rel.frases.length ? Math.floor((1000 * rel.ok) / rel.frases.length + 0.5) / 10 : 100;
+    return rel;
+  }
+  return { verificar, blocos, frasesDe, contar, LIMITES };
+}
+if (typeof module !== "undefined") module.exports = { criarSte };
+</script>
+
+<script>
+(() => {
+  const dic = JSON.parse(document.getElementById("dicionario").textContent);
+  const ste = criarSte(dic);
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  let nivel = 100;
+
+  /* D — dicionário */
+  const linhas = [
+    ...dic.aprovadas.map((e) => ({ cat: "aprovada", termo: e.termo, classe: e.classe, ok: true, alt: e.sentido, bom: "", ruim: e.nao_use_para === "—" ? "–" : "Não use para " + e.nao_use_para })),
+    ...dic.nao_aprovadas.map((e) => ({ cat: e.categoria, termo: e.termo, classe: e.classe, ok: false, alt: e.alternativa, bom: e.aprovado, ruim: e.nao_aprovado })),
+  ];
+  $("#dicCount").textContent = `Dicionário PT-BR: ${dic.nao_aprovadas.length} não aprovadas · ${dic.aprovadas.length} aprovadas · ${dic.nomes_tecnicos.length} nomes técnicos`;
+  let cat = "todas";
+  function renderDic() {
+    const q = $("#dicSearch").value.trim().toLowerCase();
+    const rows = linhas.filter((l) => (cat === "todas" || l.cat === cat) && (!q || (l.termo + " " + l.alt).toLowerCase().includes(q)));
+    $("#dicBody").innerHTML = rows.length ? rows.map((l) => `<tr>
+      <td class="w">${esc(l.termo)} <i>(${esc(l.classe)})</i></td>
+      <td>${l.ok ? '<span class="ok">✓ Aprovada</span>' : `<span class="no">✕ Não aprovada</span><br><span class="cat">${esc(l.cat)}</span>`}</td>
+      <td class="${l.ok ? "" : "alt"}">${esc(l.alt)}</td>
+      <td class="good">${esc(l.bom) || "–"}</td>
+      <td class="bad">${esc(l.ruim)}</td></tr>`).join("") : `<tr><td colspan="5" class="note">Nenhuma palavra com “${esc(q)}”. Tente outra busca.</td></tr>`;
+  }
+  $("#catFilter").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button"); if (!b) return;
+    cat = b.dataset.cat;
+    $("#catFilter").querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderDic();
+  });
+  $("#dicSearch").addEventListener("input", renderDic);
+
+  /* E — limites */
+  const BARRAS = [
+    { nome: "Frase de procedimento", chave: "procedimento", unidade: "palavras", escala: 30, passo: 5 },
+    { nome: "Frase descritiva", chave: "descritivo", unidade: "palavras", escala: 30, passo: 5 },
+    { nome: "Parágrafo descritivo", chave: "frases_paragrafo", unidade: "frases", escala: 10, passo: 1 },
+    { nome: "Grupo nominal", fixo: 3, unidade: "palavras", escala: 5, passo: 1 },
+    { nome: "Instruções por passo", fixo: 1, unidade: "", escala: 3, passo: 1, nota: "exceto ações simultâneas" },
+  ];
+  $("#bars").innerHTML = BARRAS.map((b, i) => {
+    const ticks = []; for (let v = 0; v <= b.escala; v += b.passo) ticks.push(`<span>${v}</span>`);
+    return `<div class="bar"><div class="bar-h"><span>${b.nome}${b.nota ? ` <span class="note">(${b.nota})</span>` : ""}</span><b id="bv${i}"></b></div>
+      <div class="track" role="img" id="bt${i}"><span class="fill" id="bf${i}"></span></div><div class="ticks" aria-hidden="true">${ticks.join("")}</div></div>`;
+  }).join("");
+  function renderBars() {
+    BARRAS.forEach((b, i) => {
+      const v = b.fixo ?? ste.LIMITES[nivel][b.chave];
+      $(`#bf${i}`).style.width = `${(100 * v) / b.escala}%`;
+      $(`#bv${i}`).textContent = `máx. ${v}${b.unidade ? " " + b.unidade : ""}`;
+      $(`#bt${i}`).setAttribute("aria-label", `${b.nome}: máximo ${v} ${b.unidade}`);
+    });
+  }
+
+  /* G — verificador */
+  const EX_RUIM = "É de suma importância que o analista realize previamente a sanitização dos leads oriundos do evento, assegurando que os mesmos não possuam duplicidade, e posteriormente efetue a importação através do Data Loader.\n\n1. Utilize o relatório de duplicados e depois delete os registros.\n2. O campo Telefone deverá ser preenchido pelo vendedor.\n\nVale ressaltar que estaremos disponibilizando uma solução robusta visando otimizar a jornada dos leads.";
+  const EX_BOM = "Sanitize os leads do Método CIS antes da importação.\n\n1. Exporte os leads do evento do Método CIS.\n2. Rode a detecção de duplicados.\n3. Se um lead estiver duplicado, mantenha o registro mais antigo.\n4. Importe os leads com o Data Loader.\n\nATENÇÃO: Confirme o total antes da importação. Um total errado gera comissão errada.";
+  const ta = $("#texto");
+  function marcar(texto, marcas) {
+    let h = esc(texto);
+    [...new Set(marcas)].sort((a, b) => b.length - a.length).forEach((m) => { const e = esc(m); h = h.split(e).join(`\u0001${e}\u0002`); });
+    return h.replace(/\u0001/g, "<mark>").replace(/\u0002/g, "</mark>");
+  }
+  function renderG() {
+    const rel = ste.verificar(ta.value, nivel);
+    const n = rel.frases.length;
+    const pass = rel.erros === 0;
+    $("#score").className = "score " + (n ? (pass ? "pass" : "fail") : "");
+    $("#score").innerHTML = n
+      ? `<span class="pct">${rel.conformidade}%</span><span class="verdict">${pass ? "Conforme ao STE-PT" : "Não conforme"}</span>
+         <span class="sum">${rel.ok} de ${n} frases conformes · ${rel.erros} erro(s) · ${rel.avisos} aviso(s) · nível ${nivel}</span>`
+      : `<span class="pct">–</span><span class="verdict">Sem texto</span><span class="sum">Cole um texto ou carregue um exemplo.</span>`;
+    const par = rel.achadosParagrafo.map((a) => `<li class="frase e"><span class="st">✕</span><span class="tx">Linha ${a.linha}</span><span class="meta">${a.codigo}</span><ul><li class="erro">${esc(a.mensagem)}</li></ul></li>`).join("");
+    $("#frases").innerHTML = n ? par + rel.frases.map((f) => {
+      const erro = f.achados.some((a) => a.severidade === "erro");
+      return `<li class="frase ${erro ? "e" : "k"}"><span class="st">${erro ? "✕" : "✓"}</span>
+        <span class="tx">${marcar(f.texto, f.marcas)}</span>
+        <span class="meta${f.palavras > f.limite ? " over" : ""}">${f.tipo === "procedimento" ? "PASSO" : "DESC"} · ${f.palavras}/${f.limite}</span>
+        ${f.achados.length ? `<ul>${f.achados.map((a) => `<li class="${a.severidade}"><code>${a.codigo}</code> ${esc(a.mensagem)}</li>`).join("")}</ul>` : ""}</li>`;
+    }).join("") : `<li class="empty">O resultado aparece aqui, frase por frase.</li>`;
+  }
+  function setNivel(v) {
+    nivel = v;
+    document.querySelectorAll("[data-nivel]").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.nivel) === v)));
+    $("#cmdText").textContent = `PYTHONIOENCODING=utf-8 py skills/ste-ptbr/scripts/ste_lint.py arquivo.md --nivel ${v}`;
+    renderBars(); renderG();
+  }
+  document.querySelectorAll("[data-nivel]").forEach((b) => b.addEventListener("click", () => setNivel(Number(b.dataset.nivel))));
+  ta.addEventListener("input", renderG);
+  $("#exRuim").addEventListener("click", () => { ta.value = EX_RUIM; renderG(); });
+  $("#exBom").addEventListener("click", () => { ta.value = EX_BOM; renderG(); });
+  $("#limpar").addEventListener("click", () => { ta.value = ""; renderG(); ta.focus(); });
+  $("#copiar").addEventListener("click", async (ev) => {
+    const b = ev.currentTarget;
+    try { await navigator.clipboard.writeText($("#cmdText").textContent); b.textContent = "Copiado"; }
+    catch { const r = document.createRange(); r.selectNodeContents($("#cmdText")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selecionado"; }
+    setTimeout(() => { b.textContent = "Copiar"; }, 1600);
+  });
+
+  if (!ta.value) ta.value = EX_RUIM;
+  renderDic();
+  setNivel(100);
+})();
+</script>

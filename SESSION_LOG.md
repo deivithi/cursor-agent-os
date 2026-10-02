@@ -6,6 +6,15 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-02 — Skill `ste-ptbr` (STE-PT: ASD-STE100 adaptado ao PT-BR)
+
+- ✅ Origem: post do Karpathy sobre pedir saída em ASD-STE100. O operador pediu a ideia adaptada ao contexto Febracis, em PT-BR.
+- ✅ `skills/ste-ptbr/`: regras (9 seções), dicionário PT-BR (registro, ambiguidade Salesforce, slop de IA, verbo), níveis 100 e 80, exemplos Febracis, gotchas. Comando `/ste`.
+- ✅ Linter `scripts/ste_lint.py` (stdlib) + testes; prancha HTML com verificador (`assets/`, gerada por `build_prancha.py`). Núcleo JS com paridade conferida contra o Python.
+- ✅ Revisão adversarial independente: 8 Major + 17 Minor, todos corrigidos com teste de regressão; re-checagem feita.
+- ✅ Prancha publicada como artifact privado: <https://claude.ai/artifact/H6mV1mdtPP47jYfLMv2P58>
+- ⏳ Próximo: usar `/ste` nos runbooks de `lead-audit`/`commission-audit` e nos passos Gherkin do `salesforce-bdd-spec-architect`.
+
 ## 2026-10-01 — Plataforma de Indicações Febracis: pendências fechadas + Vercel no ar
 
 - ✅ Web no Vercel (prd = main, hml = branch hml); APIs no Zo atrás de gateway Caddy com identidade **OIDC do Vercel** (sem segredo compartilhado). Smoke ponta a ponta `scripts/smoke-vercel.sh`.
