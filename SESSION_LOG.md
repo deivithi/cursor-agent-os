@@ -6,7 +6,7 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
-## 2026-10-05/06 — Indicações Febracis: Sprint 8 (T04 fila genérica + T92 runbook/manual)
+## 2026-10-06 — Indicações Febracis: Sprint 8, iniciada em 05/10 (T04 fila genérica + T92 runbook/manual)
 
 - ✅ Repo `REferido - Febracis` (`deivithi/febracis-indicacoes`): PR #10 squash; `main` = `hml` = clones do Zo no mesmo commit. ADR-021 (fila própria no Postgres no lugar do pg-boss).
 - ✅ Deploy em prd e hml (Vercel READY, Zo reprovisionado, smokes ok). 4 simulações do runbook em hml; a 3ª achou e corrigiu falha falsa do `restore-test.sh`.
