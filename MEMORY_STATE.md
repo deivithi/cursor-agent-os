@@ -1,12 +1,12 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-10-06 07:37 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-10-06 17:07 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
 **Saúde da memória:** ATUALIZADA
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `f95a91f044dd`
+**Fingerprint estrutural:** `932261c3aa4a`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
 > condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
@@ -24,15 +24,15 @@
 
 | Item | Quantidade |
 |---|---|
-| Skills custom com SKILL.md (`skills/`, sem `_templates`) | 111 |
-| Diretórios em `skills/` | 113 |
+| Skills custom com SKILL.md (`skills/`, sem `_templates`) | 112 |
+| Diretórios em `skills/` | 114 |
 | Skills cybersecurity | 736 |
 | Diretórios cyber | 739 |
 | Skills scientific | 22 |
-| Commands (`commands/*.md`) | 48 |
+| Commands (`commands/*.md`) | 49 |
 | Rules (`rules/*.md`) | 27 |
 | Hooks (`hooks/*.js` + 2 `.ps1`) | 14 |
-| Arquivos em `scripts/` | 78 |
+| Arquivos em `scripts/` | 113 |
 | Skills em `~/.cursor/skills` (sync) | 63 |
 | Skills oficiais em `~/.cursor/skills-cursor` | 26 |
 
@@ -68,13 +68,13 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 
 | Repo | HEAD | Data | Pendências | origin/main...HEAD |
 |---|---|---|---|---|
-| `DRE_Eventos` | `6380b65` | 2026-09-22 | 12 arquivo(s) | -0 / +0 |
+| `DRE_Eventos` | `ce751b2` | 2026-10-06 | 13 arquivo(s) | -37 / +2 |
 | `declaw` | `d741815` | 2026-08-28 | limpo | -0 / +1 |
 | `webwright` | `bc26750` | 2026-08-03 | limpo | -0 / +0 |
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `5ba8dea` | 2026-10-06 | limpo | n/a |
+| `.` (raiz) | `d628341` | 2026-10-06 | limpo | n/a |
 
 ## Worktrees (14)
 
@@ -116,18 +116,18 @@ Não aparecem no laço de `worktrees/` porque não vivem lá. Encontrados via `g
 
 | Arquivo | Data declarada | Dias de atraso |
 |---|---|---|
-| `AGENTS.md` | 2026-09-30 | 6 |
-| `CONTEXT.md` | 2026-09-30 | 6 |
-| `AGENT_MEMORY.md` | 2026-09-30 | 6 |
-| `DECISIONS.md` | 2026-09-30 | 6 |
-| `SESSION_LOG.md` | 2026-09-30 | 6 |
+| `AGENTS.md` | 2026-09-30 | 7 |
+| `CONTEXT.md` | 2026-09-30 | 7 |
+| `AGENT_MEMORY.md` | 2026-09-30 | 7 |
+| `DECISIONS.md` | 2026-10-06 | 1 |
+| `SESSION_LOG.md` | 2026-09-30 | 7 |
 | `PROJECTS_INDEX.md` | não declarada | n/a |
-| `SKILLS_INDEX.md` | 2026-09-30 | 6 |
-| última sessão em `SESSION_LOG.md` | 2026-10-06 | 0 |
+| `SKILLS_INDEX.md` | 2026-09-30 | 7 |
+| última sessão em `SESSION_LOG.md` | 2026-10-06 | 1 |
 
 ## SESSION_LOG — ordem cronológica
 
-Decrescente e em ordem em 29 blocos. **Não** verifica sessão faltando
+Decrescente e em ordem em 32 blocos. **Não** verifica sessão faltando
 nem bloco duplicado: só compara datas consecutivas de headers no formato `## YYYY-MM-DD`.
 
 ## Commits de memória/estrutura sem registro de sessão
