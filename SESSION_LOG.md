@@ -6,6 +6,13 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-05/06 — Indicações Febracis: Sprint 8 (T04 fila genérica + T92 runbook/manual)
+
+- ✅ Repo `REferido - Febracis` (`deivithi/febracis-indicacoes`): PR #10 squash; `main` = `hml` = clones do Zo no mesmo commit. ADR-021 (fila própria no Postgres no lugar do pg-boss).
+- ✅ Deploy em prd e hml (Vercel READY, Zo reprovisionado, smokes ok). 4 simulações do runbook em hml; a 3ª achou e corrigiu falha falsa do `restore-test.sh`.
+- ✅ Skill `indicacoes-febracis`: 3 cópias iguais (usuário, workspace — agora versionada aqui — e repo do projeto).
+- ➡️ Próximo: calibração da carga com o pico real do CIS (Comercial); T48 quando o Salesforce liberar; aprovação de Design da T06.
+
 ## 2026-10-02 — Skill `ste-ptbr` (STE-PT: ASD-STE100 adaptado ao PT-BR)
 
 - ✅ Origem: post do Karpathy sobre pedir saída em ASD-STE100. O operador pediu a ideia adaptada ao contexto Febracis, em PT-BR.
