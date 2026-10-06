@@ -2,7 +2,7 @@
 
 Faz o corte de versão com enxame de QA, triagem e patch. Uso: `/corte [<versao>|qa <areas>|patch <achado>]`
 
-Carregue `skills/corte-release/SKILL.md` e siga o workflow.
+Carregue a skill `corte-release` (`~/.claude/skills/corte-release/SKILL.md`) e siga o workflow. Funciona de qualquer pasta.
 
 ## Modos
 
