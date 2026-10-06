@@ -6,6 +6,15 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-06 — Indicações Febracis: Sprint 9 = passagem do projeto para a Lorrany (DigitalOcean)
+
+- ✅ Pedido do PO: repositório organizado na conta da empresa para a dev Lorrany Marra subir sem dúvidas; ela implanta na **DigitalOcean da Febracis** (Zo/Vercel só referência). Repo oficial criado: `tifebracis/febracis-indicacoes` (privado, histórico completo, só `main` e `hml`, tags/releases `sprint-01`…`sprint-09`, `main` protegida, Lorrany admin).
+- ✅ Sprint 9 (PR #14 no espelho, squash `16c4ec0`): T93 acesso temporário sem 2º fator por prazo (ADR-022, corte total no vencimento); T94 ambiente local sem Zo (`pnpm local:*`, Docker); T95 pacote DigitalOcean (imagens por digest, compose + Caddy, init SCRAM, trava de papel na API, vigia e backup age+Spaces, ADR-023); T96 docs (PRD/SDD/BACKLOG separados com situação, SPRINTS, guia de entrada, skill nova `/ambiente-local`).
+- ✅ Gauntlet: 4 checks verdes; revisão de segurança (6), revisão de código (11) e simulação "Lorrany" (15) — 32 achados, todos corrigidos; re-checagem aprovada.
+- ✅ Deploy hml + prd (Zo reprovisionado com a migração, smokes do gateway e do Vercel ok). Acesso temporário da Lorrany em prd provado (admin só da Febracis Demo, até 05/11/2026 10:33); senha em arquivo 0600 no Zo.
+- ⚠️ Bloqueios: GitHub Actions da org `tifebracis` não executa nenhum workflow (TI); `.claude/settings.json` do projeto bloqueado pelo classificador (opcional).
+- ➡️ Próximo: Lorrany faz a sprint 10 (implantação na DigitalOcean); PO apaga o arquivo da senha depois de enviar e cobra a TI pelo Actions.
+
 ## 2026-10-06 — Indicações Febracis: Sprint 8, iniciada em 05/10 (T04 fila genérica + T92 runbook/manual)
 
 - ✅ Repo `REferido - Febracis` (`deivithi/febracis-indicacoes`): PR #10 squash; `main` = `hml` = clones do Zo no mesmo commit. ADR-021 (fila própria no Postgres no lugar do pg-boss).

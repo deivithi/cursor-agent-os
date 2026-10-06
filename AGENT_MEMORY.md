@@ -84,6 +84,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - `cloud` = `https://github.com/deivithilopes-ai/cursor-agent-os.git` (mirror, congelado no push de 28/06/2026)
 - Versiona config compartilhada (skills, agents, rules, scripts, memória)
 - ADR-001: não rastreia `worktrees/`, `DRE_Eventos/`, `declaw/`, `webwright/`, `cybersecurity-skills/`
+9. **Plataforma de Indicações Febracis** — embaixador → lead → venda (Salesforce) → recompensa; NestJS + Next 16 + PostgreSQL 18 com RLS. Pasta `REferido - Febracis/`; skill `/indicacoes-febracis`. **Desde 06/10/2026 passou para a desenvolvedora Lorrany Marra** (`lorranymarra-febracis`), que implanta na DigitalOcean da Febracis (ADR-023 do projeto). Repo oficial `tifebracis/febracis-indicacoes`; o antigo `deivithi/febracis-indicacoes` virou remoto `deploy` (Vercel + Zo atuais leem dele, só referência até o corte). Estado e próximo passo: `REferido - Febracis/docs/ESTADO.md`
 
 ### Repositórios aninhados
 | Path | Remote / notas (verificado 30/09/2026) |
@@ -93,6 +94,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 | `webwright/` | `origin/main` (`microsoft/webwright`). HEAD `bc26750` (03/08), **sincronizado** — a nota "behind 4" estava desatualizada |
 | `cybersecurity-skills/` | `origin/main` (`mukul975/Anthropic-Cybersecurity-Skills`). **ahead 33 / behind 223** — a nota "behind 137" vinha de fetch antigo |
 | `..\civictrust\` (fora do workspace) | `origin` = `deivithi/civictrust`. HEAD `49b840c` (24/09), demo pública na Vercel. Repo real descoberto em 30/09/2026; antes ausente de toda a memória |
+| `REferido - Febracis/` | `origin` = `tifebracis/febracis-indicacoes` (oficial, org Febracis, plano Team, `main` protegida); `deploy` = `deivithi/febracis-indicacoes` (espelho lido pelo Vercel e pelo Zo). Push para a `tifebracis` só com o token da `deivithilopes-ai` passado no comando (o helper de credencial trava) — ver memória `indicacoes-passagem-lorrany` |
 | `..\Corretor2.0\` | **sem remote**. HEAD `2a5430f` (17/08), limpo |
 
 ### Worktrees (14)
@@ -127,7 +129,8 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 - Detalhe e listas: [SKILLS_INDEX.md](SKILLS_INDEX.md). Contagens vivas: [MEMORY_STATE.md](MEMORY_STATE.md)
 
 ## GitHub CLI
-- gh instalado, conta **deivithi** (ativa) + **deivithilopes-ai** (mirror)
+- gh instalado, conta **deivithi** (ativa) + **deivithilopes-ai** (conta da empresa; membro da org **`tifebracis`** da Febracis; escopos `repo`, `read:org`, `gist`, `workflow` desde 06/10/2026)
+- Org `tifebracis`: o GitHub Actions não executa workflows em nenhum repositório (06/10/2026) — pendência da TI (dono da org)
 - Repos citados: febracis-dre-eventos, febracis-dre, declaw, pulsofinance, aria-agent, caverna, etc.
 - **Raiz Cursor Agent OS**: `https://github.com/deivithi/cursor-agent-os` (criado 22/06/2026, ver ADR-006)
   - `origin` = deivithi/cursor-agent-os (conta ativa)
