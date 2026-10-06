@@ -1,6 +1,30 @@
 # DECISIONS.md — Registro de decisões de arquitetura (ADR)
 
-> Iniciado em: 08/06/2026 · Última atualização: 30/09/2026
+> Iniciado em: 08/06/2026 · Última atualização: 06/10/2026
+
+## ADR-015: Gauntlet contínuo — score, catraca e hook Stop automático
+
+**Data:** 06/10/2026
+**Contexto:** Alexandr Wang (Meta, Startup School 2026) atribui o ganho de enxames de agentes
+ao "loop certo + métrica certa" (paráfrase verificada; aspas literais não verificadas). O
+gauntlet do ADR-008 era só pass/fail e dependia do agente lembrar de rodá-lo. Sem gradiente,
+o agente para no primeiro verde; sem automação, o gauntlet vira letra morta.
+**Decisão:**
+1. `scripts/gauntlet/gauntlet.py` (stdlib) avalia projetos com `gauntlet.json`: gates binários,
+   checks de integridade de teste, score composto 0-100 e catraca de baseline (só sobe).
+2. Hook `Stop` no Claude Code e no Cursor roda o gauntlet quando o código muda. Falha ou
+   regressão → bloqueia o fim do turno e devolve feedback textual ao agente.
+3. Saída do loop por `max_blocks` (3) ou estagnação (I(t)=0, `adaptive-depth.md`).
+4. Avaliador fora do alcance do agente: `gauntlet.json` e configs de teste são `protected`;
+   `accept` (rebaixar baseline) só com aceite do operador.
+5. Piloto: DRE_Eventos (coverage 70 + complexidade C901 30). O próprio gauntlet usa o gauntlet.
+**Alternativas rejeitadas:** LLM-judge no hook (custo e latência por turno); mutation testing
+local (mutmut exige fork, não roda nativo no Windows); só pass/fail (sem gradiente).
+**Consequências:** fim de turno com código alterado custa o tempo da suíte (DRE ≈ 50 s).
+Sem mudança, < 0,5 s. Instalação dos hooks é um passo único do operador
+(`install_hooks.py`), porque o classificador do auto mode bloqueia o agente de editar a
+própria config.
+**Fonte:** `rules/gauntlet-protocol.md` §11-12.
 
 ## ADR-014: Estado de memória gerado, não escrito à mão
 

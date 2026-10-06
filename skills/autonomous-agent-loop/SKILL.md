@@ -85,6 +85,17 @@ LOOP FOREVER:
 score_final = (0.6 * taxa_conversao) + (0.3 * velocidade_funil) + (0.1 * custo_aquisicao_inverso)
 ```
 
+**Para código, a métrica já existe:** `scripts/gauntlet/gauntlet.py` implementa este padrão + os padrões 3, 5 e 6.
+
+| Padrão | Como o gauntlet implementa |
+|---|---|
+| 2. Métrica única | Score 0-100 composto (pesos em `gauntlet.json`); gates binários zeram o score |
+| 3. Firewall | `integrity.protected` — mudar o avaliador/config reprova; testes não podem perder casos, asserts nem ganhar skip |
+| 5. Ledger | `.gauntlet/history.tsv` (timestamp, commit, verdict, score, baseline, issues, segundos) |
+| 6. Keep/Discard | Catraca: `keep` só com ganho ≥ `min_gain`; `regress` abaixo de `baseline - tolerance` |
+
+Loop de experimento: `run --json` → exit 2 (`regress`) = descartar o experimento (`git restore`/`git stash`); exit 0 = manter. A baseline sobe sozinha no `keep`.
+
 ---
 
 ### 3. 🔒 Separação Imutável vs Modificável (The Firewall)

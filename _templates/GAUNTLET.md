@@ -10,6 +10,22 @@
 - **Framework:** [Flask | Next.js | Hono | ...]
 - **Testes:** [pytest | jest | vitest | go test | ...]
 
+## Gauntlet executável (`gauntlet.json`)
+
+O gauntlet deste projeto roda **sozinho** pelo hook `Stop` (rules/gauntlet-protocol.md §11).
+
+```bash
+py -3 <Cursor>/scripts/gauntlet/gauntlet.py init   # gera gauntlet.json p/ o stack
+py -3 <Cursor>/scripts/gauntlet/gauntlet.py run    # 1ª vez: cria a baseline
+```
+
+| Campo | Valor neste projeto |
+|---|---|
+| Gates | [ex.: pytest, ruff] |
+| Métricas e pesos | [ex.: coverage 70 + complexidade C901 30] |
+| Baseline atual | ver `gauntlet.py status` (número não se escreve à mão) |
+| Arquivos protegidos | [ex.: gauntlet.json, pytest.ini, pyproject.toml, .github/workflows/*] |
+
 ## Comando único de verificação
 
 ```bash

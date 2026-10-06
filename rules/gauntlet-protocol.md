@@ -133,6 +133,8 @@ Conteúdo esperado:
 
 Se o projeto tem GAUNTLET.md → usá-lo COMO EXTENSÃO do mínimo (§2), nunca como substituição.
 
+A parte **executável** do gauntlet vive em `gauntlet.json` (§11). O `GAUNTLET.md` explica; o `gauntlet.json` roda sozinho.
+
 ---
 
 ## 6. Comportamento quando teste falha
@@ -194,6 +196,7 @@ Ou, se incompleto (protótipo):
 | `human-architectural-gate.md` | Gate ANTES de implementar; gauntlet DEPOIS de implementar |
 | `anti-sycophancy.md` | Agente não pode bajular dizendo "tá pronto" sem rodar checks |
 | `calibration.md` | Report de gauntlet inclui nível de confiança quando incompleto |
+| `adaptive-depth.md` | Hook usa I(t): pendências não caíram → libera (estagnação) |
 
 ---
 
@@ -246,3 +249,62 @@ Checks ausentes para deploy:
 
 Não deployo sem verificação. Posso configurar os checks — confirma?
 ```
+
+---
+
+## 11. Gauntlet contínuo — score, catraca e hook automático (ADR-015)
+
+> Base: Wang/Meta (Startup School 2026, paráfrase) — o enxame só rende com "o loop certo + a métrica certa".
+> Karpathy autoresearch (métrica única + keep/discard + git), Anthropic "Demystifying evals for AI agents"
+> (grader code-based, resistente a hack), EvilGenie/ImpossibleBench (agentes editam testes p/ passar).
+
+**Pass/fail diz "pare". Score contínuo diz "para onde melhorar".** O gauntlet tem as duas camadas:
+
+| Camada | O que é | Efeito |
+|---|---|---|
+| Gates | Comandos binários (testes, lint, type-check, build) | Qualquer falha zera o score → `fail` |
+| Integridade | Comparada com o commit da baseline: testes executados não caem; skips não sobem; asserts não triviais não caem; sem skip/xfail/only novo em teste; sem `noqa` nu / `noqa: C901` / `pragma: no cover` novo em código; arquivos `protected` sem mudança | Violação zera o score → `fail` |
+| Score 0-100 | Métricas normalizadas × pesos (ex.: coverage 70 + complexidade C901 30) | Ranqueia a mudança |
+| Catraca | Baseline em `.gauntlet/baseline.json`; só sobe | `keep` ≥ baseline + `min_gain` · `regress` < baseline − `tolerance` · `same` no meio |
+
+**Motor:** `scripts/gauntlet/gauntlet.py` (stdlib, Windows/Linux). Comandos: `init`, `run [--json]`, `status`, `accept`, `hook`.
+
+**Automático, sem comando do operador:**
+
+1. O hook `Stop` (Claude Code e Cursor) roda ao fim de cada turno do agente.
+2. Ele acha projetos com `gauntlet.json` pelos arquivos **editados** na sessão, pelo `cwd` (se a sessão mudou arquivo) e pelas raízes do workspace (Cursor). Ler arquivo não dispara.
+3. Sem mudança no código desde a última avaliação → custo < 0,5 s, silêncio.
+4. Código mudou → roda o gauntlet. Passou → linha de status ao operador. Falhou/regrediu → **bloqueia o fim do turno** e devolve o feedback ao agente, que continua corrigindo.
+5. Saída do loop: `max_blocks` (padrão 3) **ou** estagnação — nenhuma pendência anterior foi resolvida (`adaptive-depth.md`: I(t)=0 → EXIT) **ou** teto de `2 × max_blocks` na sessão. Libera com aviso para o agente relatar as pendências.
+6. Instalação dos hooks: `py -3 scripts/gauntlet/install_hooks.py` (idempotente, com backup; o operador roda uma vez).
+
+**Regras para o agente:**
+
+- Projeto novo com testes e sem `gauntlet.json` → rodar `gauntlet.py init` + `run` (baseline) e commitar o `gauntlet.json`. Ajustar pesos ao projeto.
+- Feedback do hook = trabalho do agente (ADR-010). Corrigir o **código**, nunca o teste nem o avaliador.
+- `gauntlet.py accept --reason "..."` rebaixa a baseline → **só com aceite explícito do operador** (spec mudou de propósito). Fica no histórico e o hook avisa o operador.
+- Mudança em arquivo `protected` só passa com `accept` do operador — commitar não basta.
+- Report de entrega (§7) inclui a linha do gauntlet: `score X (baseline Y, verdict)`.
+
+**Limites conhecidos (não esconder):**
+
+- Mutation testing não roda nativo no Windows (`mutmut` exige fork). Entra quando houver CI Linux noturno.
+- Coverage pode ser inflado com teste fraco; asserts não triviais e o reviewer-agent (§2 nível 5) compensam em parte. O LLM-judge **não** roda no hook (custo por turno).
+- Coverage do Python exclui os arquivos de teste (`gauntlet.coveragerc`); no DRE o número real caiu de 86% para 77%.
+- O agente consegue rodar `accept` sozinho; a defesa é a trilha (histórico + aviso ao operador), não bloqueio. O hook é guarda-corpo, não controle de acesso.
+- Mudança de outra pessoa depois do último verde (commit, pull) também é avaliada; se for supressão/protegido, só o `accept` libera.
+- Cursor não informa arquivos editados: avalia os projetos das raízes do workspace quando o código muda.
+- Sem git, a integridade cobre só contagens (testes, asserts, skips); diff de skip/supressão/protegido exige git.
+- Revisão adversarial em 3 rodadas (21 → 17 → 9 achados); LOW restantes: corrida rara no lock velho e custo do `git diff --binary` com binário rastreado grande modificado.
+
+---
+
+## 12. Referências da pesquisa (06/10/2026)
+
+- https://github.com/karpathy/autoresearch — métrica única, budget fixo, keep/discard via git, `results.tsv`
+- https://anthropic.com/engineering/demystifying-evals-for-ai-agents — tipos de grader, resistência a hack, pass@k vs pass^k
+- https://arxiv.org/abs/2511.21654 (EvilGenie) — detecção de edição de teste e LLM-judge funcionam; holdout ajuda pouco
+- https://arxiv.org/abs/2510.20270 (ImpossibleBench) — atalhos: editar assert, special-case, `sys.exit(0)`
+- https://arxiv.org/abs/2507.19457 (GEPA) — feedback textual rende mais que escalar
+- https://stryker-mutator.io/docs/stryker-js/incremental/ · https://mutmut.readthedocs.io/ — mutation incremental
+- Wang/Meta: só paráfrase verificada (https://cryptobriefing.com/meta-ai-agent-swarm-outperforms-engineers/) — não citar como aspas literais

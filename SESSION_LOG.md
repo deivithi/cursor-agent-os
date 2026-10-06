@@ -6,6 +6,16 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-06 — Gauntlet contínuo: score, catraca e Stop hook automático (ADR-015)
+
+- ✅ Origem: fala de Alexandr Wang (Meta, Startup School 2026) — "loop certo + métrica certa". Pesquisa: Karpathy autoresearch, AlphaEvolve/OpenEvolve, GEPA, Anthropic evals, EvilGenie/ImpossibleBench (reward hacking). Citação literal de Wang não verificada (só paráfrase).
+- ✅ `scripts/gauntlet/gauntlet.py` (stdlib): gates + integridade de teste + score 0-100 + catraca de baseline; `init`/`run`/`status`/`accept --reason`/`hook`. Integridade comparada com o último estado aprovado (`git stash create` preso em `refs/gauntlet/*`), hash do `gauntlet.json`, supressões (`noqa` nu, `pragma: no cover`…), asserts triviais não contam.
+- ✅ Stop hook (Claude Code + Cursor): roda quando o código muda; falha/regressão bloqueia o fim do turno com feedback; sai por `max_blocks`, estagnação (I(t)=0) ou teto da sessão. Sem mudança < 0,6 s.
+- ✅ Piloto DRE_Eventos (`gauntlet.json` + `gauntlet.coveragerc`, commits `ac7b987`, `ce751b2`): coverage real sem os testes caiu de 86% para 77% (o número antigo era inflado). Dogfood: o próprio gauntlet tem `gauntlet.json`.
+- ✅ Gauntlet do gauntlet: 107 testes, 91% coverage no motor, ruff limpo, C901 ≤ 10. Revisão adversarial em 3 rodadas (21 → 17 → 9 achados), todos HIGH/MEDIUM corrigidos.
+- ⚠️ Bloqueio: o classificador do auto mode negou ao agente editar `~/.claude/settings.json` (automodificação). Instalação do hook fica com o operador: `py -3 scripts/gauntlet/install_hooks.py`.
+- ➡️ Próximo: operador roda o instalador; ativar `gauntlet.py init` nos próximos projetos com testes; mutation testing quando houver CI Linux.
+
 ## 2026-10-06 — Skill `corte-release` (corte de versão + enxame de QA + patch)
 
 - ✅ Origem: post sobre release manager + bot de engenharia (Grok Bot no Slack). Adaptado ao ecossistema: aviso no PR do GitHub + Telegram via Zo, enxame no `Workflow` do Claude Code.

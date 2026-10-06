@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "stack": "python",
+  "timeout_s": 600,
+  "gates": [
+    {
+      "name": "pytest",
+      "cmd": [
+        "{python}",
+        "-m",
+        "pytest",
+        "tests",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--cov=gauntlet",
+        "--cov=install_hooks",
+        "--cov-report=json:{state}/coverage.json",
+        "--junitxml={state}/junit.xml"
+      ],
+      "env": {
+        "COVERAGE_FILE": "{state}/.coverage"
+      },
+      "junit": "{state}/junit.xml"
+    },
+    {
+      "name": "ruff",
+      "cmd": [
+        "{python}",
+        "-m",
+        "ruff",
+        "check",
+        ".",
+        "--output-format",
+        "concise"
+      ]
+    },
+    {
+      "name": "ruff-format",
+      "cmd": [
+        "{python}",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "name": "coverage",
+      "source": "coverage_json",
+      "path": "{state}/coverage.json",
+      "weight": 70,
+      "norm": "percent"
+    },
+    {
+      "name": "complexidade_c901",
+      "cmd": [
+        "{python}",
+        "-m",
+        "ruff",
+        "check",
+        ".",
+        "--select",
+        "C901",
+        "--output-format",
+        "json",
+        "--exit-zero"
+      ],
+      "source": "ruff_json_count",
+      "weight": 30,
+      "norm": {
+        "type": "inverse",
+        "k": 5
+      }
+    }
+  ],
+  "integrity": {
+    "tests_glob": [
+      "tests/**/*.py"
+    ],
+    "protected": [
+      "gauntlet.json",
+      "**/ruff.toml",
+      "**/.ruff.toml",
+      "**/pytest.ini",
+      "**/conftest.py"
+    ]
+  },
+  "ratchet": {
+    "min_gain": 0.3,
+    "tolerance": 0.3
+  },
+  "hook": {
+    "enabled": true,
+    "max_blocks": 3
+  }
+}
