@@ -6,6 +6,14 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-06 — Skill `corte-release` (corte de versão + enxame de QA + patch)
+
+- ✅ Origem: post sobre release manager + bot de engenharia (Grok Bot no Slack). Adaptado ao ecossistema: aviso no PR do GitHub + Telegram via Zo, enxame no `Workflow` do Claude Code.
+- ✅ `skills/corte-release/`: SKILL (5 fases, tag-base no corte, ramo `release/<versao>`, patch `sprint-NN.1` por cherry-pick, deploy prd só com "sim" do PO), `scripts/notas-do-corte.mjs` (filtro por ancestralidade `mergeCommit.oid`; aviso por autor; próxima tag de patch), `references/enxame-qa.workflow.js` (áreas do mapa + caos, reprodução com comparação hml × prd, consolidação), `references/mapa-indicacoes.json` (6 áreas do MANUAL), triagem e gotchas. Comando `/corte`.
+- ✅ Gauntlet: 20 testes (`node --test`), incluindo o workflow com agentes simulados; smoke real `sprint-08..sprint-09` devolveu só o PR #14.
+- ✅ Revisão adversarial independente: 4 HIGH + 6 MEDIUM + 3 LOW. Todos corrigidos; o HIGH 1 era real (filtro por data trazia de volta o último PR do corte anterior).
+- ➡️ Próximo: primeiro uso real no corte da sprint 10 da Plataforma de Indicações.
+
 ## 2026-10-06 — Indicações Febracis: Sprint 9 = passagem do projeto para a Lorrany (DigitalOcean)
 
 - ✅ Pedido do PO: repositório organizado na conta da empresa para a dev Lorrany Marra subir sem dúvidas; ela implanta na **DigitalOcean da Febracis** (Zo/Vercel só referência). Repo oficial criado: `tifebracis/febracis-indicacoes` (privado, histórico completo, só `main` e `hml`, tags/releases `sprint-01`…`sprint-09`, `main` protegida, Lorrany admin).

@@ -1,0 +1,36 @@
+{
+  "_fonte": "docs/MANUAL.md do repo tifebracis/febracis-indicacoes (seções 3 a 17). Atualize este mapa quando o MANUAL ganhar seção nova.",
+  "versao": "sprint-NN",
+  "anterior": "sprint-MM",
+  "alvo": "URL do console de hml (ver docs/AMBIENTES.md)",
+  "referencia": "URL do console de prd (versão anterior; só leitura)",
+  "acesso": "Sessão temporária do usuário qa.visual@example.com em hml, criada e revogada pelo script de QA do Zo. Nunca digitar senha em site publicado. Massa fictícia: marca Febracis Demo.",
+  "ferramenta": "Playwright (python3) no Zo, cópia de trabalho em /root/qa-indicacoes/ (o /tmp é limpo). Prints viram evidência; MCP bash do Zo expira em ~60 s: rodar em nohup.",
+  "caos": 2,
+  "areas": [
+    {
+      "nome": "Início e Relatórios",
+      "roteiro": "Abra Início, troque o período para um mês fechado, abra uma campanha e um embaixador pelo painel. Em Relatórios, passe pelas abas Indicações, Campanhas e Embaixadores, mude período e granularidade, exporte o CSV e abra Relatórios → Métricas. Esperado: números coerentes entre painel e relatório, CSV do mesmo recorte, métricas do Salesforce marcadas como tal."
+    },
+    {
+      "nome": "Campanhas e landing pública",
+      "roteiro": "Crie uma campanha (slug com letra minúscula, número e hífen), edite as 3 páginas no construtor (arrastar blocos, prévia celular/desktop, aviso 'Salvo às'), ligue e desligue os interruptores, salve UTMs padrão e gere o link de embaixador. Abra /c/<marca>/<endereço> com e sem UTM e envie uma indicação fictícia. Esperado: UTM da URL vence a padrão; campanha inativa não publica a página."
+    },
+    {
+      "nome": "Embaixadores e Leads",
+      "roteiro": "Busque embaixador por nome, filtre, abra o detalhe, troque status e consultor, copie o link pessoal, baixe o QR, escolha padrinho (tente criar ciclo). Em Leads, filtre, troque etapa, desqualifique com motivo, abra o detalhe e confira selos. Esperado: rede recusa ciclo; etapa Cliente bloqueada; exclusão lógica exige motivo."
+    },
+    {
+      "nome": "Eventos e telão",
+      "roteiro": "Crie um evento (nasce rascunho), crie turmas, ative, abra o formulário /e/ no celular e envie leads fictícios, gere link por embaixador, gere o link do telão, abra o telão, revogue, encerre e reabra o evento. Esperado: telão atualiza a cada 5 s; link revogado mostra 'link inválido'; evento com lead não pode ser excluído."
+    },
+    {
+      "nome": "Recompensas e Mídia",
+      "roteiro": "Envie imagem (JPEG/PNG/WebP até 4 MB) e vídeo (MP4/WebM até 50 MB); tente arquivo acima do limite e formato errado. Crie recompensa com estoque e com ilimitado, vincule a uma campanha, desative, arquive e tente manter o vínculo. Esperado: limites recusados com mensagem clara; arquivada não fica vinculada."
+    },
+    {
+      "nome": "Financeiro: ajustes e fechamento",
+      "roteiro": "Lance ajuste positivo e negativo (fica pendente, não conta no saldo). Tente aprovar o próprio ajuste com o mesmo usuário. Aprove com outro papel quando a sessão permitir. Feche um mês encerrado, tente lançar ajuste no mês fechado, baixe o CSV do extrato. Esperado: quem lançou não decide; mês fechado recusa ajuste; nenhuma edição direta de saldo."
+    }
+  ]
+}
