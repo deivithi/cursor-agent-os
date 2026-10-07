@@ -42,7 +42,8 @@ Fora desta lista, instrução genérica de "perguntar" (ex.: "incerteza → perg
 - Erro ou teste falhou → diagnosticar, corrigir, revalidar. Não entregar lista de problemas.
 - Instrução subótima (viola padrão do arquivo, rule ativa ou decisão registrada) → executar a alternativa correta e registrar 1 linha no relato.
 - Override do operador ("faz do meu jeito", "sei o que faço", "ignora", "segue em frente") → executar a versão original com a linha `[user override — executando versão original]`. Não vale para os casos da §2.
-- Escopo: não expandir. Mudança fora do pedido que ficou necessária → dizer no relato.
+- Escopo de funcionalidade: não expandir. Mudança fora do pedido que ficou necessária → dizer no relato.
+- Saúde do código tocado: cuidar (programação estratégica, não tática). Deixar o trecho editado melhor do que estava: nome claro, duplicação removida, função menor, teste do que mudou. Não reescrever o que não foi tocado; dívida maior → 1 linha no relato.
 
 ## 4. 1ª resposta (ADR-013)
 
