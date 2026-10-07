@@ -1,13 +1,13 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-10-07 11:00 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-10-07 11:05 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
 **Saúde da memória:** DESATUALIZADA
-- pendência: 37 caminho(s) não commitado(s) no repo raiz
+- pendência: 4094 caminho(s) não commitado(s) no repo raiz
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `c520122cd6e4`
+**Fingerprint estrutural:** `1cce9ecedda1`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
 > condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
@@ -18,7 +18,6 @@
 - tarefa agendada inativa: Febracis-Cursor-SyncDaily = Disabled, última execução 2026-06-16
 - tarefa agendada inativa: Febracis-CursorAgent-Daily = Disabled, última execução 2026-06-16
 - tarefa agendada inativa: Febracis-OpenDesign-Update = Disabled, última execução 2026-06-15
-- scheduler do Hermes parado desde 2026-07-08 16:38 — 3 job(s) enabled que não rodam
 - 2 worktree(s) do repo raiz fora de worktrees/ com trabalho pendente — fora do inventário até agora
 
 ## Inventário (contado no disco)
@@ -33,7 +32,7 @@
 | Commands (`commands/*.md`) | 49 |
 | Rules (`rules/*.md`) | 14 |
 | Hooks (`hooks/*.js` + 2 `.ps1`) | 14 |
-| Arquivos em `scripts/` | 115 |
+| Arquivos em `scripts/` | 116 |
 | Skills em `~/.cursor/skills` (sync) | 63 |
 | Skills oficiais em `~/.cursor/skills-cursor` | 26 |
 
@@ -53,16 +52,16 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 
 | Item | Valor |
 |---|---|
-| Último heartbeat do ticker | 2026-07-08 16:38 (91 dias) |
+| Último heartbeat do ticker | 2026-10-07 11:04 (0 dias) |
 | Jobs habilitados | 3 |
 | Jobs pausados | 1 |
-| Veredito | **parado** — jobs enabled que não rodam |
+| Veredito | operando |
 
 | Job | Estado | Última execução |
 |---|---|---|
-| `FIO-IA gerar fio (Hermes)` | enabled | 07/08/2026 14:10:39 |
-| `FIO-IA watchdog (Hermes)` | enabled | 07/08/2026 15:15:51 |
-| `Briefing Diário Febracis Salesforce` | enabled | 07/08/2026 12:04:01 |
+| `FIO-IA gerar fio (Hermes)` | enabled | 10/07/2026 11:05:30 |
+| `FIO-IA watchdog (Hermes)` | enabled | 10/07/2026 11:04:58 |
+| `Briefing Diário Febracis Salesforce` | enabled | 10/07/2026 11:05:29 |
 | `OpenWiki Personal Brain update` | pausado | nunca |
 
 ## Repositórios
@@ -75,7 +74,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `415e18e` | 2026-10-06 | 37 caminho(s) | n/a |
+| `.` (raiz) | `afadb49` | 2026-10-07 | 4094 caminho(s) | n/a |
 
 ## Worktrees (14)
 
@@ -101,8 +100,6 @@ Repositórios independentes com `.git` próprio — **diretório** em todos os 1
 O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heurística declarada**, não fato binário.
 Acima do corte (3): `determined-wu-3787c2`, `dre-eventos-fix`, `festive-grothendieck`.
 No corte ou abaixo (11): `charming-lichterman`, `cranky-mahavira`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani`.
-
-A sujeira da raiz **ignora** os arquivos que o próprio sistema de memória gera ou edita: `MEMORY_STATE\.md`, `scripts/memory-doctor\.ps1`. Eles não são trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há 2 caminho(s) nessa condição.
 
 ## Worktrees registrados pelo repo raiz (fora de `worktrees/`)
 

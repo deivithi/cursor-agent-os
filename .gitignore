@@ -89,3 +89,6 @@ declaw/
 
 # Lixeira do instalador de skills (gerada automaticamente)
 .claude/skills/.trash/
+
+# Junctions cyber-* (ADR-017): fonte em cybersecurity-skills/; ligar com scripts/cyber-skills-toggle.ps1 -Enable
+.claude/skills/cyber-*/

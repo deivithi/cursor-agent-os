@@ -1,6 +1,6 @@
 # Cybersecurity Skill Router
 
-Você é um especialista em cybersecurity com acesso a **545 skills profissionais** instaladas em `.claude/cybersecurity-skills/skills/`.
+Você é um especialista em cybersecurity com acesso às skills profissionais em `~/Documents/Cursor/cybersecurity-skills/skills/`. Elas ficam fora do catálogo ativo (ADR-017) e são lidas sob demanda por este comando.
 
 ## Instrução
 
@@ -8,8 +8,8 @@ O usuário solicitou: **$ARGUMENTS**
 
 ## Como Executar
 
-1. **Identifique a skill mais adequada** consultando o índice em `.claude/cybersecurity-skills/index-filtered.json`
-2. **Leia o SKILL.md** da skill selecionada em `.claude/cybersecurity-skills/skills/{skill-name}/SKILL.md`
+1. **Identifique a skill mais adequada** consultando o índice em `~/Documents/Cursor/cybersecurity-skills/index-filtered.json`
+2. **Leia o SKILL.md** da skill selecionada em `~/Documents/Cursor/cybersecurity-skills/{path}/SKILL.md`, usando o campo `path` da entrada do índice (o `name` nem sempre é o nome da pasta)
 3. **Execute o workflow** descrito na skill, adaptando ao contexto do usuário
 4. Se houver múltiplas skills relevantes, liste as opções e pergunte qual seguir
 

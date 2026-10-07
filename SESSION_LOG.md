@@ -13,7 +13,9 @@
 - ✅ 11 rules para `rules-archive/` e 3 para `rules-on-demand/`, com README em cada pasta. Referências cruzadas corrigidas.
 - ✅ `.cursor/rules/first-response.mdc` removido; `plan-and-execute.mdc` espelha a rule nova.
 - ✅ `scripts/memory-doctor.ps1`: lista de dependências críticas atualizada.
-- 🔎 Não tocado: cópias em `~/.cursor/rules/` (fora do git), catálogo de skills.
+- ✅ ADR-017: 739 skills `cyber-*` fora do catálogo ativo via `scripts/cyber-skills-toggle.ps1`; `/cyber` lê sob demanda; cópia de 4.085 arquivos saiu do índice do repo raiz.
+- 🔎 Não tocado: `~/.cursor/rules/caverna-activate.md` (sem `.off`, ligada a hook).
+
 ## 2026-10-06 — Gauntlet contínuo: score, catraca e Stop hook automático (ADR-015)
 
 - ✅ Origem: fala de Alexandr Wang (Meta, Startup School 2026) — "loop certo + métrica certa". Pesquisa: Karpathy autoresearch, AlphaEvolve/OpenEvolve, GEPA, Anthropic evals, EvilGenie/ImpossibleBench (reward hacking). Citação literal de Wang não verificada (só paráfrase).

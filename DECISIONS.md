@@ -2,6 +2,18 @@
 
 > Iniciado em: 08/06/2026 · Última atualização: 07/10/2026
 
+## ADR-017: Skills cyber-* fora do catálogo ativo
+
+**Data:** 07/10/2026
+**Contexto:** 739 junctions `.claude/skills/cyber-*` apontavam para `cybersecurity-skills/skills/`. O Claude Code
+listava todas em toda sessão e listava de novo quando o hook relia o workspace. O repo raiz também guardava
+uma cópia de 4.085 arquivos delas. O trabalho do operador (Salesforce, Febracis) quase nunca usa pentest ou forense.
+**Decisão:**
+- `scripts/cyber-skills-toggle.ps1 -Disable` remove só as junctions. A fonte em `cybersecurity-skills/` fica intacta.
+- O comando `/cyber` lê o índice `cybersecurity-skills/index-filtered.json` e abre o SKILL.md pelo campo `path`, sob demanda.
+- As cópias saem do índice do repo raiz e `.claude/skills/cyber-*/` vai para o `.gitignore`.
+**Reverter:** `pwsh -File scripts/cyber-skills-toggle.ps1 -Enable` (testado: ida e volta com 739 junctions e fonte com 4.085 arquivos).
+**Limite conhecido:** 3 entradas do índice upstream apontam para pastas ausentes ou renomeadas.
 ## ADR-016: Rules sempre ativas reduzidas ao núcleo verificável
 
 **Data:** 07/10/2026
