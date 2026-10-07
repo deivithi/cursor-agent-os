@@ -1,12 +1,13 @@
 # MEMORY_STATE — estado do ecossistema
 
-> GERADO por `scripts/memory-doctor.ps1` em 2026-10-06 17:07 BRT. Não editar à mão.
+> GERADO por `scripts/memory-doctor.ps1` em 2026-10-07 11:00 BRT. Não editar à mão.
 > Fatos voláteis recomputados do disco e do Git. Onde este arquivo contradiz outro, este vence.
 
-**Saúde da memória:** ATUALIZADA
+**Saúde da memória:** DESATUALIZADA
+- pendência: 37 caminho(s) não commitado(s) no repo raiz
 - aceito (não conta para a saúde): OpenWiki sem ~/.openwiki/.env — bloqueio consciente do OAuth do X (não criar sem client_id)
 - aceito (não conta para a saúde): plugin bundle em skills/ (não é skill, não precisa de SKILL.md): pptx-generator
-**Fingerprint estrutural:** `932261c3aa4a`
+**Fingerprint estrutural:** `c520122cd6e4`
 
 > `Saúde: ATUALIZADA` significa **zero pendência acionável de memória**. As linhas `aceito` são
 > condições deliberadas. As **condições de ambiente** abaixo são problemas reais de operação:
@@ -30,9 +31,9 @@
 | Diretórios cyber | 739 |
 | Skills scientific | 22 |
 | Commands (`commands/*.md`) | 49 |
-| Rules (`rules/*.md`) | 27 |
+| Rules (`rules/*.md`) | 14 |
 | Hooks (`hooks/*.js` + 2 `.ps1`) | 14 |
-| Arquivos em `scripts/` | 113 |
+| Arquivos em `scripts/` | 115 |
 | Skills em `~/.cursor/skills` (sync) | 63 |
 | Skills oficiais em `~/.cursor/skills-cursor` | 26 |
 
@@ -45,14 +46,14 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `Febracis-Cursor-SyncDaily` (sync de skills) | Disabled **inativa** | 2026-06-16 |
 | `Febracis-CursorAgent-Daily` | Disabled **inativa** | 2026-06-16 |
 | `Febracis-OpenDesign-Update` | Disabled **inativa** | 2026-06-15 |
-| `Febracis-Cursor-UpdateWatchdog` | Running | 2026-10-05 |
-| `Febracis-Codex-LogGuard-Audit` | Ready | 2026-10-06 |
+| `Febracis-Cursor-UpdateWatchdog` | Running | 2026-10-07 |
+| `Febracis-Codex-LogGuard-Audit` | Ready | 2026-10-07 |
 
 ## Scheduler do Hermes
 
 | Item | Valor |
 |---|---|
-| Último heartbeat do ticker | 2026-07-08 16:38 (90 dias) |
+| Último heartbeat do ticker | 2026-07-08 16:38 (91 dias) |
 | Jobs habilitados | 3 |
 | Jobs pausados | 1 |
 | Veredito | **parado** — jobs enabled que não rodam |
@@ -74,7 +75,7 @@ Plugin bundles em `skills/` (têm `plugin.json` ou `.claude-plugin` e skills ani
 | `cybersecurity-skills` | `dfea41c2` | 2026-03-11 | 23 arquivo(s) | -223 / +33 |
 | `scientific-skills` | n/a | n/a | não é repo git | n/a |
 | `worktrees\dre-eventos-fix` | `d95783b` | 2026-06-08 | limpo | -0 / +0 |
-| `.` (raiz) | `d628341` | 2026-10-06 | limpo | n/a |
+| `.` (raiz) | `415e18e` | 2026-10-06 | 37 caminho(s) | n/a |
 
 ## Worktrees (14)
 
@@ -101,7 +102,7 @@ O corte em 10 arquivos rastreados para separar "shell" de "com código" é **heu
 Acima do corte (3): `determined-wu-3787c2`, `dre-eventos-fix`, `festive-grothendieck`.
 No corte ou abaixo (11): `charming-lichterman`, `cranky-mahavira`, `gifted-boyd`, `heuristic-ritchie`, `inspiring-dijkstra`, `modest-dirac`, `naughty-wilson`, `peaceful-jepsen`, `quirky-easley`, `quirky-liskov`, `upbeat-mirzakhani`.
 
-A sujeira da raiz **ignora** os arquivos que o próprio sistema de memória gera ou edita: `MEMORY_STATE\.md`, `scripts/memory-doctor\.ps1`. Eles não são trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há 1 caminho(s) nessa condição.
+A sujeira da raiz **ignora** os arquivos que o próprio sistema de memória gera ou edita: `MEMORY_STATE\.md`, `scripts/memory-doctor\.ps1`. Eles não são trabalho pendente — senão o snapshot seria estale-por-construção. Hoje há 2 caminho(s) nessa condição.
 
 ## Worktrees registrados pelo repo raiz (fora de `worktrees/`)
 
@@ -119,15 +120,15 @@ Não aparecem no laço de `worktrees/` porque não vivem lá. Encontrados via `g
 | `AGENTS.md` | 2026-09-30 | 7 |
 | `CONTEXT.md` | 2026-09-30 | 7 |
 | `AGENT_MEMORY.md` | 2026-09-30 | 7 |
-| `DECISIONS.md` | 2026-10-06 | 1 |
+| `DECISIONS.md` | 2026-10-07 | 0 |
 | `SESSION_LOG.md` | 2026-09-30 | 7 |
 | `PROJECTS_INDEX.md` | não declarada | n/a |
 | `SKILLS_INDEX.md` | 2026-09-30 | 7 |
-| última sessão em `SESSION_LOG.md` | 2026-10-06 | 1 |
+| última sessão em `SESSION_LOG.md` | 2026-10-07 | 0 |
 
 ## SESSION_LOG — ordem cronológica
 
-Decrescente e em ordem em 32 blocos. **Não** verifica sessão faltando
+Decrescente e em ordem em 33 blocos. **Não** verifica sessão faltando
 nem bloco duplicado: só compara datas consecutivas de headers no formato `## YYYY-MM-DD`.
 
 ## Commits de memória/estrutura sem registro de sessão

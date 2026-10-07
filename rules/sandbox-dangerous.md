@@ -15,7 +15,7 @@ isolado:
 
 - **Dev container** (`.devcontainer/`) ou container Docker dedicado, **ou**
 - **VM / sandbox** com filesystem e rede restritos, **ou**
-- `/sandbox` do Claude Code (isola file/network, ver `workflow-patterns.md` §7).
+- `/sandbox` do Claude Code (isola file/network).
 
 Fora de ambiente isolado → **não** habilitar skip-permissions. Operar com aprovação normal.
 
@@ -66,7 +66,8 @@ Falhou em qualquer item → não habilitar skip-permissions.
 
 ## 5. Referência cruzada
 
-- `workflow-patterns.md` §7 (`/sandbox`) e §9 (worktree p/ isolar código)
+- `/sandbox` do Claude Code e `isolation: worktree` p/ isolar código
+- `plan-and-execute.md` §2 — lista fechada do que exige confirmação
 - `human-architectural-gate.md` — gate humano em domínios irreversíveis (independe de sandbox)
 - `HARNESS.md` §"10 primitivas" — Blast Radius Limiter, Kill Switch, Least Agency
 - `hooks/git-safety-guard.js` — lembrete preToolUse de skip-permissions fora de sandbox

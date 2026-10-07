@@ -2,7 +2,7 @@
 
 > Atualizado em: 30/09/2026
 > Entry point da memória. **Não** bloquear o 1º turno. AGENTS.md já está no prompt.
-> Ritual abaixo = sob demanda (ADR-013). Ver `rules/first-response.md`.
+> Ritual abaixo = sob demanda (ADR-013). Ver `rules/plan-and-execute.md` §4.
 >
 > **No DSH, o único vetor automático é `AGENTS.md`** — o global (`~/.dsh/AGENTS.md`, com o
 > bloco de estado gerado) e o do projeto. Nenhum hook do workspace é montado. Contrato
@@ -53,7 +53,7 @@ Memória completa só nos gatilhos acima.
 | rules/memory-protocol.md | O que capturar e com que confiança | Quando mudar a política de memória |
 | rules/gauntlet-protocol.md | Protocolo de verificação universal (ADR-008) | Quando mudar política de qualidade |
 | rules/plan-and-execute.md | Auto-approve + autonomia + skill em toda ação (ADR-009/010/011) | Quando mudar o ciclo operacional |
-| rules/first-response.md | 1ª resposta imediata; memória sob demanda (ADR-013) | Quando mudar política de latência |
+| rules/plan-and-execute.md §4 | 1ª resposta imediata; memória sob demanda (ADR-013) | Quando mudar política de latência |
 | QWEN.md | Protocolo operacional Qwen Code | Quando mudar regras de sessão |
 
 **Fora deste repositório:**

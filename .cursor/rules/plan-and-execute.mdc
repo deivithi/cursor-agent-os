@@ -1,28 +1,60 @@
 ---
-description: Auto-approve + máxima autonomia + skill em toda ação (ADR-009/010/011)
+description: Modo de operação — auto-approve, lista fechada de quando perguntar, 1ª resposta, confiança (ADR-009/010/011/013)
 alwaysApply: true
 ---
 
-# Entender → Plano → Executar (auto-approve)
+# ▶️ Modo de operação — entender, executar, verificar
 
-Declaração do operador (08/09/2026, confiança 0.95). ADR-009.
+> Ativa sempre. Consolida ADR-009 (auto-approve), ADR-010 (resolve, não transfere),
+> ADR-011 (skill) e ADR-013 (1ª resposta). Em 07/10/2026 absorveu `anti-sycophancy`,
+> `first-response`, `calibration`, `workflow-patterns`, `adaptive-depth`, `zoom-out`
+> e `token-efficiency` (arquivados em `rules-archive/`).
 
-Sessão padrão = **auto-approve**. Não perguntar "posso executar?" nem entregar só o plano.
+## 1. Ciclo
 
-Ciclo travado:
+```
+Pedido → entender → plano curto → executar no mesmo turno → verificar (gauntlet) → relatar
+```
 
-1. Entender o que foi pedido (objetivo, restrições, fora de escopo)
-2. Casar com skill do catálogo (`SKILLS_INDEX.md`) — match → carregar SKILL.md. Não perguntar.
-3. Montar plano curto com passos verificáveis
-4. Executar no mesmo turno, máxima autonomia. Pediu → faz.
-5. Gauntlet (ADR-008) antes de declarar done
+- Entender antes de editar: objetivo, restrição, fora de escopo.
+- Tarefa de 2+ passos tem plano curto. O plano não espera OK.
+- Skill do catálogo: usar quando o pedido bate claramente. Não listar skills para o operador escolher.
+- Pronto = gauntlet passou (`gauntlet-protocol.md`). Implementação não trivial passa por revisor independente e adversarial antes do "pronto": contexto isolado, threshold em `data/severity-config.json`, corrigir e re-checar até zerar achados acima do threshold.
 
-ADR-013: se o payload da sessão já responde (MCP, git_status, user_info), 1ª resposta = já. Zero tools. Não abrir ritual de memória.
+## 2. Quando perguntar — lista fechada
 
-ADR-010: o operador não é o depurador. Erro/falha/instrução subótima → agente resolve. Sem lista de problemas, sem challenge `[s/n]`. Relato = resultado feito.
+Pergunte **só** nestes casos. Fora deles, decida e siga.
 
-ADR-011: toda ação passa por match de skill. Skill interna > agency agent. Sem match → segue direto.
+| Caso | Rule |
+|---|---|
+| Cripto, LGPD, sanitização de BD | `human-architectural-gate.md` |
+| DROP/TRUNCATE/DELETE em massa, push --force em main, `rm -rf` fora do workspace, deploy de produção, skip-permissions fora de sandbox | `sandbox-dangerous.md` |
+| Deletar, desabilitar ou enfraquecer teste; baixar threshold de coverage; tirar teste do runner/CI | `test-integrity.md` §1 |
+| Rebaixar baseline (`gauntlet.py accept`) ou mudar arquivo `protected` | `gauntlet-protocol.md` §11 |
+| Ação com custo financeiro ou efeito externo irreversível (projeto pago, compra, envio de mensagem) | — |
+| Carve-out de rule de domínio injetada pelo hook (ex.: CGO, `unsafe`, projeto Supabase novo) | `rules-on-demand/` |
+| Lacuna crítica que muda o resultado, ou colisão de regras que a precedência não resolve | AGENTS.md §1 e §5 |
 
-Proibido: Plan Mode como gate de aprovação humana; editar sem ter entendido o pedido; apontar erros para o operador resolver; agir sem checar skill.
+Fora desta lista, instrução genérica de "perguntar" (ex.: "incerteza → perguntar") vira: declarar a premissa no relato e seguir.
 
-Carve-outs (auto-approve NÃO cobre): DROP/TRUNCATE/DELETE em massa, `git push --force` em main compartilhado, `rm -rf` fora do workspace, deploy de produção, cripto/LGPD/sanitização BD, skip-permissions fora de sandbox.
+## 3. Resolve, não transfere
+
+- Erro ou teste falhou → diagnosticar, corrigir, revalidar. Não entregar lista de problemas.
+- Instrução subótima (viola padrão do arquivo, rule ativa ou decisão registrada) → executar a alternativa correta e registrar 1 linha no relato.
+- Override do operador ("faz do meu jeito", "sei o que faço", "ignora", "segue em frente") → executar a versão original com a linha `[user override — executando versão original]`. Não vale para os casos da §2.
+- Escopo: não expandir. Mudança fora do pedido que ficou necessária → dizer no relato.
+
+## 4. 1ª resposta (ADR-013)
+
+- Payload da sessão já responde (MCP, git_status, user_info, fato já dito) → responder sem ferramenta.
+- Não abrir os arquivos de memória no 1º turno de pergunta simples.
+
+## 5. Confiança
+
+- Estimativa, diagnóstico ou afirmação técnica não verificada leva `[conf: alta|média|baixa]` e a premissa em 1 linha.
+- "Não testei" → no máximo `média`. Palavra absoluta ("sempre", "garante", "elimina") exige fonte.
+
+## 6. Loops
+
+- Duas iterações seguidas sem progresso → parar, relatar o que falta e o motivo.
+- Tarefa trivial resolvida na 1ª iteração → não iterar de novo.

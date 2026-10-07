@@ -32,7 +32,7 @@ Base: skill `ste-ptbr` (adaptação PT-BR do ASD-STE100). Nível padrão: **80**
 7. Não use enchimento: `vale ressaltar`, `é importante destacar`, `basicamente`, `robusto`, `no cenário atual`.
 8. Escreva o número exato. Não use `etc.`, `e/ou` nem "o mesmo" como pronome.
 9. Não corte artigo nem preposição.
-10. Mostre a incerteza com o rótulo `[conf: X]` de `calibration.md`, não com "acho que" ou "talvez".
+10. Mostre a incerteza com o rótulo `[conf: X]` de `plan-and-execute.md` §5, não com "acho que" ou "talvez".
 11. Em aviso de risco, escreva a ação primeiro e o risco depois.
 12. Use no máximo 6 frases por parágrafo. Prefira lista e tabela a texto corrido.
 

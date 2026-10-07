@@ -29,7 +29,7 @@ testes, lint, type-check, coverage, mutation testing, reviewer-agent.
 5. **Testes são contrato** (`rules/test-integrity.md`):
    nunca deletar, skipar ou enfraquecer testes sem aceite explícito.
 
-6. **Reviewer-agent** (`rules/workflow-patterns.md` §2):
+6. **Reviewer-agent** (`rules/plan-and-execute.md` §1; threshold em `data/severity-config.json`):
    implementação não-trivial passa por agente revisor independente.
 
 7. **Gates arquiteturais** (`rules/human-architectural-gate.md`):

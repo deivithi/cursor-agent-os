@@ -81,8 +81,8 @@ Motivo: foi exatamente isso que apodreceu. `SKILLS_INDEX.md` declarava 110 skill
 | Rule | Relação |
 |---|---|
 | `memory-protocol.md` | Define **o que** capturar e com que confiança; esta define **quando** e **por onde** |
-| `first-response.md` | ADR-013 continua valendo: nada de ritual pesado no primeiro turno de pergunta simples |
-| `plan-and-execute.md` | Autonomia e commit/push valem também para a manutenção da memória |
+| `plan-and-execute.md` §4 | ADR-013 continua valendo: nada de ritual pesado no primeiro turno de pergunta simples |
+| `plan-and-execute.md` §1 | Autonomia e commit/push valem também para a manutenção da memória |
 | `gauntlet-protocol.md` | O doctor é o check objetivo da camada de memória; sem ele, "memória atualizada" é afirmação sem evidência |
 
 ## Manutenção desta rule

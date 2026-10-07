@@ -42,7 +42,7 @@ echo "  📝 Rule: $RULE"
 echo "  🔢 PR: #$PR_NUMBER"
 
 # Determine target file based on content
-TARGET="$PROJECT_DIR/.claude/rules/workflow-patterns.md"
+TARGET="$PROJECT_DIR/rules-on-demand/lessons.md"
 
 if echo "$RULE" | grep -qiE "style|format|naming|const|let|var|import|export|enum|string|type|interface|async|await|promise"; then
   TARGET="$PROJECT_DIR/.claude/rules/javascript-code.md"
@@ -58,6 +58,7 @@ TARGET_NAME="$(basename "$TARGET")"
 echo "  📂 Target: $TARGET_NAME"
 
 # Append rule
+mkdir -p "$(dirname "$TARGET")"
 echo "" >> "$TARGET"
 echo "- $RULE (via PR #$PR_NUMBER, $(date '+%Y-%m-%d'))" >> "$TARGET"
 

@@ -94,9 +94,9 @@ executa sem erro.
 
 | Rule | Como o STE-PT se encaixa |
 |---|---|
-| `calibration.md` | O rótulo `[conf: X]` não conta palavra. Palavra vaga ("provavelmente") sai; o rótulo fica. |
+| `plan-and-execute.md` §5 | O rótulo `[conf: X]` não conta palavra. Palavra vaga ("provavelmente") sai; o rótulo fica. |
 | `gauntlet-protocol.md` | O linter é o check objetivo do texto. Resultado entra no report de gauntlet. |
-| `anti-sycophancy.md` | Slop ("vale ressaltar", "robusto") é erro nos dois níveis. |
+| `plan-and-execute.md` §3 | Slop ("vale ressaltar", "robusto") é erro nos dois níveis. |
 | `pt-br-acentos.md` | Acento obrigatório. Termo técnico EN (deploy, org, job) é nome técnico aprovado. |
 | `human-architectural-gate.md` | `⛔ BLOQUEIO` é o formato do aviso nos domínios do gate. |
 

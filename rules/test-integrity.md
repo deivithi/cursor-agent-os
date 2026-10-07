@@ -1,7 +1,7 @@
 # 🧪 Test Integrity — Testes São Contrato, Não Obstáculo
 
 > Ativa sempre que a sessão tocar testes (criar, editar, rodar, refatorar) ou quando um
-> teste falhar. Complementa `workflow-patterns.md` §4 (verificação) e `vibe-deploy-guard.md`.
+> teste falhar. Complementa `gauntlet-protocol.md` (verificação) e `vibe-deploy-guard.md`.
 > Reforçada pelo hook `hooks/git-safety-guard.js` (preToolUse).
 >
 > Princípio (do vídeo Akita/Galego): _"Testes ficaram baratos com IA. Ela nunca pode
@@ -90,7 +90,7 @@ Sem aceite → não alterar. Seguir corrigindo o código.
 
 - `test-driven-development` (skill) — ciclo TDD + comando de testes por stack
 - `alpha-loop` (skill) — itera código até os testes passarem (sem mexer nos testes)
-- `workflow-patterns.md` §4 — nunca declarar completo sem provar que funciona
+- `gauntlet-protocol.md` — nunca declarar completo sem provar que funciona
 - `vibe-deploy-guard.md` — checks de deploy
 - `hooks/git-safety-guard.js` — enforcement preToolUse (remoção de teste → pede confirmação)
 - `human-architectural-gate.md` — mesma filosofia: humano decide o irreversível

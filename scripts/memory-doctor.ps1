@@ -1,4 +1,4 @@
-<#
+﻿<#
 memory-doctor.ps1 — diagnóstico e regeneração do estado de memória do ecossistema.
 
 Por que existe: os arquivos de memória declaravam números escritos à mão (skills,
@@ -366,10 +366,9 @@ $criticalRefs = @(
   'AGENTS.md', 'MEMORY_STATE.md', 'CONTEXT.md', 'AGENT_MEMORY.md', 'DECISIONS.md',
   'SESSION_LOG.md', 'PROJECTS_INDEX.md', 'SKILLS_INDEX.md', 'config.json',
   'SECURITY.md', 'HARNESS.md', 'QWEN.md', '.cursorrules', '.gitignore',
-  'rules\caverna-activate.md.off', 'rules\plan-and-execute.md', 'rules\first-response.md',
-  'rules\memory-protocol.md', 'rules\gauntlet-protocol.md', 'rules\anti-sycophancy.md',
-  'rules\human-architectural-gate.md', 'rules\sandbox-dangerous.md', 'rules\workflow-patterns.md',
-  'rules\test-integrity.md', 'rules\token-efficiency.md', 'rules\pt-br-acentos.md',
+  'rules\plan-and-execute.md', 'rules\memory-protocol.md', 'rules\gauntlet-protocol.md',
+  'rules\human-architectural-gate.md', 'rules\sandbox-dangerous.md',
+  'rules\test-integrity.md', 'rules\pt-br-acentos.md', 'rules\ste-comunicacao.md',
   'rules\session-bootstrap.md',
   'hooks\openwiki-auth-guard.js', 'hooks\profile-session.js', 'hooks\profile-runtime.js',
   'hooks\git-safety-guard.js', 'hooks\hook-healthcheck.js',

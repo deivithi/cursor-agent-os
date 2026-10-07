@@ -6,6 +6,14 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-07 — Organização das rules (ADR-016)
+
+- ✅ Origem: análise do setup de DHH (harness qualquer, poucas skills, revisão adversarial) contra o nosso.
+- ✅ `rules/plan-and-execute.md` reescrita: ciclo, lista fechada de quando perguntar, resolve-não-transfere, 1ª resposta, confiança, loops.
+- ✅ 11 rules para `rules-archive/` e 3 para `rules-on-demand/`, com README em cada pasta. Referências cruzadas corrigidas.
+- ✅ `.cursor/rules/first-response.mdc` removido; `plan-and-execute.mdc` espelha a rule nova.
+- ✅ `scripts/memory-doctor.ps1`: lista de dependências críticas atualizada.
+- 🔎 Não tocado: cópias em `~/.cursor/rules/` (fora do git), catálogo de skills.
 ## 2026-10-06 — Gauntlet contínuo: score, catraca e Stop hook automático (ADR-015)
 
 - ✅ Origem: fala de Alexandr Wang (Meta, Startup School 2026) — "loop certo + métrica certa". Pesquisa: Karpathy autoresearch, AlphaEvolve/OpenEvolve, GEPA, Anthropic evals, EvilGenie/ImpossibleBench (reward hacking). Citação literal de Wang não verificada (só paráfrase).

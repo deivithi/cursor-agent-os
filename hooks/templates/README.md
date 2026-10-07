@@ -33,4 +33,4 @@ pwsh hooks\templates\install-git-hooks.ps1 -ProjectPath C:\caminho\do\repo
 
 - O hook é copiado com quebras de linha **LF** (git no Windows roda hooks via `sh`).
 - Combina com `rules/test-integrity.md` (não enfraquecer testes p/ passar o gate) e o
-  reviewer-agent de `workflow-patterns.md` §2 (review antes do merge).
+  reviewer-agent de `rules/plan-and-execute.md` §1 (review antes do merge).

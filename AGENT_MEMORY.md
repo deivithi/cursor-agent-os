@@ -25,7 +25,7 @@ Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-010**:
 - Proibido apontar erros, falhas ou challenges para o operador resolver.
 - Instrução subótima → executar a alternativa correta, sem `[s/n]`.
 - Relato ao operador = resultado feito, não lista de problemas.
-- Fonte: `rules/anti-sycophancy.md` + `rules/plan-and-execute.md`
+- Fonte: `rules/plan-and-execute.md` §3
 
 Declaração direta do operador em 08/09/2026 (confiança 0.95) — **ADR-011**:
 
@@ -38,7 +38,7 @@ Declaração direta do operador em 08/09/2026 — **ADR-013**:
 
 - 1ª resposta imediata. Payload da sessão (MCP, git_status, AGENTS.md) basta.
 - Proibido ritual de memória / grep em massa no 1º turno de status/sim-não.
-- Fonte: `rules/first-response.md`
+- Fonte: `rules/plan-and-execute.md` §4
 
 ## Stack
 - Salesforce (Sales, Service, Marketing, Experience)

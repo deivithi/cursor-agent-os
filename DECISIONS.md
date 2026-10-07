@@ -1,7 +1,27 @@
 # DECISIONS.md — Registro de decisões de arquitetura (ADR)
 
-> Iniciado em: 08/06/2026 · Última atualização: 06/10/2026
+> Iniciado em: 08/06/2026 · Última atualização: 07/10/2026
 
+## ADR-016: Rules sempre ativas reduzidas ao núcleo verificável
+
+**Data:** 07/10/2026
+**Contexto:** DHH descreve o setup dele como "qualquer harness, vários agentes, quase nenhuma
+skill e revisão adversarial". O nosso carregava 26 rules em toda sessão. Várias se contradiziam
+(`plan-and-execute` proibia perguntar; `zoom-out` §3 e `anti-sycophancy` mandavam perguntar).
+Três rules de domínio eram injetadas duas vezes: sempre, e de novo pelo hook `profile-runtime`.
+**Decisão:**
+- Núcleo sempre ativo: `plan-and-execute` (reescrita), `gauntlet-protocol`, `human-architectural-gate`,
+  `test-integrity`, `sandbox-dangerous`, `memory-protocol`, `session-bootstrap`, `ste-comunicacao`,
+  `pt-br-acentos`, `vibe-deploy-guard`, mais as rules com `paths:` (Python, JS, n8n, Salesforce).
+- `plan-and-execute` absorve `anti-sycophancy`, `first-response`, `calibration`, `workflow-patterns`,
+  `adaptive-depth`, `zoom-out` e ganha uma **lista fechada** de quando perguntar (§2), que vence qualquer outra.
+- Arquivadas em `rules-archive/`: as 7 acima, `token-efficiency`, `agency-agents`, `graphify`, `supabase-docs`.
+- Rules de domínio (`golang`, `geo-seo`, `supabase-factory`) vão para `rules-on-demand/`; o hook continua injetando.
+**Consequência:** rules sempre ativas caem de 87.579 para 50.730 bytes. O controle real fica em
+mecanismo (gauntlet, hook Stop, gate humano, reviewer adversarial), não em texto.
+**Validar:** experimento A/B em 5 tarefas reais (setup completo × núcleo) pelo score do gauntlet.
+**Pendente:** catálogo de skills (~640 `cyber-*` listadas em toda sessão, mais duplicação via
+`Documents/Cursor/.claude/skills`) — decisão do operador.
 ## ADR-015: Gauntlet contínuo — score, catraca e hook Stop automático
 
 **Data:** 06/10/2026

@@ -1,6 +1,6 @@
 # 🛡️ Human Architectural Gate — Cripto / LGPD / Sanitização BD
 
-> Ativa sempre. Mais forte que `anti-sycophancy.md`: BLOQUEIA execução até receber spec arquitetural explícita.
+> Ativa sempre. Mais forte que `plan-and-execute.md`: BLOQUEIA execução até receber spec arquitetural explícita.
 > Princípio: IA executa, humano arquiteta. Em domínios irreversíveis, "quase certo" = errado.
 >
 > Diretriz operacional: *"A IA não implementa protocolos de criptografia, regras de LGPD ou sanitização de banco de dados a menos que receba instruções diretas e arquiteturais explícitas do operador humano."*
@@ -119,7 +119,7 @@ User pode autorizar improviso c/ frase explícita:
 [user override — improvisando c/ defaults; premissas: <lista>]
 ```
 
-Premissas DEVEM ter rótulo de confiança (`calibration.md`):
+Premissas DEVEM ter rótulo de confiança (`plan-and-execute.md`):
 
 ```
 Premissa 1: bcrypt cost 12 [conf: média — OWASP 2024 recomenda 10-14]
@@ -147,13 +147,11 @@ Premissa 2: pepper em env var PEPPER [conf: baixa — KMS seria preferível]
 
 | Rule | Relação |
 |---|---|
-| `anti-sycophancy.md` | Esta rule é mais forte: BLOQUEIA, ñ apenas desafia. Anti-syc executa após `[s/n]`; gate exige spec completa |
+| `plan-and-execute.md` §2 | Esta rule é um dos casos da lista fechada de "perguntar". Vence o auto-approve |
+| `plan-and-execute.md` §5 | Premissas listadas no Spec Request DEVEM ter rótulo `[conf: alta/média/baixa]` |
 | `vibe-deploy-guard.md` | Cobre 18 checks técnicos (RLS, secrets, SQL inj). Esta rule cobre **decisão arquitetural** ANTES da implementação |
-| `calibration.md` | Premissas listadas no Spec Request DEVEM ter rótulo `[conf: alta/média/baixa]` |
-| `caverna-activate.md` | Safety carve-out: spec request é VERBOSE, sem caverna |
-| `supabase-factory-activate.md` | Sanitização em Supabase também aciona supabase-factory p/ schema strategy |
-| `workflow-patterns.md` §4 | Verificação antes de declarar completo — esta rule adiciona verificação ANTES de começar |
-| `zoom-out.md` | Drift p/ implementar cripto/LGPD ñ pedido = trigger de zoom-out + bloqueio gate |
+| `gauntlet-protocol.md` | Gauntlet verifica DEPOIS; esta rule bloqueia ANTES de começar |
+| skill `supabase-factory` | Sanitização em Supabase também aciona supabase-factory p/ schema strategy |
 
 ---
 
@@ -250,10 +248,8 @@ Resposta:
 - CLAUDE.md `🏗️ Excelência em Planejamento` — pensar antes de agir
 - CLAUDE.md `🚫 Precisão` — palavras absolutistas exigem fonte
 - CLAUDE.md `🧩 Integridade Conceitual` — Brooks, zero Frankenstein
-- `anti-sycophancy.md` — challenge de instruções subótimas
-- `calibration.md` — rotular confiança em premissas
+- `plan-and-execute.md` — modo de operação, lista fechada de "perguntar", rótulo de confiança
 - `vibe-deploy-guard.md` — checks técnicos pós-spec
-- `zoom-out.md` — anti-narrowing, drift de escopo
 - skill `security-audit` — auditoria pós-implementação (OWASP A02 Cryptographic Failures)
 - skill `supabase-factory` — provisioning antes de destruir
 - skill `guardrails` — input/output sanitization (técnico, complementar)

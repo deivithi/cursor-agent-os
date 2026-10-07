@@ -32,7 +32,7 @@ Ordem de execução. Falha em qualquer nível → parar e corrigir antes de avan
 | 2 | **Lint + Type-check** | Zero errors novos. Warnings novos devem ser justificados ou corrigidos |
 | 3 | **Testes de integração / E2E** | Passam (se existem no projeto) |
 | 4 | **Coverage** | ≥ threshold do projeto (default: 80% se não definido em GAUNTLET.md) |
-| 5 | **Reviewer-agent** | Sem findings acima do threshold de severity (workflow-patterns §2) |
+| 5 | **Reviewer-agent** | Sem findings acima do threshold de severity (`plan-and-execute.md` §1; threshold em `data/severity-config.json`) |
 | 6 | **Checks de deploy** | vibe-deploy-guard (se aplicável a deploy) |
 
 Projetos com `GAUNTLET.md` próprio podem adicionar checks além do mínimo.
@@ -190,13 +190,11 @@ Ou, se incompleto (protótipo):
 | Rule | Relação |
 |---|---|
 | `test-integrity.md` | Protege testes de serem removidos/enfraquecidos. Gauntlet exige que rodem |
-| `workflow-patterns.md` §2 | Reviewer-agent é o nível 5 do gauntlet |
-| `workflow-patterns.md` §4 | "Nunca marcar completo sem provar" — gauntlet formaliza o "provar" |
+| `plan-and-execute.md` §1 | Reviewer-agent é o nível 5 do gauntlet; "pronto" = gauntlet passou |
+| `plan-and-execute.md` §5 | Report de gauntlet inclui nível de confiança quando incompleto |
+| `plan-and-execute.md` §6 | Hook libera quando pendências não caem (estagnação) |
 | `vibe-deploy-guard.md` | Nível 6 do gauntlet (checks de deploy) |
 | `human-architectural-gate.md` | Gate ANTES de implementar; gauntlet DEPOIS de implementar |
-| `anti-sycophancy.md` | Agente não pode bajular dizendo "tá pronto" sem rodar checks |
-| `calibration.md` | Report de gauntlet inclui nível de confiança quando incompleto |
-| `adaptive-depth.md` | Hook usa I(t): pendências não caíram → libera (estagnação) |
 
 ---
 
@@ -275,7 +273,7 @@ Não deployo sem verificação. Posso configurar os checks — confirma?
 2. Ele acha projetos com `gauntlet.json` pelos arquivos **editados** na sessão, pelo `cwd` (se a sessão mudou arquivo) e pelas raízes do workspace (Cursor). Ler arquivo não dispara.
 3. Sem mudança no código desde a última avaliação → custo < 0,5 s, silêncio.
 4. Código mudou → roda o gauntlet. Passou → linha de status ao operador. Falhou/regrediu → **bloqueia o fim do turno** e devolve o feedback ao agente, que continua corrigindo.
-5. Saída do loop: `max_blocks` (padrão 3) **ou** estagnação — nenhuma pendência anterior foi resolvida (`adaptive-depth.md`: I(t)=0 → EXIT) **ou** teto de `2 × max_blocks` na sessão. Libera com aviso para o agente relatar as pendências.
+5. Saída do loop: `max_blocks` (padrão 3) **ou** estagnação — nenhuma pendência anterior foi resolvida (`plan-and-execute.md` §6) **ou** teto de `2 × max_blocks` na sessão. Libera com aviso para o agente relatar as pendências.
 6. Instalação dos hooks: `py -3 scripts/gauntlet/install_hooks.py` (idempotente, com backup; o operador roda uma vez).
 
 **Regras para o agente:**

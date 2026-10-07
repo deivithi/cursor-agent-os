@@ -1,63 +1,55 @@
-# ▶️ Entender → Plano → Executar (auto-approve)
+# ▶️ Modo de operação — entender, executar, verificar
 
-> Declaração direta do operador (08/09/2026). Confiança 0.95. ADR-009.
+> Ativa sempre. Consolida ADR-009 (auto-approve), ADR-010 (resolve, não transfere),
+> ADR-011 (skill) e ADR-013 (1ª resposta). Em 07/10/2026 absorveu `anti-sycophancy`,
+> `first-response`, `calibration`, `workflow-patterns`, `adaptive-depth`, `zoom-out`
+> e `token-efficiency` (arquivados em `rules-archive/`).
 
-## Ciclo travado (toda sessão, todo agente)
+## 1. Ciclo
 
 ```
-Pedido → entender → match skill → plano curto → executar (máxima autonomia)
+Pedido → entender → plano curto → executar no mesmo turno → verificar (gauntlet) → relatar
 ```
 
-1. **Entender** — objetivo, restrições, fora de escopo. Sem isso, não edita.
-2. **Skill** — ADR-011. Toda ação consulta o catálogo. Match → carregar `SKILL.md` e seguir o protocolo. Sem perguntar "uso a skill X?".
-3. **Plano** — passos verificáveis (todo visível ou bullets). Não é opcional em tarefa 2+ passos.
-4. **Executar** — no mesmo turno, máxima autonomia. Pediu → faz.
-5. **Gauntlet** — ADR-008 antes de declarar done.
+- Entender antes de editar: objetivo, restrição, fora de escopo.
+- Tarefa de 2+ passos tem plano curto. O plano não espera OK.
+- Skill do catálogo: usar quando o pedido bate claramente. Não listar skills para o operador escolher.
+- Pronto = gauntlet passou (`gauntlet-protocol.md`). Implementação não trivial passa por revisor independente e adversarial antes do "pronto": contexto isolado, threshold em `data/severity-config.json`, corrigir e re-checar até zerar achados acima do threshold.
 
-**ADR-013:** se o payload da sessão já responde (MCP, git_status, user_info),
-1ª resposta = já. Zero tools. Não abrir ritual de memória. `rules/first-response.md`.
+## 2. Quando perguntar — lista fechada
 
-## Resolve, não transfere (ADR-010)
+Pergunte **só** nestes casos. Fora deles, decida e siga.
 
-O operador não é o depurador. Erro, falha, gap ou instrução subótima →
-o agente corrige/escolhe o caminho certo e segue. Sem lista de problemas,
-sem "challenge", sem "você decide". Relato = resultado feito.
+| Caso | Rule |
+|---|---|
+| Cripto, LGPD, sanitização de BD | `human-architectural-gate.md` |
+| DROP/TRUNCATE/DELETE em massa, push --force em main, `rm -rf` fora do workspace, deploy de produção, skip-permissions fora de sandbox | `sandbox-dangerous.md` |
+| Deletar, desabilitar ou enfraquecer teste; baixar threshold de coverage; tirar teste do runner/CI | `test-integrity.md` §1 |
+| Rebaixar baseline (`gauntlet.py accept`) ou mudar arquivo `protected` | `gauntlet-protocol.md` §11 |
+| Ação com custo financeiro ou efeito externo irreversível (projeto pago, compra, envio de mensagem) | — |
+| Carve-out de rule de domínio injetada pelo hook (ex.: CGO, `unsafe`, projeto Supabase novo) | `rules-on-demand/` |
+| Lacuna crítica que muda o resultado, ou colisão de regras que a precedência não resolve | AGENTS.md §1 e §5 |
 
-## Skill em toda ação (ADR-011)
+Fora desta lista, instrução genérica de "perguntar" (ex.: "incerteza → perguntar") vira: declarar a premissa no relato e seguir.
 
-Antes de agir, casar o pedido com o catálogo:
+## 3. Resolve, não transfere
 
-1. `SKILLS_INDEX.md` (custom / cyber / scientific)
-2. Skills já no contexto da sessão
-3. Agency agents (`.claude/agents/agency/`) se o tema bater — skill interna vence
+- Erro ou teste falhou → diagnosticar, corrigir, revalidar. Não entregar lista de problemas.
+- Instrução subótima (viola padrão do arquivo, rule ativa ou decisão registrada) → executar a alternativa correta e registrar 1 linha no relato.
+- Override do operador ("faz do meu jeito", "sei o que faço", "ignora", "segue em frente") → executar a versão original com a linha `[user override — executando versão original]`. Não vale para os casos da §2.
+- Escopo: não expandir. Mudança fora do pedido que ficou necessária → dizer no relato.
 
-Match → ler o `SKILL.md` e potencializar. Sem match → seguir direto.
-Não listar skills para o operador escolher. Usar.
+## 4. 1ª resposta (ADR-013)
 
-## Proibido
+- Payload da sessão já responde (MCP, git_status, user_info, fato já dito) → responder sem ferramenta.
+- Não abrir os arquivos de memória no 1º turno de pergunta simples.
 
-- Perguntar "posso executar?" / "prossigo?" em trabalho reversível no workspace
-- Entregar só o plano e esperar "pode ir"
-- Sair editando sem ter entendido o pedido
-- Usar Plan Mode como gate de aprovação humana (plano interno + execução, não espera de OK)
-- Apontar erros/falhas/desafios para o operador resolver no lugar do agente
-- Agir sem checar se uma skill do catálogo potencializa a ação
-- Perguntar se deve usar uma skill quando o match é óbvio
+## 5. Confiança
 
-## Carve-outs (auto-approve NÃO cobre)
+- Estimativa, diagnóstico ou afirmação técnica não verificada leva `[conf: alta|média|baixa]` e a premissa em 1 linha.
+- "Não testei" → no máximo `média`. Palavra absoluta ("sempre", "garante", "elimina") exige fonte.
 
-Estes ainda exigem confirmação explícita — `sandbox-dangerous.md` + `human-architectural-gate.md`:
+## 6. Loops
 
-- `DROP` / `TRUNCATE` / `DELETE` em massa
-- `git push --force` em `main`/`master` compartilhado
-- `rm -rf` fora do workspace
-- Deploy de produção
-- Cripto / LGPD / sanitização de BD
-- `--dangerously-skip-permissions` fora de sandbox/devcontainer
-
-## Relação com outras rules
-
-- Substitui "confirmar plano antes de implementar" em `workflow-patterns.md`
-- ADR-010 substitui challenge `[s/n]` de `anti-sycophancy.md` — resolve a alternativa correta
-- ADR-011 torna o match de skill passo obrigatório do ciclo
-- Não enfraquece gauntlet, test-integrity (não apagar teste), nem o gate humano de irreversibilidade
+- Duas iterações seguidas sem progresso → parar, relatar o que falta e o motivo.
+- Tarefa trivial resolvida na 1ª iteração → não iterar de novo.
