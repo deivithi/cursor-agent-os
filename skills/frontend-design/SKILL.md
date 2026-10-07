@@ -41,6 +41,18 @@ tags:
 
 ---
 
+## 0. Método padrão — vale para TODA criação de UI (diretriz do operador, 07/10/2026)
+
+> "O design de UI está 80% resolvido com Claude Design + Mobbin MCP + bom gosto + exclusões agressivas."
+
+1. **Claude Design gera a base** — Artifact type Design (`Artifact quickstart intent: design`) ou o design system do projeto.
+2. **Mobbin compara** — "compare seu design com os melhores exemplos encontrados no Mobbin": buscar 3-5 telas reais do mesmo padrão (onboarding, checkout, dashboard...) e listar o que elas fazem melhor (hierarquia, densidade, copy, estados vazios).
+   - Mobbin MCP ainda **não está instalado** neste ambiente. Fallback: mobbin.com via Claude in Chrome / WebSearch. Instalar o MCP quando houver (registrar aqui).
+3. **Bom gosto** — ajustar a base pelo que a comparação mostrou, mantendo a identidade da marca (Febracis quando aplicável).
+4. **Exclusões agressivas** — cortar tudo que não ganha o lugar: elemento decorativo, card redundante, texto de enchimento, segunda CTA, animação gratuita. Na dúvida, remove.
+
+Relato de entrega de UI cita: referências Mobbin usadas + o que foi excluído.
+
 ## 1. Princípios de Design Anti-AI-Slop
 
 ### O que evitar (sinais de "feito por IA")
@@ -388,8 +400,10 @@ Para usar MagicUI sem React/build, implementar os efeitos em CSS/JS puro:
 4. DEFINIR layout (assimétrico > grid perfeita quando possível)
 5. ADICIONAR micro-interações (scroll reveal, hover lift, stagger)
 6. ADICIONAR componentes animados (MagicUI patterns, se relevante)
-7. GERAR HTML standalone em output/
-8. VALIDAR: abre no browser? Responsivo? Visual coerente?
+7. COMPARAR com 3-5 referências Mobbin do mesmo padrão (§0) e ajustar
+8. EXCLUIR agressivamente o que não ganha o lugar (§0)
+9. GERAR HTML standalone em output/
+10. VALIDAR: abre no browser? Responsivo? Visual coerente?
 ```
 
 ### Convenções de Output

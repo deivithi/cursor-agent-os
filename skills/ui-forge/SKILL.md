@@ -60,6 +60,8 @@ tags:
 
 ## Workflow
 
+> Toda geração segue o **método padrão** de `frontend-design` §0: Claude Design (base) → comparação com Mobbin → bom gosto → exclusões agressivas.
+
 ```
 PROMPT DO USUÁRIO
     │
