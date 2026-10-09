@@ -18,6 +18,13 @@ const {
   mergeDomainState,
   buildActivationContext,
 } = require("./profile-runtime");
+// Fail-open: sem o módulo do painel, o profile e as domain rules continuam.
+let textoManutencao = () => "";
+try {
+  ({ textoManutencao } = require("./manutencao-painel"));
+} catch {
+  /* painel indisponível */
+}
 
 async function main() {
   const input = await readStdinJson();
@@ -40,7 +47,10 @@ async function main() {
   );
   writeDomainActive(domainState);
 
-  const context = buildActivationContext(profileId, domainState.rules);
+  // Painel da manutenção contínua: pendências do PO em toda sessão, sem comando.
+  const manutencao = textoManutencao();
+  const ativacao = buildActivationContext(profileId, domainState.rules);
+  const context = [ativacao, manutencao].filter(Boolean).join("\n\n---\n\n");
   if (!context) {
     if (isCursorHook()) emitCursorOutput({});
     return;

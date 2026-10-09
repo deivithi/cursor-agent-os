@@ -243,7 +243,8 @@ $scheduledTaskNames = @(
   'Febracis-CursorAgent-Daily',
   'Febracis-OpenDesign-Update',
   'Febracis-Cursor-UpdateWatchdog',
-  'Febracis-Codex-LogGuard-Audit'
+  'Febracis-Codex-LogGuard-Audit',
+  'Febracis-Manutencao-Continua'
 )
 $scheduledTasks = @()
 foreach ($name in $scheduledTaskNames) {

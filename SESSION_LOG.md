@@ -6,6 +6,18 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-09 — Manutenção contínua automática (porteiro + agenda + painel)
+
+- ✅ Diretriz do PO: tudo automático, sem comando extra em nenhuma sessão.
+- ✅ `scripts/ciclo.mjs` (porteiro, sem LLM): coleta, triagem, worktree por item, bump de vulnerabilidade sem LLM (`pnpm update --ignore-scripts` + audit), conferência de diff, checagem estática em worktree limpo, push só em `manut/*`, PR e comentários de modelo; `painel.json` + `porteiro.log`.
+- ✅ Agente corretor sem shell: só `Read,Glob,Grep,Edit,Write`, sem MCP, cwd no worktree. Confinamento testado (leitura e escrita fora negadas).
+- ✅ Painel em toda sessão do Claude Code e do Cursor (`hooks/manutencao-painel.js` via `profile-session.js`, fail-open); tarefa no `memory-doctor.ps1`.
+- ✅ Gauntlet: 56 testes; revisão adversarial em 4 rodadas (2 CRITICAL + 3 HIGH → 1 CRITICAL + 4 HIGH → 1 CRITICAL → APPROVE). Modelo de ameaça: no Windows sem sandbox, código que roda como o usuário lê o keyring do `gh`; por isso o LLM não executa nada e o porteiro não executa código do agente.
+- ✅ Validado com dados reais: coleta em `tifebracis` (token da conta da empresa só no comando), bump de `source-map-js` num worktree de teste (só lockfile mudou; audit limpo), lint + typecheck em 60 s.
+- ✅ Junction `.claude/` de alpha-loop, autonomous-agent-loop, /corte e /ste sincronizada (5608fbb).
+- ⚠️ O classificador do modo automático bloqueou registrar a tarefa e rodar o ciclo completo (categoria "criar agente autônomo"). O operador roda `instalar-agenda.ps1` uma vez.
+- ➡️ Primeiro ciclo real: PR de `source-map-js` (HIGH, prd) em `tifebracis`.
+
 ## 2026-10-09 — Skill `manutencao-continua` (ciclo de manutenção por agente)
 
 - ✅ Origem: post sobre falta de manutenção em software feito com IA ("enquanto depender de humano no ciclo, não escala"). Adaptação: o humano sai do ciclo operacional e fica só no irreversível (prd, LGPD, cripto, dado em massa).

@@ -164,6 +164,7 @@ export function deRunsCI(runs, ancoras = {}) {
     const marco = !houveVerde && ancoras[nome] ? ancoras[nome] : calculado;
     sinais.push({
       ancora: { workflow: nome, marco },
+      runId: lista[0].databaseId ?? null,
       id: `ci:${nome}@${marco}`,
       tipo: 'falha-ci',
       titulo: `CI de main falhando: ${nome}`,
@@ -207,26 +208,62 @@ export function deErrosRuntime(erros, limiarHigh = LIMIAR_RUNTIME_HIGH) {
   }));
 }
 
-/** Vulnerabilidades: [{ pacote, severidade, id }] (npm audit, govulncheck, pip-audit). Uma por pacote. */
+/**
+ * Saída do `pnpm audit --json` / `npm audit --json` → lista de vulnerabilidades.
+ * Aceita o formato `advisories` (pnpm, npm 6) e `vulnerabilities` (npm 7+). Outro formato (inclusive
+ * `{"error": ...}`) lança erro: auditor que não auditou é lacuna, nunca "zero vulnerabilidades".
+ * `dev`: todas as ocorrências são de dependência de desenvolvimento. `semCorrecao`: não há versão corrigida.
+ */
+export function deAudit(json) {
+  if (json && typeof json === 'object' && json.advisories && typeof json.advisories === 'object') {
+    return Object.values(json.advisories).map((a) => ({
+      pacote: a.module_name,
+      severidade: a.severity,
+      id: a.github_advisory_id ?? (a.id === undefined ? undefined : String(a.id)),
+      dev: (a.findings ?? []).length > 0 && (a.findings ?? []).every((f) => f.dev === true),
+      semCorrecao: !a.patched_versions || a.patched_versions === '<0.0.0',
+    }));
+  }
+  if (json && typeof json === 'object' && json.vulnerabilities && typeof json.vulnerabilities === 'object') {
+    return Object.values(json.vulnerabilities).map((v) => {
+      const ghsa = (v.via ?? []).map((x) => /GHSA-[\w-]+/.exec(x?.url ?? '')?.[0]).find(Boolean);
+      return { pacote: v.name, severidade: v.severity, id: ghsa, dev: false, semCorrecao: v.fixAvailable === false };
+    });
+  }
+  const motivo = json?.error ? `: ${String(json.error.summary ?? json.error.code ?? json.error).slice(0, 120)}` : '';
+  throw new Error(`saída de audit sem "advisories" nem "vulnerabilities"${motivo}`);
+}
+
+/** Compatibilidade: nome antigo. */
+export const dePnpmAudit = (json) => (json && (json.advisories || json.vulnerabilities) ? deAudit(json) : []);
+
+/**
+ * Vulnerabilidades: [{ pacote, severidade, id, dev?, semCorrecao? }] (pnpm/npm audit, govulncheck, pip-audit).
+ * Uma por pacote. Só de dev → LOW (não chega a prd). Sem correção publicada e em prd → mantém a
+ * severidade e marca `semCorrecao`: não há o que o agente subir, então o destino é `escalar` (o PO decide).
+ */
 export function deVulnerabilidades(vulns) {
   const mapa = { critical: 'CRITICAL', high: 'HIGH', moderate: 'MEDIUM', medium: 'MEDIUM', low: 'LOW' };
   const porPacote = new Map();
   for (const v of vulns ?? []) {
     const pacote = String(v.pacote ?? '').trim();
     if (!pacote) continue;
-    const sev = mapa[String(v.severidade ?? '').toLowerCase()] ?? 'MEDIUM';
-    const g = porPacote.get(pacote) ?? { severidade: 'LOW', ids: [] };
+    const sev = v.dev ? 'LOW' : mapa[String(v.severidade ?? '').toLowerCase()] ?? 'MEDIUM';
+    const g = porPacote.get(pacote) ?? { severidade: 'LOW', ids: [], semCorrecao: true };
     if (SEVERIDADES.indexOf(sev) < SEVERIDADES.indexOf(g.severidade)) g.severidade = sev;
+    // Basta uma ocorrência de prd com correção para o agente ter o que subir.
+    if (!v.dev && !v.semCorrecao) g.semCorrecao = false;
     if (v.id) g.ids.push(String(v.id));
     porPacote.set(pacote, g);
   }
   return [...porPacote.entries()].map(([pacote, g]) => ({
     id: `vuln:${pacote}`,
     tipo: 'vulnerabilidade',
-    titulo: `Dependência vulnerável: ${pacote} (${g.ids.length ? g.ids.join(', ') : 'sem id'})`,
+    titulo: `Dependência vulnerável: ${pacote} (${g.ids.length ? g.ids.join(', ') : 'sem id'})${g.semCorrecao && g.severidade !== 'LOW' ? ' — sem versão corrigida' : ''}`,
     texto: pacote,
     rotulos: [],
     severidade: g.severidade,
+    semCorrecao: g.semCorrecao,
     desde: null,
     url: null,
     aprovada: true,
@@ -234,12 +271,12 @@ export function deVulnerabilidades(vulns) {
   }));
 }
 
+// Última linha que COMEÇA com o marcador: o porteiro escreve o marcador real no fim do corpo;
+// um marcador injetado no meio de um título não vale.
 function idDoPr(pr) {
-  for (const linha of String(pr.body ?? '').split(/\r?\n/)) {
-    const i = linha.indexOf(MARCA_PR);
-    if (i >= 0) return linha.slice(i + MARCA_PR.length).trim();
-  }
-  return null;
+  const linhas = String(pr.body ?? '').split(/\r?\n/).reverse();
+  const linha = linhas.find((l) => l.trim().startsWith(MARCA_PR));
+  return linha ? linha.trim().slice(MARCA_PR.length).trim() || null : null;
 }
 
 /** PRs do agente (`gh pr list --label agente:manutencao --state all --json number,body,state`) ainda abertos. */
@@ -276,9 +313,11 @@ export function destino(sinal, estado = {}, prsAbertos = new Map()) {
   if (sinal.ignorar) return 'ignorar';
   if (prsAbertos.has(sinal.id) || (hist.pr && !hist.resolvido)) return 'aguardando-revisao';
   if (sinal.comHumano) return 'com-humano';
+  if (hist.gate && !sinal.rotulos.includes(ROTULO_LIBERADO)) return 'gate-humano';
   if ((hist.tentativas ?? 0) >= MAX_TENTATIVAS) return 'escalar';
   if (precisaGateHumano(sinal)) return 'gate-humano';
   if (sinal.tipo === 'seguranca') return 'seguranca';
+  if (sinal.tipo === 'vulnerabilidade' && sinal.semCorrecao && sinal.severidade !== 'LOW') return 'escalar';
   if (!sinal.confiavel) return 'aguardando-triagem';
   if (sinal.tipo === 'funcionalidade') return sinal.aprovada ? 'corrigir' : 'propor-spec';
   if (sinal.severidade === 'LOW') return 'backlog';
@@ -326,7 +365,7 @@ export function triar(sinais, { estado = {}, orcamento = ORCAMENTO_PADRAO, prsAb
   return { fila: fila.map(({ texto, ancora, ...resto }) => ({ ...resto, ramo: ramo(resto.id) })), resumo };
 }
 
-export const RESULTADOS = ['falhou', 'pr', 'pr-recusado', 'resolvido', 'tratado', 'reset'];
+export const RESULTADOS = ['falhou', 'pr', 'pr-recusado', 'resolvido', 'tratado', 'gate', 'reset'];
 
 /** Registra o resultado de uma tentativa. `tratado` exige a ação (ex.: gate-humano). */
 export function registrar(estado, id, resultado, { pr = null, acao = null, agora = new Date() } = {}) {
@@ -350,6 +389,11 @@ export function registrar(estado, id, resultado, { pr = null, acao = null, agora
       hist.resolvido = true;
       hist.tentativas = 0;
       delete hist.tratado;
+      delete hist.gate;
+      break;
+    case 'gate':
+      // O agente concluiu que o item toca LGPD, cripto, segredo ou dado em massa: o PO decide.
+      hist.gate = true;
       break;
     case 'tratado':
       if (!UMA_VEZ.has(acao)) throw new Error(`resultado "tratado" exige a ação (--acao): ${[...UMA_VEZ].join(', ')}`);
@@ -437,6 +481,11 @@ function gravarJson(caminho, valor) {
 
 const CHAVE_ANCORAS = '_ancoras_ci';
 
+/** `--vulns` aceita a lista normalizada ou a saída crua do `pnpm audit --json`. */
+function lerVulns(conteudo) {
+  return Array.isArray(conteudo) ? conteudo : deAudit(conteudo);
+}
+
 export function main(argv, saida = process.stdout) {
   const a = argumentos(argv);
   const caminhoEstado = expandirHome(a.estado);
@@ -458,7 +507,7 @@ export function main(argv, saida = process.stdout) {
     ...deIssues(sinal(a.issues)),
     ...sinaisCI,
     ...deErrosRuntime(sinal(a.erros), numero(a.limiar, '--limiar') ?? LIMIAR_RUNTIME_HIGH),
-    ...deVulnerabilidades(sinal(a.vulns)),
+    ...deVulnerabilidades(lerVulns(sinal(a.vulns))),
   ];
   const resultado = triar(sinais, {
     estado,

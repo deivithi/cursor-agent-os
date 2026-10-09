@@ -8,11 +8,13 @@ description: >
   em massa). Adaptação da tese "manutenção também precisa ser automatizada" para o
   ecossistema Febracis (gh + Telegram via Zo + Workflow + gauntlet). Ativa com "manutenção
   contínua", "manter o projeto vivo", "zelador", "triagem de issues", "corrigir bugs
-  sozinho", "ciclo de manutenção", "bugs em aberto", "/manutencao".
+  sozinho", "ciclo de manutenção", "bugs em aberto", "/manutencao". Também ativa sozinha quando
+  um projeto chega em prd sem config de manutenção, ou quando o painel de início de sessão
+  mostra pendência de manutenção.
 allowed-tools: Bash, Read, Glob, Grep, Edit, Write, Agent, Workflow
 metadata:
   author: deivithi
-  version: "1.0.0"
+  version: "2.0.0"
 ---
 
 # 🔁 Manutenção Contínua — o projeto não morre depois do lançamento
@@ -28,16 +30,20 @@ corrige e abre o PR. O PO recebe um resumo no Telegram e decide só o que é irr
 ## 📁 Estrutura
 
 - `SKILL.md` — você está aqui.
+- `scripts/ciclo.mjs` — porteiro da tarefa agendada: coleta, triagem, painel e agente só quando há trabalho (node puro, zero token sem trabalho).
 - `scripts/triagem.mjs` — junta os sinais, deduplica, classifica e aplica o orçamento do ciclo (node puro).
-- `references/projeto-indicacoes.json` — config do ciclo para a Plataforma de Indicações. Serve de modelo.
-- `tests/triagem.test.mjs` — gauntlet do script.
+- `scripts/instalar-agenda.ps1` — instala a tarefa `Febracis-Manutencao-Continua` (idempotente).
+- `references/projeto-<slug>.json` — um arquivo por projeto no ciclo. `projeto-indicacoes.json` serve de modelo.
+- `tests/` — gauntlet do porteiro, da triagem e do painel.
 - `gotchas.md` — problemas conhecidos.
+- Fora da skill: `hooks/manutencao-painel.js` (painel no início de toda sessão) e a tarefa no `scripts/memory-doctor.ps1`.
 
 ## Quando usar
 
 - Projeto já lançado (Indicações, DRE_Eventos, Pulso Finance) que precisa continuar vivo.
 - O PO pergunta "tem bug em aberto?", "o que quebrou essa semana?" ou "roda a manutenção".
-- Ligar o ciclo agendado num projeto novo.
+- **Projeto chegou em prd e não tem `references/projeto-<slug>.json`.** O agente que fez o deploy cria a config (copie a de Indicações, `ativo: true`) e faz o commit. A partir do dia seguinte, o porteiro inclui o projeto sozinho. Ninguém precisa pedir.
+- O painel do início de sessão mostra pendência de manutenção: trate ou mencione ao PO quando o assunto tocar o projeto.
 
 ## Quando NÃO usar (→ Handoff)
 
@@ -130,19 +136,31 @@ O PO destrava um item escalado com `node $T --estado "$E" --id "<id>" --resultad
 3. Mande ao PO no Telegram via Zo (`send_telegram_message`). Mensagem curta: PRs para revisar, gates e escalações.
 4. **Merge em main e deploy em prd ficam com o PO.** O ciclo nunca mescla nem publica em prd.
 
-## Agendar o ciclo
+## Automático: agenda, porteiro e painel
 
-O ciclo roda sem o PO pedir. Escolha um caminho e registre na config (`agenda`):
+O ciclo roda sem ninguém pedir. Decisão do PO em 09/10/2026: tudo automático, sem comando extra em nenhuma sessão.
 
-| Caminho | Quando usar | Limite |
-|---|---|---|
-| Tarefa agendada local (Claude Code headless) | Projeto com clone local e coletores no Zo/Vercel | Máquina ligada; estado em `~/.claude/manutencao/` |
-| Automação do Zo (`create_automation`) | Clone e coletores no Zo | Usa a cota do Zo; estado num arquivo do Zo |
-| `schedule` (rotina na nuvem) | Só GitHub (issues, CI, PR) | Não vê `DIR` local nem o Zo; estado precisa de outro lugar |
-| `/loop` local | Teste do ciclo numa sessão aberta | Só enquanto a sessão vive |
+**Modelo de ameaça** (revisão adversarial de 09/10, 3 rodadas): no Windows sem sandbox, código que roda como o usuário lê o token do `gh` no keyring. Por isso o LLM **não executa nada** e o porteiro **não executa código que o LLM escreveu**.
 
-Ligar uma agenda que consome plano ou cota pede confirmação do PO (`plan-and-execute.md` §2).
+| Peça | O que faz | Executa código do agente? | Custo |
+|---|---|---|---|
+| Tarefa `Febracis-Manutencao-Continua` | Todo dia às 07:30 (ou quando o PC ligar) roda `scripts/ciclo.mjs`, console oculto, até 8 h | — | Zero |
+| Porteiro `ciclo.mjs` (código, sem LLM) | Coleta (issues, CI, PRs, `pnpm audit`), triagem, painel, `porteiro.log`; worktree por item em `~/.claude/manutencao/<slug>/wt/`; todo `git` com hooks desligados; push só em `manut/<id>-<data>`; PR e comentários de modelo | Não | Zero token |
+| Vulnerabilidade | O porteiro roda `pnpm update <pacote> --recursive --depth 100 --ignore-scripts`, confere o audit e que só lockfile/package.json mudaram e abre o PR. Sem lint/typecheck aqui (rodariam a versão recém-baixada); o PR pede `pnpm verify`. Sem correção publicada → `escalar` | Não | Zero token |
+| Agente corretor (`claude -p`, issue ou CI) | Só `Read,Glob,Grep,Edit,Write` (`--tools`), sem MCP, `acceptEdits` com cwd no worktree. Testado: não lê nem escreve fora do worktree e não tem shell. Item vai no prompt entre marcas de "dado não confiável"; para CI, o log da falha também | — | Plano, só com trabalho |
+| Conferência do porteiro | Diff contra o SHA de `origin/main` gravado antes do agente, `--no-renames`. Recusa `.github/`, `.husky/`, `scripts/`, todo `package.json`, lockfile, workspace, configs (eslint, tsconfig, turbo, `*.config.*`), `.env*`, `.npmrc`, `CODEOWNERS`. Depois: commit com hooks desligados e checagem num **worktree limpo novo**, criado desse commit (só arquivos rastreados; nada que o agente gravou em pasta ignorada como `node_modules/` ou `coverage/`): `install --frozen-lockfile --ignore-scripts` + `checagens_estaticas` (padrão `lint`, `typecheck`) | Não (worktree limpo, config do `main`, toolchain fixo) | Zero |
+| PR | Diz que testes e build **não** rodaram na máquina do porteiro: rodar `pnpm verify` antes do merge. Textos de fora saneados (sem menção, link, `Closes`, marcador) | — | — |
+| Agente de spec (`claude -p`, só leitura) | Spec curta de funcionalidade em worktree limpo; o porteiro saneia e posta na issue | — | Plano, só com pedido |
+| Painel no início de sessão | `hooks/profile-session.js` injeta o `painel.json` em toda sessão do Claude Code e do Cursor: PRs abertos e para revisar, gates, escalados, lacunas, agenda parada. Títulos saneados, até 8 por projeto | — | Zero |
+| memory-doctor | Mostra a tarefa parada em "Condições de ambiente" do bloco do DSH | — | Zero |
 
+- Token: a config diz a conta do `gh` (`gh_conta`). O porteiro pega o token no keyring a cada ciclo e usa só nas chamadas dele a `gh` e `git push`/`fetch`. Auditor, checagens e agentes rodam com `envLimpo`.
+- Agente devolve `gate-humano` → o estado do item ganha `gate` (vale para issue e CI) e a triagem manda para o gate até `gate:liberado` ou reset; em issue, o porteiro também põe o rótulo `gate-humano` e comenta o modelo. Item sem issue (CI, vulnerabilidade) não tem rótulo: o PO libera com `node scripts/triagem.mjs --estado ~/.claude/manutencao/<slug>.json --id "<id>" --resultado reset` (o id aparece no painel e no `resumo.md`).
+- Lock atômico por projeto (`ciclo.lock`, 8 h; lock velho é renomeado). Rodar um projeto só não apaga o painel dos outros.
+- Backlog não abre PR: fica no `resumo.md` e é marcado como tratado. Telegram não está no ciclo automático: o canal é o painel de sessão e o próprio PR.
+- Erros de runtime não entram no ciclo automático (sem coletor sem MCP). Rode `/manutencao` com o coletor manual quando houver.
+- Instalar ou reinstalar a tarefa (uma vez, pelo operador): `pwsh -File skills/manutencao-continua/scripts/instalar-agenda.ps1`. O classificador do modo automático não deixa o agente registrar a tarefa nem rodar o ciclo completo.
+- Teste sem gastar token: `node scripts/ciclo.mjs --sem-agente [--projeto <slug>]`. Exit 2 = houve lacuna (a tarefa aparece como falha no Agendador; o motivo está no `porteiro.log`).
 
 ## Progressive Disclosure
 
@@ -172,5 +190,5 @@ Ligar uma agenda que consome plano ou cota pede confirmação do PO (`plan-and-e
 ## Gauntlet desta skill
 
 ```bash
-node --test ~/.claude/skills/manutencao-continua/tests/triagem.test.mjs
+node --test ~/.claude/skills/manutencao-continua/tests/triagem.test.mjs ~/.claude/skills/manutencao-continua/tests/ciclo.test.mjs
 ```

@@ -2,7 +2,11 @@
   "_fonte": "Config do ciclo de manutenção da Plataforma de Indicações. Copie para outro projeto e troque os campos.",
   "projeto": "Indicações Febracis",
   "slug": "indicacoes",
+  "ativo": true,
+  "agente": true,
   "repo": "tifebracis/febracis-indicacoes",
+  "gh_conta": "deivithilopes-ai",
+  "git_auth_org": "tifebracis",
   "dir": "C:/Users/deivithi.lopes/Documents/Cursor/REferido - Febracis",
   "estado": "~/.claude/manutencao/indicacoes.json",
   "gauntlet": "pnpm verify",
@@ -13,9 +17,9 @@
     "ci": "gh run list --repo tifebracis/febracis-indicacoes --branch main --limit 50 --json databaseId,workflowName,conclusion,status,createdAt,url,headSha",
     "prs": "gh pr list --repo tifebracis/febracis-indicacoes --label agente:manutencao --state all --limit 300 --json number,body,state",
     "erros": "Vercel MCP get_runtime_errors (projeto de hml/prd, últimas 24 h) + log da API no Zo. Mascarar PII antes de gravar.",
-    "vulns": "pnpm audit --json (exit 1 com JSON válido = sucesso; mapear advisories para {pacote, severidade, id})"
+    "vulns": "automático: npx <packageManager> audit --json (o pnpm local quebra no shim da 12.8.1)"
   },
-  "agenda": "a definir pelo PO (schedule na nuvem, automação do Zo ou /loop)",
-  "resumo": "Telegram do PO via Zo",
-  "_rotulos": "Fixos no script (não configuráveis): agente:manutencao, aprovado, gate:liberado, gate-humano, lgpd, seguranca:cripto, dados:destrutivo; ignorados: wontfix, duplicate, question, invalid, blocked."
+  "_rotulos": "Fixos no script (não configuráveis): agente:manutencao, aprovado, gate:liberado, gate-humano, lgpd, seguranca:cripto, dados:destrutivo; ignorados: wontfix, duplicate, question, invalid, blocked.",
+  "agenda": "Tarefa agendada Febracis-Manutencao-Continua (todo dia 07:30, porteiro scripts/ciclo.mjs); o agente só roda com trabalho na fila ou 1x por semana",
+  "resumo": "Telegram do PO via Zo"
 }

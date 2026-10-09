@@ -22,3 +22,18 @@
 20. **CI escalado não trava o ciclo.** Só CI em `corrigir` ou com PR aberto segura os outros itens. Workflow que só o PO destrava (Actions desligado, `deploy-prd`) fica em `escalar` e o resto segue.
 21. **Âncora de CI depois de verde fora da janela.** Se main ficou verde e quebrou de novo entre dois ciclos, e o verde saiu da janela de 50 runs, a quebra nova herda a âncora antiga. Risco baixo com ciclo diário; aumente `--limit` do `gh run list` se o repo tem muitos runs.
 22. **Estado sem lock.** Registre os resultados em série, pelo orquestrador. Agentes em paralelo não gravam o estado.
+23. **`gh` local não lê `tifebracis` com a conta pessoal (404).** A config de Indicações usa `gh_conta: deivithilopes-ai`; o porteiro pega o token dessa conta no keyring e passa só ao filho.
+24. **`pnpm` local quebra no shim da 12.8.1.** O porteiro roda `npx --yes <packageManager> audit --json`, com a versão do `package.json`.
+25. **Dependabot desligado nos repos de Indicações.** A fonte de vulnerabilidade é o `pnpm audit`, não a API do GitHub.
+26. **Vulnerabilidade só de dev ou sem correção vira LOW.** Caso real de 09/10: `braces` (dev, sem versão corrigida) vai para backlog; `source-map-js` (prd, corrigida em 1.2.2) vai para correção.
+27. **Agente headless sem shell.** O corretor só tem `Read,Glob,Grep,Edit,Write`. Se uma correção precisar rodar algo, ela falha e volta como lacuna; não dê shell ao agente fora de sandbox.
+28. **Registrar a tarefa e rodar o ciclo completo são bloqueados para o agente.** O classificador do modo automático trata como "criar agente autônomo". O operador roda `instalar-agenda.ps1` uma vez; o painel avisa se a agenda parar.
+29. **Console da tarefa.** A tarefa usa `conhost.exe --headless` para não abrir janela por até 2 h de agente.
+30. **O token da empresa é admin e `main` aceita push de admin** (`enforce_admins=false`). Por isso o LLM nunca recebe o token: só o porteiro faz push, e só em `manut/*`. Endurecimento opcional do lado do GitHub: token fine-grained sem admin, sem `gist` e sem `workflow`, e `enforce_admins` ligado em `main` (decisão do PO e da TI).
+31. **O porteiro não roda testes nem build.** Executariam código do agente na máquina com o keyring. Só checagem estática (lint + typecheck) com a config do `main`, que o agente não pode mudar. O PR diz isso; `pnpm verify` roda na revisão humana ou no CI.
+32. **Item que o agente marcou `gate-humano` ou que mexeu em arquivo proibido** vira pendência do PO no painel e conta como tentativa: depois de 2, escala.
+33. **`pnpm update --depth Infinity` não existe no pnpm 12.** Use `--depth 100`.
+34. **Worktree preso no Windows.** Processo com cwd dentro do worktree (inclusive um shell aberto) impede o `git worktree remove`. O porteiro tenta de novo com `rmSync` e roda `git worktree prune`.
+35. **`origin` nunca buscado no clone local.** O clone de Indicações só tinha `deploy/*`. O porteiro faz `fetch origin main` com o token da empresa antes de abrir worktree.
+36. **Arquivo em pasta ignorada pelo git.** O agente pode gravar em `node_modules/` ou `coverage/` (o diff não mostra). Por isso a checagem roda num worktree novo, criado do commit, com `git status --porcelain --ignored` vazio antes do install. Reproduzido na revisão de 09/10: `npx` preferiu um `pnpm` falso em `node_modules`, e o eslint 10 carregou `coverage/eslint.config.mjs`.
+37. **CI do PR roda o teste do agente.** Os workflows de Indicações rodam com `permissions: contents: read` e sem `secrets.*`; o teste não tem segredo para vazar. Se um workflow passar a usar segredo em `pull_request`, rode `manut/*` sem segredo ou exija aprovação.
