@@ -190,6 +190,20 @@ IF iteration >= MAX_ITERATIONS:
 | 🔴 MAX_ITERATIONS atingido | **TIMEOUT** — reportar estado, pedir input humano |
 | 💥 Erro de ambiente (import, tool) | **ERROR** — diagnosticar ambiente, não código |
 
+### Avaliador padrão: gauntlet (`scripts/gauntlet/gauntlet.py`)
+
+Projeto com `gauntlet.json` na raiz → o Passo 6 (Test & Analyze) usa o gauntlet, não um comando solto:
+
+```bash
+py -3 scripts/gauntlet/gauntlet.py run --project <dir> --json
+# exit 0 = keep/same/incomplete · 1 = fail (gate/integridade) · 2 = regress (score caiu)
+```
+
+- `feedback` do JSON é o insumo do Passo 7 (teste que falhou, arquivo que perdeu coverage, função que ficou complexa).
+- `all_tests_pass` = `ok: true`. `no_progress` = `len(issues)` não caiu entre iterações.
+- O hook `Stop` roda o mesmo avaliador sozinho ao fim do turno. O loop manual é para iterar **antes** de entregar.
+- Proibido mexer em `gauntlet.json` e nos arquivos `protected` para passar (`rules/test-integrity.md`).
+
 ---
 
 ## 📊 Métricas do Loop
