@@ -1,0 +1,21 @@
+{
+  "_fonte": "Config do ciclo de manutenção da Plataforma de Indicações. Copie para outro projeto e troque os campos.",
+  "projeto": "Indicações Febracis",
+  "slug": "indicacoes",
+  "repo": "tifebracis/febracis-indicacoes",
+  "dir": "C:/Users/deivithi.lopes/Documents/Cursor/REferido - Febracis",
+  "estado": "~/.claude/manutencao/indicacoes.json",
+  "gauntlet": "pnpm verify",
+  "orcamento": 3,
+  "limiar": 20,
+  "coletores": {
+    "issues": "gh api \"repos/tifebracis/febracis-indicacoes/issues?state=open&per_page=100\" --paginate --slurp",
+    "ci": "gh run list --repo tifebracis/febracis-indicacoes --branch main --limit 50 --json databaseId,workflowName,conclusion,status,createdAt,url,headSha",
+    "prs": "gh pr list --repo tifebracis/febracis-indicacoes --label agente:manutencao --state all --limit 300 --json number,body,state",
+    "erros": "Vercel MCP get_runtime_errors (projeto de hml/prd, últimas 24 h) + log da API no Zo. Mascarar PII antes de gravar.",
+    "vulns": "pnpm audit --json (exit 1 com JSON válido = sucesso; mapear advisories para {pacote, severidade, id})"
+  },
+  "agenda": "a definir pelo PO (schedule na nuvem, automação do Zo ou /loop)",
+  "resumo": "Telegram do PO via Zo",
+  "_rotulos": "Fixos no script (não configuráveis): agente:manutencao, aprovado, gate:liberado, gate-humano, lgpd, seguranca:cripto, dados:destrutivo; ignorados: wontfix, duplicate, question, invalid, blocked."
+}

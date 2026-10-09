@@ -6,6 +6,15 @@
 > trabalho real com evidência no disco. Os quatro blocos abaixo foram reconstruídos a partir de
 > commits, mtime de arquivos e relatórios de auditoria — não de lembrança.
 
+## 2026-10-09 — Skill `manutencao-continua` (ciclo de manutenção por agente)
+
+- ✅ Origem: post sobre falta de manutenção em software feito com IA ("enquanto depender de humano no ciclo, não escala"). Adaptação: o humano sai do ciclo operacional e fica só no irreversível (prd, LGPD, cripto, dado em massa).
+- ✅ `skills/manutencao-continua/`: SKILL (5 fases: coletar, triar, corrigir em worktree até PR, resto da fila, resumo no Telegram), `scripts/triagem.mjs` (node puro), config de Indicações, 22 gotchas, comando `/manutencao`, junction em `.claude/skills/`.
+- ✅ Triagem: dedup, orçamento por ciclo, CI de main primeiro, gate por regex Unicode + rótulos (`gate:liberado` libera), autor de fora só com `aprovado` (anti prompt injection), máscara de PII com dígito verificador de CPF, estado fora do repo em `~/.claude/manutencao/<slug>.json`, conciliação automática de PRs mesclados/fechados, âncora de CI no estado.
+- ✅ Gauntlet: 33 testes `node --test`, incluindo CLI pela junction. Revisão adversarial em 3 rodadas (1 CRITICAL + 6 HIGH → 2 HIGH → 0 HIGH); MEDIUM da 3ª rodada corrigidos. Coleta real validada contra `deivithi/febracis-indicacoes` (issues REST + runs).
+- ⚠️ `gh` local não acessa `tifebracis` (404): a coleta oficial precisa do token da conta da empresa.
+- ➡️ Próximo: o PO escolhe a agenda (tarefa local headless, automação do Zo ou rotina na nuvem); custo pede confirmação.
+
 ## 2026-10-07 — Organização das rules (ADR-016)
 
 - ✅ Origem: análise do setup de DHH (harness qualquer, poucas skills, revisão adversarial) contra o nosso.
